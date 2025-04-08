@@ -3,6 +3,8 @@
 // Authentication - School , student , teacher
 require("dotenv").config();
 const formidable = require("formidable");
+const path = require("path");
+const fs = require("fs");
 const School = require("../models/school.model");
 
 
