@@ -43,5 +43,29 @@ module.exports = {
     }catch (error){
          res.status(500).json({success:false, message:"School Registration Failed."})
     }
+    },
+
+    loginSchool: async (req, res) =>{
+        try{
+            const school = await School.findOne({email:req.body.email});
+            if(school){
+                const isAuth = bcrypt.compareSync(req.body.password, school.password);
+                if(isAuth){
+                    //res.header("Authorization", school._id);
+                    res.status(200).json({success:true, 
+                        //if this doesn't work then use this
+                        //user:{id:school._id, owner_name:school.owner_name},school_name:school.School_name,
+                        //image_url:school.school_image,role:"SCHOOL",
+                        data:school, message:"School Logged In Successfully"})
+                }else{
+                    res.status(401).json({success:false, message:"Password Not Match"})
+                }
+            }else{
+                res.status(401).json({success:false, message:"Email Not Found/Registered"})
+            }
+        }catch (error){{
+
+        }
     }
+}
 }
