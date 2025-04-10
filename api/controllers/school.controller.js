@@ -88,6 +88,18 @@ module.exports = {
             res.status(500).json({success:false, message:"Internal Server Error [All School Data]"})
         }
     },
-    
+    getSchoolOwnData: async (req, res) => {
+        try{
+            const id= "";
+            const school = await School.findOne({_id:id});
+            if(school){
+                res.status(200).json({success:true, school})
+            }else{
+                res.status(404).json({success:false, message:"School not found"})
+            }
+        }catch(error){
+            res.status(500).json({success:false, message:"Internal Server Error [Own Data]"})
+        }
+    }
 
 }
