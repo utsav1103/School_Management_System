@@ -74,9 +74,20 @@ module.exports = {
             }else{
                 res.status(401).json({success:false, message:"Email Not Found/Registered"})
             }
-        }catch (error){{
+        }catch (error){ 
             res.status(500).json({success:false, message:"School Login Failed."})
-        }
+        
     }
-}
+}, 
+    getAllSchools: async (req, res) => {
+        try{
+            const schools = await School.find().select(['-password','-_id','-email','-owner_name','-createdAt']);
+            res.status(200).json({success:true, message:"All School Data", schools})
+
+        }catch(error){
+            res.status(500).json({success:false, message:"Internal Server Error [All School Data]"})
+        }
+    },
+    
+
 }
