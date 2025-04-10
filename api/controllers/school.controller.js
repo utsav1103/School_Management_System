@@ -6,6 +6,7 @@ const formidable = require("formidable");
 const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const School = require("../models/school.model");
 
 
@@ -51,7 +52,17 @@ module.exports = {
             if(school){
                 const isAuth = bcrypt.compareSync(req.body.password, school.password);
                 if(isAuth){
-                    //res.header("Authorization", school._id);
+                    const jwtSecret = process.env.JWT_SECRET;
+
+                    const token = jwt.sign({
+                        id:school._id,
+                        schoolId:school._id,
+                        owner_name:school.owner_name,
+                        school_name:school.school_name,
+                        image_url:school.school_image,
+                        role:"SCHOOL"
+                    }, jwtSecret);
+                    res.header("Authorization", token);
                     res.status(200).json({success:true, 
                         //if this doesn't work then use this
                         //user:{id:school._id, owner_name:school.owner_name},school_name:school.School_name,
@@ -64,7 +75,7 @@ module.exports = {
                 res.status(401).json({success:false, message:"Email Not Found/Registered"})
             }
         }catch (error){{
-
+            res.status(500).json({success:false, message:"School Login Failed."})
         }
     }
 }
