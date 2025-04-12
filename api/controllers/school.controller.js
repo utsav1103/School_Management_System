@@ -90,7 +90,7 @@ module.exports = {
     },
     getSchoolOwnData: async (req, res) => {
         try{
-            const id= "";
+            const id= req.user.id;
             const school = await School.findOne({_id:id});
             if(school){
                 res.status(200).json({success:true, school})
@@ -105,7 +105,7 @@ module.exports = {
         
 
         try {
-            const id = '';
+            const id = req.user.id;
             const form = new formidable.IncomingForm();
             form.parse(req, async(err, fields, files) => {
                 const school = await School.findOne({_id:id});
