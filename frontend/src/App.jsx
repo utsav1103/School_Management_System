@@ -1,6 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import School from './school/School.jsx'
 import './App.css'
+import Attendance from './school/components/attendance/Attendance.jsx'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
         <Routes>
             {/*School Routes*/}
           <Route path='school' element={<School/>}>
+          <Route path='attendance' element={<Attendance/>}/>
 
           </Route>
 
