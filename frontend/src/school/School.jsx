@@ -16,8 +16,26 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+
+//ICONS
+
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
+//subject
+import LibraryBooksRoundedIcon from '@mui/icons-material/LibraryBooksRounded';
+//exam
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+//attendance
+import WavingHandRoundedIcon from '@mui/icons-material/WavingHandRounded';
+//class
+import FormatListNumberedRoundedIcon from '@mui/icons-material/FormatListNumberedRounded';
+
+
 import { Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -112,6 +130,19 @@ export default function School() {
     setOpen(false);
   };
 
+  const navArr = [
+    {link: "/school",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
+    {link: "/school/class",component:"Class", icon:FormatListNumberedRoundedIcon},
+    {link: "/school/subject",component:"Subject", icon:LibraryBooksRoundedIcon},
+    {link: "/school/students",component:"Students", icon:SchoolRoundedIcon},
+    {link: "/school/teachers",component:"Teachers", icon:PeopleAltRoundedIcon},
+    {link: "/school/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
+    {link: "/school/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
+    {link: "/school/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
+    {link: "/school/notification", component:"Notifications", icon:NotificationsActiveRoundedIcon},
+]
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -144,8 +175,8 @@ export default function School() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {navArr.map((navItem, index) => (
+            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={[
                   {
@@ -176,10 +207,10 @@ export default function School() {
                         },
                   ]}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+                    {<navItem.icon/>}
+                  </ListItemIcon>
                 <ListItemText
-                  primary={text}
+                  primary={navItem.component}
                   sx={[
                     open
                       ? {
@@ -195,7 +226,7 @@ export default function School() {
           ))}
         </List>
         <Divider />
-        <List>
+        {/* <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -245,7 +276,7 @@ export default function School() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
