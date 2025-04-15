@@ -36,7 +36,7 @@ import WavingHandRoundedIcon from '@mui/icons-material/WavingHandRounded';
 import FormatListNumberedRoundedIcon from '@mui/icons-material/FormatListNumberedRounded';
 
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -133,15 +133,19 @@ export default function School() {
   const navArr = [
     {link: "/school",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
     {link: "/school/class",component:"Class", icon:FormatListNumberedRoundedIcon},
-    {link: "/school/subject",component:"Subject", icon:LibraryBooksRoundedIcon},
+    {link: "/school/subjects",component:"Subject", icon:LibraryBooksRoundedIcon},
     {link: "/school/students",component:"Students", icon:SchoolRoundedIcon},
     {link: "/school/teachers",component:"Teachers", icon:PeopleAltRoundedIcon},
     {link: "/school/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
     {link: "/school/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
     {link: "/school/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
-    {link: "/school/notification", component:"Notifications", icon:NotificationsActiveRoundedIcon},
+    {link: "/school/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
 ]
 
+  const navigate = useNavigate()
+  const handleNavigation = (link) => {
+    navigate(link)
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -163,7 +167,7 @@ export default function School() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            ALL SCHOOLS MANAGEMENT SYSTEM
           </Typography>
         </Toolbar>
       </AppBar>
@@ -191,6 +195,8 @@ export default function School() {
                         justifyContent: 'center',
                       },
                 ]}
+
+                onClick={() =>{handleNavigation(navItem.link)}}
               >
                 <ListItemIcon
                   sx={[
