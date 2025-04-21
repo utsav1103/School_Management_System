@@ -14,6 +14,12 @@ import Client from "./client/Client.jsx";
 import Home from "./client/components/home/Home.jsx";
 import Login from "./client/components/login/Login.jsx";
 import Register from "./client/components/register/Register.jsx";
+import Teacher from "./teacher/Teacher.jsx";
+import TeacherDetails from "./teacher/components/teacher details/TeacherDetails.jsx";
+import ScheduleTeacher from "./teacher/components/schedule/ScheduleTeacher.jsx";
+import AttendanceTeacher from "./teacher/components/attendance/AttendanceTeacher.jsx";
+import ExaminationsTeacher from "./teacher/components/examinations/ExaminationsTeacher.jsx";
+import NoticeTeacher from "./teacher/components/notice/NoticeTeacher.jsx";
 
 function App() {
   return (
@@ -39,7 +45,16 @@ function App() {
           <Route></Route>
 
           {/*TEacher Routes*/}
-          <Route></Route>
+          <Route path="teacher" element={<Teacher/>}>
+
+            <Route index element={<TeacherDetails/>} />
+            <Route path="schedule" element={<ScheduleTeacher/>} />
+            <Route path="attendance" element={<AttendanceTeacher/>} />
+            <Route path="examinations" element={<ExaminationsTeacher/>} />
+            <Route path="notice" element={<NoticeTeacher/>} />
+
+
+          </Route>
 
           {/*Clients Routes*/}
           <Route
