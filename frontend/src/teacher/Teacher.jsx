@@ -131,7 +131,7 @@ export default function Teacher() {
   };
 
   const navArr = [
-    {link: "/teacher",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
+    {link: "/teacher",component:"Your Details", icon:DashboardCustomizeRoundedIcon},
     
     
     {link: "/teacher/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
