@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 //ICONS
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
@@ -131,13 +131,14 @@ export default function Student() {
   };
 
   const navArr = [
-    {link: "/teacher",component:"Your Details", icon:DashboardCustomizeRoundedIcon},
+    {link: "/student",component:"Your Details", icon:DashboardCustomizeRoundedIcon},
+    {link: "/",component:"Home", icon:HomeRoundedIcon},
     
     
-    {link: "/teacher/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
-    {link: "/teacher/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
-    {link: "/teacher/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
-    {link: "/teacher/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
+    {link: "/student/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
+    {link: "/student/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
+    {link: "/student/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
+    {link: "/student/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
 ]
 
   const navigate = useNavigate()

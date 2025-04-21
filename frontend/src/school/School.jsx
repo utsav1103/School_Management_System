@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 //ICONS
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
@@ -132,6 +132,7 @@ export default function School() {
 
   const navArr = [
     {link: "/school",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
+    {link: "/",component:"Home", icon:HomeRoundedIcon},
     {link: "/school/class",component:"Class", icon:FormatListNumberedRoundedIcon},
     {link: "/school/subjects",component:"Subject", icon:LibraryBooksRoundedIcon},
     {link: "/school/students",component:"Students", icon:SchoolRoundedIcon},

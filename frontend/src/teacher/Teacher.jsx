@@ -16,7 +16,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 //ICONS
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -131,6 +131,7 @@ export default function Teacher() {
   };
 
   const navArr = [
+    {link: "/",component:"Home", icon:HomeRoundedIcon},
     {link: "/teacher",component:"Your Details", icon:DashboardCustomizeRoundedIcon},
     
     
