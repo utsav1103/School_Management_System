@@ -3,20 +3,27 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import { registerSchema } from "../../../yupSchema/registerSchema";
-import { Button, CardMedia } from "@mui/material";
-
+import { Button, CardMedia, Typography } from "@mui/material";
 
 export default function Register() {
   const [file, setFile] = React.useState(null);
-  const [imageUrl, setImageUrl] =React.useState(null);
+  const [imageUrl, setImageUrl] = React.useState(null);
   const addImage = (event) => {
-      const file = event.target.files[0];
-      setImageUrl(URL.createObjectURL(file))
-      setFile(file)
+    const file = event.target.files[0];
+    setImageUrl(URL.createObjectURL(file));
+    setFile(file);
+  };
+
+  //Reseting image
+
+  const fileInputRef = React.useRef(null);
+  const handleClearFile = ()=>{
+    if(fileInputRef.current){
+      fileInputRef.current.value ='';
+    }
+    setFile(null);
+    setImageUrl(null);
   }
-
-
-
 
 
   const initialValues = {
@@ -31,6 +38,8 @@ export default function Register() {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       console.log("Register submit values", values);
+      Formik.resetForm();
+      handleClearFile();
     },
   });
   return (
@@ -42,19 +51,26 @@ export default function Register() {
         flexDirection: "column",
         width: "60vw",
         minWidth: "230px",
-        margin:"auto",
+        margin: "auto",
       }}
       noValidate
       autoComplete="off"
       onSubmit={Formik.handleSubmit}
     >
+      <Typography>Add School Picture</Typography>
 
       <TextField
-      type="file"
-      onChange={(event) => {addImage(event)}}
+        type="file"
+        inputRef={fileInputRef}
+        onChange={(event) => {
+          addImage(event);
+        }}
       />
-      {imageUrl && <Box>
-        <CardMedia component={'img'} image={imageUrl}/></Box>}
+      {imageUrl && (
+        <Box>
+          <CardMedia component={"img"} height={"230px"} image={imageUrl} />
+        </Box>
+      )}
 
       <TextField
         name="school_name"
@@ -99,7 +115,7 @@ export default function Register() {
       )}
 
       <TextField
-      type="password"
+        type="password"
         name="password"
         label="Password"
         value={Formik.values.password}
@@ -114,7 +130,7 @@ export default function Register() {
       )}
 
       <TextField
-      type="password"
+        type="password"
         name="confirm_password"
         label="Verify Password"
         value={Formik.values.confirm_password}
@@ -128,7 +144,9 @@ export default function Register() {
         </p>
       )}
 
-      <Button type="submit" variant="contained">Submit</Button>
+      <Button type="submit" variant="contained">
+        Submit
+      </Button>
     </Box>
   );
 }
