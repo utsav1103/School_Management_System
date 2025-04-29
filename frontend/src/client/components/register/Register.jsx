@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import { registerSchema } from "../../../yupSchema/registerSchema";
 import { Button, CardMedia, Typography } from "@mui/material";
-
+import axios from "axios";
 export default function Register() {
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
@@ -38,6 +38,20 @@ export default function Register() {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       console.log("Register submit values", values);
+
+      const fd = new FormData();
+      fd.append("image", file , file.name);
+      fd.append("school_name", values.school_name);
+      fd.append("email", values.email);
+      fd.append("owner_name", values.owner_name);
+      fd.append("password", values.password);
+      fd.append("confirm_password", values.confirm_password);
+
+      axios.post(`http:/localhost:5000/api/school/register/`,fd).then(resp=>{
+        console.log(resp);
+      }).catch(e=>{
+        console.log(e); //error handling 
+      })
       Formik.resetForm();
       handleClearFile();
     },
