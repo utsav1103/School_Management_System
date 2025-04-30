@@ -49,13 +49,14 @@ export default function Register() {
 
       axios.post(`http://localhost:3000/api/school/register/`,fd).then(resp=>{
         console.log(resp);
-        // Formik.resetForm();
-      // handleClearFile();
+        
       }).catch(e=>{
         console.log(e); //error handling 
       })
-      
+       Formik.resetForm();
+       handleClearFile();
     },
+    
     
   });
   return (
