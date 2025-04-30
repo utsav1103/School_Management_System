@@ -47,14 +47,16 @@ export default function Register() {
       fd.append("password", values.password);
       fd.append("confirm_password", values.confirm_password);
 
-      axios.post(`http:/localhost:5000/api/school/register/`,fd).then(resp=>{
+      axios.post(`http://localhost:3000/api/school/register/`,fd).then(resp=>{
         console.log(resp);
+        // Formik.resetForm();
+      // handleClearFile();
       }).catch(e=>{
         console.log(e); //error handling 
       })
-      Formik.resetForm();
-      handleClearFile();
+      
     },
+    
   });
   return (
     <Box

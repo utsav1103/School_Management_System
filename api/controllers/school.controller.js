@@ -10,7 +10,6 @@ const jwt = require("jsonwebtoken");
 const School = require("../models/school.model");
 
 
-
 module.exports = {
     registerSchool: async (req, res) => {
         
@@ -23,16 +22,18 @@ module.exports = {
             let originalFilename = photo.originalFilename.replace(" ","_");// photo one 
             let newPath = path.join(__dirname, process.env.SCHOOL_IMAGE_PATH, originalFilename);
 
+            fs.mkdirSync(path.dirname(newPath), { recursive: true });
+
             let photoData = fs.readFileSync(filepath);
             fs.writeFileSync(newPath,photoData);
 
             const salt = bcrypt.genSaltSync(10);
             const hashPassword = bcrypt.hashSync(fields.password[0], salt);
             const newSchool = new School({
-                School_name: fields.school_name[0],
+                school_name: fields.school_name[0],
                 email:fields.email[0],
                 owner_name:fields.owner_name[0],
-                
+                school_image:originalFilename,
                 password:hashPassword,
             })
 
@@ -130,8 +131,8 @@ module.exports = {
                 let photoData = fs.readFileSync(filepath);
                 fs.writeFileSync(newPath,photoData);
 
-                Object.keys(fileds).forEach((field) => {
-                    school[field]=fileds[field][0]
+                Object.keys(fields).forEach((field) => {
+                    school[field]=fields[field][0]
                 })
                 await school.save();
                 res.status(200).json({success:true, message:"School updated Successfully.", school})

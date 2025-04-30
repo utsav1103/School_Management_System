@@ -17,7 +17,10 @@ app.use(cookieParser());
 
 //MONGODO CONNECTION
 
-mongoose.connect(process.env.MONGODB_URL
+mongoose.connect(process.env.MONGODB_URL,
+    {
+        dbName: 'school_management_db'
+    }
 )
 .then(db => {
     console.log("Database is connected Successfully") 
