@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { registerSchema } from "../../../yupSchema/registerSchema";
 import { Button, CardMedia, Typography } from "@mui/material";
 import axios from "axios";
+import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 export default function Register() {
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
@@ -39,6 +40,9 @@ export default function Register() {
     onSubmit: (values) => {
       console.log("Register submit values", values);
 
+      if(!file){
+        
+
       const fd = new FormData();
       fd.append("image", file , file.name);
       fd.append("school_name", values.school_name);
@@ -49,19 +53,42 @@ export default function Register() {
 
       axios.post(`http://localhost:3000/api/school/register/`,fd).then(resp=>{
         console.log(resp)
+        setMessage(resp.data.message)
+        setMessageType("success")
         Formik.resetForm();
       handleClearFile()
         
       }).catch(e=>{
-        console.log(e); //error handling 
+        setMessage(e.response.data.message)
+        setMessageType("error")
+        console.log("Error", e); //error handling 
       })
+    }else{
+      setMessage("Please select an image")
+        setMessageType("error")
+        return;
+      }
       
        
     },
     
     
   });
+
+  const [message, setMessage] = React.useState("");
+  const [messageType, setMessageType] = React.useState("success");
+  const handleMessageClose = () => {
+  
+    setMessage("")
+  };
+
+
   return (
+    <>
+    {message && 
+      <MessageSnackbar message={message} type={messageType} handleClose={handleMessageClose}/>
+    }
+    
     <Box
       component="form"
       sx={{
@@ -75,7 +102,7 @@ export default function Register() {
       noValidate
       autoComplete="off"
       onSubmit={Formik.handleSubmit}
-    >
+      >
       <Typography>Add School Picture</Typography>
 
       <TextField
@@ -84,7 +111,7 @@ export default function Register() {
         onChange={(event) => {
           addImage(event);
         }}
-      />
+        />
       {imageUrl && (
         <Box>
           <CardMedia component={"img"} height={"230px"} image={imageUrl} />
@@ -97,7 +124,7 @@ export default function Register() {
         value={Formik.values.school_name}
         onChange={Formik.handleChange}
         onBlur={Formik.handleBlur}
-      />
+        />
 
       {Formik.touched.school_name && Formik.errors.school_name && (
         <p style={{ color: "red", textTransform: "capitalize" }}>
@@ -111,7 +138,7 @@ export default function Register() {
         value={Formik.values.email}
         onChange={Formik.handleChange}
         onBlur={Formik.handleBlur}
-      />
+        />
 
       {Formik.touched.email && Formik.errors.email && (
         <p style={{ color: "red", textTransform: "capitalize" }}>
@@ -125,7 +152,7 @@ export default function Register() {
         value={Formik.values.owner_name}
         onChange={Formik.handleChange}
         onBlur={Formik.handleBlur}
-      />
+        />
 
       {Formik.touched.owner_name && Formik.errors.owner_name && (
         <p style={{ color: "red", textTransform: "capitalize" }}>
@@ -140,7 +167,7 @@ export default function Register() {
         value={Formik.values.password}
         onChange={Formik.handleChange}
         onBlur={Formik.handleBlur}
-      />
+        />
 
       {Formik.touched.password && Formik.errors.password && (
         <p style={{ color: "red", textTransform: "capitalize" }}>
@@ -155,7 +182,7 @@ export default function Register() {
         value={Formik.values.confirm_password}
         onChange={Formik.handleChange}
         onBlur={Formik.handleBlur}
-      />
+        />
 
       {Formik.touched.confirm_password && Formik.errors.confirm_password && (
         <p style={{ color: "red", textTransform: "capitalize" }}>
@@ -167,5 +194,6 @@ export default function Register() {
         Submit
       </Button>
     </Box>
+      </>
   );
 }
