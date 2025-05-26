@@ -40,7 +40,7 @@ export default function Register() {
     onSubmit: (values) => {
       console.log("Register submit values", values);
 
-      if(!file){
+      if(file){
         
 
       const fd = new FormData();
@@ -51,7 +51,7 @@ export default function Register() {
       fd.append("password", values.password);
       fd.append("confirm_password", values.confirm_password);
 
-      axios.post(`http://localhost:3000/api/school/register/`,fd).then(resp=>{
+      axios.post(`http://localhost:3000/api/school/register`,fd).then(resp=>{
         console.log(resp)
         setMessage(resp.data.message)
         setMessageType("success")
@@ -66,7 +66,7 @@ export default function Register() {
     }else{
       setMessage("Please select an image")
         setMessageType("error")
-        return;
+      
       }
       
        
