@@ -11,7 +11,8 @@ const app = express();
 app.use(express.json());  
 //if we pass any data to body to retrive the data we have to use this  
 app.use(express.urlencoded({extended: true}));
-app.use(cors());
+const corsOption  = {exposedHeaders:"Authorization"}
+app.use(cors(corsOption));
 app.use(cookieParser());
 
 
