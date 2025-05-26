@@ -9,8 +9,12 @@ import Modal from '@mui/material/Modal';
 
 export default function Gallery() {
      const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+     const [selectdSchool, setSelectedSchool] = React.useState(null);
+  const handleOpen = (school) =>{ setOpen(true)
+     setSelectedSchool(school)};
+  const handleClose = () => {setOpen(false)
+    setSelectedSchool(null)
+  };
     const style = {
   position: 'absolute',
   top: '50%',
@@ -33,6 +37,7 @@ export default function Gallery() {
             src={`${item.img}?w=248&fit=crop&auto=format`}
             alt={item.title}
             loading="lazy"
+            onClick={()=>{handleOpen(item)}}
             />
           <ImageListItemBar
             title={item.title}
@@ -61,6 +66,13 @@ export default function Gallery() {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </Typography>
+          <img
+            srcSet={`${selectdSchool && selectdSchool.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            src={`${selectdSchool && selectdSchool.img}?w=248&fit=crop&auto=format`}
+            alt={"alt"}
+            
+            
+            />
         </Box>
       </Modal>
     </div>
