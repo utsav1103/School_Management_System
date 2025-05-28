@@ -26,10 +26,10 @@ export default function Gallery() {
   transform: "translate(-50%, -50%)",
   maxWidth: "90vw",
   maxHeight: "90vh",
-  bgcolor: "background.paper",
+  bgcolor: "rgba(160, 151, 151, 0.8)",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p:0.2,
   overflow: "auto",
   };
 
@@ -76,11 +76,8 @@ export default function Gallery() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          <Typography id="modal-modal-description" sx={{mt:2, color:"white"}} variant="h6" component="h2">
+            {selectedSchool && selectedSchool.school_name}
           </Typography>
           <img
             // srcSet={`./images/uploaded/school/${selectedSchool && selectedSchool.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -88,14 +85,15 @@ export default function Gallery() {
               selectedSchool &&
               `./images/uploaded/school/${selectedSchool.school_image}`
             }
-            alt={"alt"}
+            alt={"school"}
             style={{
-    maxWidth: "100%",
+    width: "100%",
+    height: "auto",
     maxHeight: "80vh",
     objectFit: "contain",
     display: "block",
     margin: "0 auto",
-  }}
+  }}  
           />
         </Box>
       </Modal>
