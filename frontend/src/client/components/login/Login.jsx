@@ -71,17 +71,7 @@ export default function Login() {
       )}
 
       <Box sx={{ textAlign: "center", mt: 2 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            backgroundColor: "rgba(221, 183, 239, 0.22)",
-            display: "inline-block",
-            px: 12.5,
-            borderRadius: 1,
-          }}
-        >
-          Login
-        </Typography>
+       
       </Box>
 
       <Box
@@ -89,6 +79,7 @@ export default function Login() {
         sx={{
           "& > :not(style)": { m: 1 },
           display: "flex",
+          minHeight: "80vh",
           flexDirection: "column",
           width: "50vw",
           minWidth: "230px",
@@ -100,7 +91,11 @@ export default function Login() {
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
-        
+         <Typography
+          variant="h4"
+        >
+          Login
+        </Typography>
         
 
        

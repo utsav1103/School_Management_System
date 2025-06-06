@@ -96,17 +96,7 @@ export default function Register() {
     }
     
     <Box sx={{ textAlign: "center", mt: 2 }}>
-  <Typography
-    variant="h4"
-    sx={{
-      backgroundColor: "rgba(221, 183, 239, 0.22)",
-      display: "inline-block",
-      px: 12.5,
-      borderRadius: 1,
-    }}
-  >
-    Register
-  </Typography>
+  
 </Box>
 
     
@@ -126,6 +116,13 @@ export default function Register() {
       autoComplete="off"
       onSubmit={Formik.handleSubmit}
       >
+        <Typography
+    variant="h4"
+    sx={{ color: "black", fontWeight: "bold", }}
+    
+  >
+    Register
+  </Typography>
       <Typography>Add School Picture</Typography>
 
       <TextField
