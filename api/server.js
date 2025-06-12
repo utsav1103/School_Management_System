@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-
+const path = require("path");
 // Routers import
 const schoolRouter = require("./routers/school.router")
 
@@ -14,7 +14,6 @@ app.use(express.urlencoded({extended: true}));
 const corsOption  = {exposedHeaders:"Authorization"}
 app.use(cors(corsOption));
 app.use(cookieParser());
-
 
 //MONGODO CONNECTION
 
