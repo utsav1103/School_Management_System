@@ -36,6 +36,7 @@ export default function Dashboard() {
     }
     const cancelEdit = () => {
       setEdit(false)
+      handleClearFile()
     }
 
   const fetchSchool = async () => {
