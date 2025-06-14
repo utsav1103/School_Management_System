@@ -4,6 +4,7 @@ import { Box, Button, CardMedia, TextField, Typography } from "@mui/material";
 import { baseApi } from "../../../environment";
 import { useRef } from "react";
 import EditIcon from '@mui/icons-material/Edit';
+import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 export default function Dashboard() {
   const [school, setSchool] = useState(null);
   const [schoolName, setSchoolName] = useState(null);
@@ -30,9 +31,32 @@ export default function Dashboard() {
       setFile(null);
       setImageUrl(null);
     }
+    //message
+     const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
+  const handleMessageClose = () => {
+  
+    setMessage("")
+  };
   
     const handleEditSubmit = () => {
 
+      const fd = new FormData();
+      fd.append("school_name", schoolName)
+       if(file){
+        fd.append("image", file, file.name)
+       }
+       axios.patch(`${baseApi}/school/update`, fd).then(resp => {
+         setMessage(resp.data.message)
+        setMessageType("success")
+        cancelEdit()
+        
+        
+      }).catch(e=>{
+        setMessage(e.response.data.message)
+        setMessageType("error")
+        console.log("Error", e); //error handling 
+      })
     }
     const cancelEdit = () => {
       setEdit(false)
@@ -62,7 +86,7 @@ export default function Dashboard() {
         // controller.abort();
         console.log("Component unmounted! Aborted fetch.");
     };
-  }, []);
+  },[message]);
 
   useEffect(() => {
     console.log(school)
@@ -70,6 +94,9 @@ export default function Dashboard() {
   return (
     <>
       <h1>Dashboard</h1>
+      {message && 
+            <MessageSnackbar message={message} type={messageType} handleClose={handleMessageClose}/>
+          }
       {
         edit && <>
           <Box
