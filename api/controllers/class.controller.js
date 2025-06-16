@@ -62,8 +62,14 @@ module.exports = {
         const classExamCount = (await Exam.find({class:id, school:schoolId})).length;
         const classScheduleCount = (await Schedule.findOneAndDelete({class:id, school:schoolId})).length;
 
-        await Class.findOneAndDelete({_id:id, school:schoolId})
+        if((classStudentCount === 0)  &&(classExamCount === 0) && (classScheduleCount ===0)){
+
+            await Class.findOneAndDelete({_id:id, school:schoolId})
         res.status(200).json({success:true, message: "Class deleted successfully"})
+
+        }else{
+            res.status(500).json({success:false, message:"This Class is already in use..."})
+        }
 
     }catch(error){
         console.log("Delete class error =>", error);
