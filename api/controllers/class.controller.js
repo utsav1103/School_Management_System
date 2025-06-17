@@ -1,8 +1,28 @@
+import { get } from "mongoose";
+
 const Class = require("../models/class.model");
-const Student = require("../models/student.model")
-const Exam = require("../models/examination.model")
-const Schedule = require('../models/schedule.model')
+const Student = require("../models/student.model");
+const Exam = require("../models/examination.model");
+const Schedule = require("../models/schedule.model");
 module.exports = {
+
+  //get all classes
+
+  getAllClasses:async (req, res)=> {
+
+    try{
+      const schoolId = req.user.schoolId;
+      const allClasses = await Class.find({school:schoolId});
+      res.status(200).json({success:true, message:"Success in fetching all Classes", data:allClasses})
+
+    }catch(error){
+      console.log("GetAllClasses Error", error)
+      res.status(500).json({success:false, message:"Server Error in Getting all classes..."})
+    }
+
+  },
+
+
   //creating new class
   createClass: async (req, res) => {
     try {
@@ -34,13 +54,11 @@ module.exports = {
       let id = req.params.id;
       await Class.findOneAndUpdate({ _id: id }, { $set: { ...req.body } });
       const classAfterUpdate = await Class.findOne({ _id: id });
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Class updated successfully",
-          data: classAfterUpdate,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Class updated successfully",
+        data: classAfterUpdate,
+      });
     } catch (error) {
       console.log("update class error =>", error);
       res
@@ -51,31 +69,40 @@ module.exports = {
 
   //delete class with id
 
-  deleteClassWithId: async(req, res)=>{
-    
-    try{
-        let id = req.params.id;
-        let schoolId = req.user.schoolId;
-        //giving condition to only delete unuse class
+  deleteClassWithId: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let schoolId = req.user.schoolId;
+      //giving condition to only delete unuse class
 
-        const classStudentCount = (await Student.find({student_class:id, school:schoolId})).length;
-        const classExamCount = (await Exam.find({class:id, school:schoolId})).length;
-        const classScheduleCount = (await Schedule.findOneAndDelete({class:id, school:schoolId})).length;
+      const classStudentCount = (
+        await Student.find({ student_class: id, school: schoolId })
+      ).length;
+      const classExamCount = (await Exam.find({ class: id, school: schoolId }))
+        .length;
+      const classScheduleCount = (
+        await Schedule.findOneAndDelete({ class: id, school: schoolId })
+      ).length;
 
-        if((classStudentCount === 0)  &&(classExamCount === 0) && (classScheduleCount ===0)){
-
-            await Class.findOneAndDelete({_id:id, school:schoolId})
-        res.status(200).json({success:true, message: "Class deleted successfully"})
-
-        }else{
-            res.status(500).json({success:false, message:"This Class is already in use..."})
-        }
-
-    }catch(error){
-        console.log("Delete class error =>", error);
+      if (
+        classStudentCount === 0 &&
+        classExamCount === 0 &&
+        classScheduleCount === 0
+      ) {
+        await Class.findOneAndDelete({ _id: id, school: schoolId });
+        res
+          .status(200)
+          .json({ success: true, message: "Class deleted successfully" });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, message: "This Class is already in use..." });
+      }
+    } catch (error) {
+      console.log("Delete class error =>", error);
       res
         .status(500)
         .json({ success: false, message: "Server error in deleting class." });
     }
-  }
+  },
 };
