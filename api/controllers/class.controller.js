@@ -1,4 +1,4 @@
-import { get } from "mongoose";
+//"mongoose"
 
 const Class = require("../models/class.model");
 const Student = require("../models/student.model");

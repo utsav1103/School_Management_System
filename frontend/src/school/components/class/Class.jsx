@@ -1,15 +1,39 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { classSchema } from "../../../yupSchema/classSchema";
+import axios from "axios";
+import {baseApi} from "../../../environment";
+import { useEffect, useState } from "react";
 
 export default function Class(){
+    const [classes, setClasses] = useState([])
     const Formik = useFormik({
         initialValues: {class_text:"", class_num:""},
         validationSchema:classSchema,
         onSubmit:(values)=>{
             console.log(values)
+
+          axios.post(`${baseApi}/class/create`,{...values}).then( resp=>{
+            console.log("class add response", resp)
+            
+          }).catch(e => {
+            console.log("Error in class",e) 
+          })
+          Formik.resetForm()
         }
     })
+    const FetchAllclasses = ()=>{
+      axios.get(`${baseApi}/class/all`).then(resp=>{
+        setClasses(resp.data.data)
+      }).catch(e => {
+            console.log("Error in fetching all class",e) 
+          })
+    }
+
+    useEffect(()=>{
+      FetchAllclasses();
+    },[])
+
     return (
         <>
         <h1>Class</h1>
@@ -75,6 +99,19 @@ export default function Class(){
           Submit
         </Button>
       </Box>
+
+        <Box component={"div"} sx={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
+
+        {classes && classes.map(x =>{
+          return(<Box key={x._id}>
+            <Typography>Class:{x.class_text}({x.class_num})</Typography>
+          </Box>)
+        })}
+
+        </Box>
+
+
+
         </>
     )
 }
