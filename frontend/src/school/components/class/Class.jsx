@@ -96,7 +96,7 @@ export default function Class(){
        
 
         <Button type="submit" variant="contained">
-          Submit
+          Submit 
         </Button>
       </Box>
 
@@ -104,7 +104,7 @@ export default function Class(){
 
         {classes && classes.map(x =>{
           return(<Box key={x._id}>
-            <Typography>Class:{x.class_text}({x.class_num})</Typography>
+            <Typography>Class:{x.class_text}[{x.class_num}]</Typography>
           </Box>)
         })}
 
