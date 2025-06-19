@@ -29,9 +29,20 @@ const [message, setMessage] = useState("");
   };
   const cancelEdit = () => {
     setEdit(false);
+    Formik.setFieldValue("class_text","")
+    Formik.setFieldValue("class_num","")
+    
   };
   const handleDelete = (id) => {
     console.log(id);
+    axios.delete(`${baseApi}/class/delete/${id}`).then(resp=>{
+       setMessage(resp.data.message)
+       setMessageType("success")
+    }).catch(e=>{
+      console.log(e)
+      setMessage("Error in Deleting class..")
+      setMessageType('error')
+    })
   };
 
   const Formik = useFormik({
