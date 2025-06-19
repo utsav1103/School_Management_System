@@ -1,43 +1,86 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { classSchema } from "../../../yupSchema/classSchema";
 import axios from "axios";
-import {baseApi} from "../../../environment";
+import { baseApi } from "../../../environment";
 import { useEffect, useState } from "react";
 
-export default function Class(){
-    const [classes, setClasses] = useState([])
-    const Formik = useFormik({
-        initialValues: {class_text:"", class_num:""},
-        validationSchema:classSchema,
-        onSubmit:(values)=>{
-            console.log(values)
+//icons
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import EditIcon from "@mui/icons-material/Edit";
+import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+export default function Class() {
 
-          axios.post(`${baseApi}/class/create`,{...values}).then( resp=>{
-            console.log("class add response", resp)
-            
-          }).catch(e => {
-            console.log("Error in class",e) 
-          })
-          Formik.resetForm()
-        }
-    })
-    const FetchAllclasses = ()=>{
-      axios.get(`${baseApi}/class/all`).then(resp=>{
-        setClasses(resp.data.data)
-      }).catch(e => {
-            console.log("Error in fetching all class",e) 
-          })
-    }
+const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
+  const handleMessageClose = () => {
+    setMessage("");
+  }; 
 
-    useEffect(()=>{
-      FetchAllclasses();
-    },[])
+  const [classes, setClasses] = useState([]);
+  const [edit, setEdit] = useState(false);
 
-    return (
-        <>
-        <h1>Class</h1>
-        <Box
+  const handleEdit = (id, class_text, class_num) => {
+    console.log(id);
+    setEdit(true);
+    Formik.setFieldValue("class_text",class_text)
+    Formik.setFieldValue("class_num",class_num)
+    
+  };
+  const cancelEdit = () => {
+    setEdit(false);
+  };
+  const handleDelete = (id) => {
+    console.log(id);
+  };
+
+  const Formik = useFormik({
+    initialValues: { class_text: "", class_num: "" },
+    validationSchema: classSchema,
+    onSubmit: (values) => {
+      console.log(values);
+
+      axios
+        .post(`${baseApi}/class/create`, { ...values })
+        .then((resp) => {
+          console.log("class add response", resp);
+          setMessage(resp.data.message)
+          setMessageType("success")
+        })
+        .catch((e) => {
+          console.log("Error in class", e);
+          setMessage("Error in saving class")
+          setMessageType("error")
+        });
+      Formik.resetForm();
+    },
+  });
+  const FetchAllclasses = () => {
+    axios
+      .get(`${baseApi}/class/all`)
+      .then((resp) => {
+        setClasses(resp.data.data);
+      })
+      .catch((e) => {
+        console.log("Error in fetching all class", e);
+      });
+  };
+
+  useEffect(() => {
+    FetchAllclasses();
+  }, [message]);
+
+  return (
+    <>
+    {message && (
+            <MessageSnackbar
+              message={message}
+              type={messageType}
+              handleClose={handleMessageClose}
+            />
+          )}
+      <h1>Class</h1>
+      <Box
         component="form"
         sx={{
           "& > :not(style)": { m: 1 },
@@ -54,14 +97,21 @@ export default function Class(){
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
-         <Typography
-          variant="h6" sx={{textAlign:"center" , fontWeight:"bold"}}
-        >
-          Add New Class
-        </Typography>
-        
-
-       
+        {edit ? (
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", fontWeight: "bold" }}
+          >
+            Edit Class
+          </Typography>
+        ) : (
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", fontWeight: "bold" }}
+          >
+            Add New Class
+          </Typography>
+        )}
 
         <TextField
           name="class_text"
@@ -77,8 +127,6 @@ export default function Class(){
           </p>
         )}
 
-        
-
         <TextField
           name="class_num"
           label="Class Number"
@@ -92,26 +140,61 @@ export default function Class(){
             {Formik.errors.class_num}
           </p>
         )}
+        <Button
+            type="submit"
+            variant="contained"
+          >
+            Submit
+          </Button>
 
-       
-
-        <Button type="submit" variant="contained">
-          Submit 
-        </Button>
+        {edit && (
+          <Button
+            onClick={() => {
+              cancelEdit();
+            }}
+            type="button  "
+            variant="contained"
+          >
+            Cancel
+          </Button>
+        )}
       </Box>
 
-        <Box component={"div"} sx={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
-
-        {classes && classes.map(x =>{
-          return(<Box key={x._id}>
-            <Typography>Class:{x.class_text}[{x.class_num}]</Typography>
-          </Box>)
-        })}
-
-        </Box>
-
-
-
-        </>
-    )
+      <Box
+        component={"div"}
+        sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+      >
+        {classes &&
+          classes.map((x) => {
+            return (
+              <Paper key={x._id} sx={{m:2,p:2}}>
+                <Box component={"div"}>
+                  {" "}
+                  <Typography>
+                    Class:{x.class_text}[{x.class_num}]
+                  </Typography> 
+                </Box>
+                <Box component={"div"}>
+                  <Button
+                    onClick={() => {
+                      handleEdit(x._id,x.class_text,x.class_num);
+                    }}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleDelete(x._id);
+                    }}
+                      sx={{color:"red"}}
+                  >
+                    <DeleteSweepIcon />
+                  </Button>
+                </Box>
+              </Paper>  
+            );
+          })}
+      </Box> 
+    </>
+  );
 }
