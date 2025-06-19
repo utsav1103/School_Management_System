@@ -19,20 +19,23 @@ const [message, setMessage] = useState("");
 
   const [classes, setClasses] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [editId, setEditId] = useState(null)
 
   const handleEdit = (id, class_text, class_num) => {
     console.log(id);
     setEdit(true);
+    setEditId(id);
     Formik.setFieldValue("class_text",class_text)
     Formik.setFieldValue("class_num",class_num)
     
   };
   const cancelEdit = () => {
     setEdit(false);
+    setEditId(null);
     Formik.setFieldValue("class_text","")
     Formik.setFieldValue("class_num","")
     
-  };
+  };  
   const handleDelete = (id) => {
     console.log(id);
     axios.delete(`${baseApi}/class/delete/${id}`).then(resp=>{
@@ -50,7 +53,22 @@ const [message, setMessage] = useState("");
     validationSchema: classSchema,
     onSubmit: (values) => {
       console.log(values);
+      if(edit){
+        axios
+        .patch(`${baseApi}/class/update/${editId  }`, { ...values })
+        .then((resp) => {
+          setMessage(resp.data.message)
+          setMessageType("success")
+        })
+        .catch((e) => {
+          console.log("Error in class updating", e);
+          setMessage("Error in Updating class")
+          setMessageType("error")
+        });
 
+      }else{
+
+      
       axios
         .post(`${baseApi}/class/create`, { ...values })
         .then((resp) => {
@@ -63,6 +81,7 @@ const [message, setMessage] = useState("");
           setMessage("Error in saving class")
           setMessageType("error")
         });
+      }
       Formik.resetForm();
     },
   });
