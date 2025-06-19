@@ -59,6 +59,7 @@ const [message, setMessage] = useState("");
         .then((resp) => {
           setMessage(resp.data.message)
           setMessageType("success")
+          cancelEdit()
         })
         .catch((e) => {
           console.log("Error in class updating", e);
