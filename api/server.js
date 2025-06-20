@@ -7,6 +7,7 @@ const path = require("path");
 // Routers import
 const schoolRouter = require("./routers/school.router")
 const classRouter = require("./routers/class.router")
+const subjectRouter = require("./routers/subject.router")
 
 const app = express();
 app.use(express.json());  
@@ -33,7 +34,8 @@ mongoose.connect(process.env.MONGODB_URL,
 
     //routers
     app.use("/api/school", schoolRouter)
-    app.use("/api/class", classRouter)
+    app.use("/api/class", classRouter )
+    app.use("/api/subject",subjectRouter)
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
