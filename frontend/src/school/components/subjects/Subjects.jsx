@@ -110,7 +110,7 @@ const [message, setMessage] = useState("");
               handleClose={handleMessageClose}
             />
           )}
-      <h1>subject</h1>
+      <Typography variant="h4" sx={{textAlign:'center', fontWeight:'bold'}}>Subject</Typography>
       <Box
         component="form"
         sx={{
@@ -172,6 +172,7 @@ const [message, setMessage] = useState("");
           </p>
         )}
         <Button
+        sx={{width:'120px'}}
             type="submit"
             variant="contained"
           >
@@ -183,8 +184,9 @@ const [message, setMessage] = useState("");
             onClick={() => {
               cancelEdit();
             }}
-            type="button  "
-            variant="contained"
+            type="button"
+            variant="outlined"
+            sx={{width:'120px'}}
           >
             Cancel
           </Button>
