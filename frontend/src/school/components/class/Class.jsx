@@ -172,6 +172,7 @@ const [message, setMessage] = useState("");
           </p>
         )}
         <Button
+        sx={{width:'120px'}}
             type="submit"
             variant="contained"
           >
@@ -184,7 +185,8 @@ const [message, setMessage] = useState("");
               cancelEdit();
             }}
             type="button  "
-            variant="contained"
+            variant="outlined"
+            sx={{width:'120px'}}
           >
             Cancel
           </Button>
