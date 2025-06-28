@@ -18,8 +18,8 @@ module.exports = {
         const form = new formidable.IncomingForm();
         form.parse(req, async(err, fields, files) => {
 
-            const Student = await Student.findOne({email:fields.email[0]});
-            if(Student){
+            const student = await Student.findOne({email:fields.email[0]});
+            if(student){
                 return res.status(409).json({success:false, message:"Email already exists."})
             }else{
 
@@ -63,25 +63,26 @@ module.exports = {
 
     loginStudent: async (req, res) =>{
         try{
-            const Student = await Student.findOne({email:req.body.email});
-            if(Student){
-                const isAuth = bcrypt.compareSync(req.body.password, Student.password);
+            const student = await Student.findOne({email:req.body.email});
+            if(student){
+                const isAuth = bcrypt.compareSync(req.body.password, student.password);
                 if(isAuth){
                     const jwtSecret = process.env.JWT_SECRET;
 
                     const token = jwt.sign({
-                        id:Student._id,
-                        StudentId:Student._id,
-                        owner_name:Student.owner_name,
-                        Student_name:Student.Student_name,
-                        image_url:Student.Student_image,
-                        role:"Student"
+                        id:student._id,
+                        schoolId:student.school,
+                        name:student.student_name,
+                        image_url:student.student_image,
+                        role:"STUDENT"
                     }, jwtSecret);
                     res.header("Authorization", token);
                     res.status(200).json({success:true, 
                         
-                        user:{id:Student._id, owner_name:Student.owner_name,Student_name:Student.Student_name,
-                        image_url:Student.Student_image,role:"Student"},
+                        user:{id:student._id,
+                            schoolId:student.school, 
+                            owner_name:student.owner_name,student_name:student.student_name,
+                        image_url:student.student_image,role:"STUDENT"},
                          message:"Student Logged In Successfully"})
                 }else{
                     res.status(401).json({success:false, message:"Password Not Match"})
@@ -94,10 +95,19 @@ module.exports = {
         
     }
 }, 
-    getAllStudents: async (req, res) => {
+    getStudentsWithQuery: async (req, res) => {
         try{
-            const Students = await Student.find().select(['-password','-_id','-email','-owner_name','-createdAt']);
-            res.status(200).json({success:true, message:"All Student Data", Students})
+            const filterQuery = { };
+            const schoolId = req.user.schoolId;
+            filterQuery['school'] = schoolId;
+            if(req.query.hasOwnProperty('search')){
+                filterQuery['name']={$regex:req.query.search, $option:"i"}
+            }
+            if(req.query.hasOwnProperty("student_class")){
+                filterQuery['student_class']=req.query.student_class;
+            }
+            const students = await Student.find(filterQuery).select(['-password']);
+            res.status(200).json({success:true, message:"All Student Data", students})
  
         }catch(error){
             res.status(500).json({success:false, message:"Internal Server Error [All Student Data]"})
@@ -107,11 +117,12 @@ module.exports = {
     
     getStudentOwnData: async (req, res) => {
         try{
-            console.log("here")
-            const id= req.user.id;
-            const Student = await Student.findOne({_id:id}).select(['-password']);
-            if(Student){
-                res.status(200).json({success:true, Student})
+            
+            const id= req.user.id;  
+            const schoolId = req.user.schoolId;
+            const student = await Student.findOne({_id:id,school:schoolId}).select(['-password']);
+            if(student){
+                res.status(200).json({success:true, student})
             }else{
                 res.status(404).json({success:false, message:"Student not found"})
             }
@@ -124,16 +135,17 @@ module.exports = {
 
         try {
             const id = req.user.id;
+            const schoolId = req.user.schoolId;
             const form = new formidable.IncomingForm();
             form.parse(req, async(err, fields, files) => {
-                const Student = await Student.findOne({_id:id});
+                const student = await Student.findOne({_id:id, school:schoolId});
                 if(files.image){
                     const photo = files.image[0];
                 let filepath = photo.filepath;
                 let originalFilename = photo.originalFilename.replace(" ","_");// photo one
                 
-                if(Student.Student_image){
-                    let oldImagePath = path.join(__dirname, process.env.Student_IMAGE_PATH,Student.Student_image);
+                if(student.student_image){
+                    let oldImagePath = path.join(__dirname, process.env.STUDENT_IMAGE_PATH,student.student_image);
                     if(fs.existsSync(oldImagePath)){
                         fs.unlink(oldImagePath,(err)=>{
                             if(err) console.log("Error deleting old Image.", err)
@@ -142,23 +154,25 @@ module.exports = {
                 }
                 
 
-                let newPath = path.join(__dirname, process.env.Student_IMAGE_PATH, originalFilename);
+                let newPath = path.join(__dirname, process.env.STUDENT_IMAGE_PATH, originalFilename);
                 
                  
                 let photoData = fs.readFileSync(filepath);
                 fs.writeFileSync(newPath,photoData);
 
                 Object.keys(fields).forEach((field) => {
-                    Student[field]=fields[field][0]
+                    student[field]=fields[field][0]
                 })
-                Student['Student_image']=originalFilename
+                student['student_image']=originalFilename
             }
                 else{
-                    Student['Student_name']=fields.Student_name[0]
+                    Object.keys(fields).forEach((field) => {
+                    student[field]=fields[field][0]
+                })
                 }
 
-                await Student.save();
-                res.status(200).json({success:true, message:"Student updated Successfully.", Student})
+                await student.save();
+                res.status(200).json({success:true, message:"Student updated Successfully.", student})
                 
             })
         
@@ -166,5 +180,19 @@ module.exports = {
              res.status(500).json({success:false, message:"Student Registration Failed."})
         }
         },
+        deleteStudentWithId : async (req, res)=>{
+            try{
+
+                const id= req.params.id;
+                const schoolId = req.user.schoolId;
+                await Student.findOneAndDelete({_id:id, school:schoolId});
+                const students = await Student.find({school:schoolId});
+                res.status.json({success:true, message:"Student deleted succesfully...", students})
+
+            }catch(error){
+                res.status(500).json({success:false, message: "Error in deleting student"})
+            }
+
+        }
 
 }
