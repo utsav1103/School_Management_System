@@ -46,7 +46,7 @@ module.exports = {
                     gender:fields.gender[0],
                     guardian:fields.guardian[0],
                     guardian_phone:fields.guardian_phone[0], 
-                    student_image:fields.student_image,
+                    student_image:originalFilename,
                     password:hashPassword,
                 })
                 

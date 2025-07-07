@@ -7,13 +7,13 @@ export const studentSchema = yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   student_class: yup.string().required("Student Class is required"),
-  age: yup.number().required("Student age is required"),
+  age: yup.string().required("Student age is required"),
   gender: yup.string().required("Gender is required"),
   guardian: yup.string().required("Guardian is required"),
   guardian_phone: yup
-    .number()
+    .string()
     .min(10, "Not a valid number")
-    .max(10, "invalid number")
+     .max(10, "invalid number")
     .required("Guardian Contact is required"),
   password: yup
     .string()

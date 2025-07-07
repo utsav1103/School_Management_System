@@ -10,4 +10,4 @@ router.patch("/update/:id",authMiddleware(["SCHOOL"]), updateClassWithId);// aut
 router.delete("/delete/:id",authMiddleware(["SCHOOL"]), deleteClassWithId);
 
 
-module.exports = router;
+module.exports = router;  
