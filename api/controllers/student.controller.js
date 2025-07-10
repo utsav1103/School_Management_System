@@ -100,10 +100,10 @@ module.exports = {
             const filterQuery = { };
             const schoolId = req.user.schoolId;
             filterQuery['school'] = schoolId;
-            if(req.query.hasOwnProperty('search')){
-                filterQuery['name']={$regex:req.query.search, $option:"i"}
+            if(req.query.search){
+                filterQuery['name']={$regex:req.query.search, $options:"i"}
             }
-            if(req.query.hasOwnProperty("student_class")){
+            if(req.query.student_class){
                 filterQuery['student_class']=req.query.student_class;
             }
             const students = await Student.find(filterQuery).select(['-password']);
