@@ -5,6 +5,9 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import {
   Button,
+  Card,
+  CardActionArea,
+  CardContent,
   CardMedia,
   FormControl,
   InputLabel,
@@ -15,9 +18,11 @@ import {
 import axios from "axios";
 import { studentSchema } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+
 export default function Students() {
 
-  const [classes, setClasses] = React.useState([])
+  const [classes, setClasses
+  ] = React.useState([])
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
 
@@ -102,9 +107,34 @@ export default function Students() {
       console.log("error in fetching classes",e)
     })
   }
+
+  const [params, setParams] = React.useState({})
+  const handleClass = (e)=>{
+    setParams((prevParams) =>({
+      ...prevParams,
+      student_class: e.target.value || undefined,
+    }));
+  };
+  const handleSearch = (e)  => {
+    setParams((prevParams) =>({
+      ...prevParams,
+      search:e.target.value || undefined,
+    }));
+  };
+
+  const [students, setStudents] = React.useState([])
+  const fetchStudents = ()=>{
+    axios.get(`${baseApi}/student/fetch-with-query`,{params}).then(resp=>{
+      setStudents(resp.data.students)
+    }).catch(e=>{
+      console.log("error in fetching classes",e)
+    })
+  }
+
   React.useEffect(()=>{
     fetchClasses()
-  },[])
+    fetchStudents()
+  },[message,params])
 
   return (
     <Box
@@ -126,6 +156,8 @@ export default function Students() {
           handleClose={handleMessageClose}
         />
       )}
+
+
 
       <Box sx={{ textAlign: "center", mt: 2 }}></Box>
 
@@ -308,6 +340,55 @@ export default function Students() {
           Submit
         </Button>
       </Box>
+      <Box component={'div'} sx={{display:'flex', flexDirection:'row', justifyContent: 'center', marginTop:'30px'}}>
+       
+        <TextField
+          label="Search"
+          
+          onChange={(e)=>{
+            handleSearch(e)
+          }}
+          //onBlur={Formik.handleBlur}
+        />
+         <FormControl sx={{width:'180px', marginLeft:'5px'}}>
+          <InputLabel id="demo-simple-select-label">Class</InputLabel>
+          <Select
+            label="Student Class"
+            onChange={(e) =>{
+              handleClass(e)
+            }}
+          >  
+            {classes && classes.map(x=>{return(<MenuItem key={x._id} value={x._id}>{x.class_text}({x.class_num})</MenuItem>)})}
+          </Select>
+        </FormControl>
+        
+      </Box>
+      <Box component={'div'} sx={{display:'flex', flexDirection:'row', justifyContent: 'center', marginTop:'30px'}}>
+            {students && students.map(student => {
+
+              return(
+                 <Card key={student._id} sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image="/static/images/cards/contemplative-reptile.jpg"
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {student.name}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Lizards are a widespread 
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+              )
+            })}
+
+       </Box>
     </Box>
   );
 }
