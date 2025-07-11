@@ -1,5 +1,5 @@
 import * as React from "react";
-import {baseApi} from "../../../environment"
+import { baseApi } from "../../../environment";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
@@ -20,9 +20,7 @@ import { studentSchema } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
 export default function Students() {
-
-  const [classes, setClasses
-  ] = React.useState([])
+  const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
 
@@ -99,42 +97,47 @@ export default function Students() {
     setMessage("");
   };
 
+  const fetchClasses = () => {
+    axios
+      .get(`${baseApi}/class/all`)
+      .then((resp) => {
+        setClasses(resp.data.data);
+      })
+      .catch((e) => {
+        console.log("error in fetching classes", e);
+      });
+  };
 
-  const fetchClasses = ()=>{
-    axios.get(`${baseApi}/class/all`).then(resp=>{
-      setClasses(resp.data.data)
-    }).catch(e=>{
-      console.log("error in fetching classes",e)
-    })
-  }
-
-  const [params, setParams] = React.useState({})
-  const handleClass = (e)=>{
-    setParams((prevParams) =>({
+  const [params, setParams] = React.useState({});
+  const handleClass = (e) => {
+    setParams((prevParams) => ({
       ...prevParams,
       student_class: e.target.value || undefined,
     }));
   };
-  const handleSearch = (e)  => {
-    setParams((prevParams) =>({
+  const handleSearch = (e) => {
+    setParams((prevParams) => ({
       ...prevParams,
-      search:e.target.value || undefined,
+      search: e.target.value || undefined,
     }));
   };
 
-  const [students, setStudents] = React.useState([])
-  const fetchStudents = ()=>{
-    axios.get(`${baseApi}/student/fetch-with-query`,{params}).then(resp=>{
-      setStudents(resp.data.students)
-    }).catch(e=>{
-      console.log("error in fetching classes",e)
-    })
-  }
+  const [students, setStudents] = React.useState([]);
+  const fetchStudents = () => {
+    axios
+      .get(`${baseApi}/student/fetch-with-query`, { params })
+      .then((resp) => {
+        setStudents(resp.data.students);
+      })
+      .catch((e) => {
+        console.log("error in fetching classes", e);
+      });
+  };
 
-  React.useEffect(()=>{
-    fetchClasses()
-    fetchStudents()
-  },[message,params])
+  React.useEffect(() => {
+    fetchClasses();
+    fetchStudents();
+  }, [message, params]);
 
   return (
     <Box
@@ -156,8 +159,6 @@ export default function Students() {
           handleClose={handleMessageClose}
         />
       )}
-
-
 
       <Box sx={{ textAlign: "center", mt: 2 }}></Box>
 
@@ -223,7 +224,6 @@ export default function Students() {
           </p>
         )}
 
-           
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Class</InputLabel>
           <Select
@@ -233,8 +233,15 @@ export default function Students() {
             label="Student Class"
             name="student_class"
             onChange={Formik.handleChange}
-          >  
-            {classes && classes.map(x=>{return(<MenuItem key={x._id} value={x._id}>{x.class_text}({x.class_num})</MenuItem>)})}
+          >
+            {classes &&
+              classes.map((x) => {
+                return (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.class_text}({x.class_num})
+                  </MenuItem>
+                );
+              })}
           </Select>
         </FormControl>
 
@@ -340,55 +347,100 @@ export default function Students() {
           Submit
         </Button>
       </Box>
-      <Box component={'div'} sx={{display:'flex', flexDirection:'row', justifyContent: 'center', marginTop:'30px'}}>
-       
+      <Box
+        component={"div"}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: "30px",
+        }}
+      >
         <TextField
           label="Search"
-          
-          onChange={(e)=>{
-            handleSearch(e)
+          onChange={(e) => {
+            handleSearch(e);
           }}
           //onBlur={Formik.handleBlur}
         />
-         <FormControl sx={{width:'180px', marginLeft:'5px'}}>
+        <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
           <InputLabel id="demo-simple-select-label">Class</InputLabel>
           <Select
             label="Student Class"
-            onChange={(e) =>{
-              handleClass(e)
+            onChange={(e) => {
+              handleClass(e);
             }}
-          >  
-            {classes && classes.map(x=>{return(<MenuItem key={x._id} value={x._id}>{x.class_text}({x.class_num})</MenuItem>)})}
+          >
+            {classes &&
+              classes.map((x) => {
+                return (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.class_text}({x.class_num})
+                  </MenuItem>
+                );
+              })}
           </Select>
         </FormControl>
-        
       </Box>
-      <Box component={'div'} sx={{display:'flex', flexDirection:'row', justifyContent: 'center', marginTop:'30px'}}>
-            {students && students.map(student => {
-
-              return(
-                 <Card key={student._id} sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {student.name}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Lizards are a widespread 
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
-              )
-            })}
-
-       </Box>
+      <Box
+        component={"div"}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: "30px",
+        }}
+      >
+        {students &&
+          students.map((student) => {
+            return (
+              <Card key={student._id} sx={{ maxWidth: 345 }}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="330"
+                    image={`/images/uploaded/student/${student.student_image}`}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Name-</span>
+                      {student.name}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Email-</span>{" "}
+                      {student.email}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Class-</span>
+                      {student.student_class?.class_text}({student.student_class?.class_num})
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Age-</span>{" "}
+                      {student.age}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Gender-</span>{" "}
+                      {student.gender}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Guardian-</span>{" "}
+                      {student.guardian}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <span style={{ fontWeight: "bold" }}>Contact-</span>
+                      {student.guardian_phone}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                    ></Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            );
+          })}
+      </Box>
     </Box>
   );
 }

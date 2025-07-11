@@ -106,7 +106,7 @@ module.exports = {
             if(req.query.student_class){
                 filterQuery['student_class']=req.query.student_class;
             }
-            const students = await Student.find(filterQuery).select(['-password']);
+            const students = await Student.find(filterQuery).select(['-password']).populate('student_class', 'class_text class_num');
             res.status(200).json({success:true, message:"All Student Data", students})
  
         }catch(error){
