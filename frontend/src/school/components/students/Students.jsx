@@ -19,6 +19,11 @@ import axios from "axios";
 import { studentSchema } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
+//icons
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 export default function Students() {
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
@@ -136,6 +141,9 @@ export default function Students() {
 
   React.useEffect(() => {
     fetchClasses();
+  }, []);
+  React.useEffect(() => {
+    
     fetchStudents();
   }, [message, params]);
 
@@ -229,7 +237,7 @@ export default function Students() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={Formik.values.student_class}
+            value={Formik.values.student_class || ""}
             label="Student Class"
             name="student_class"
             onChange={Formik.handleChange}
@@ -371,6 +379,7 @@ export default function Students() {
               handleClass(e);
             }}
           >
+            <MenuItem value="">All Students</MenuItem>
             {classes &&
               classes.map((x) => {
                 return (
@@ -412,7 +421,7 @@ export default function Students() {
                       {student.email}
                     </Typography>
                     <Typography gutterBottom variant="h5" component="div">
-                      <span style={{ fontWeight: "bold" }}>Class-</span>
+                      <span style={{ fontWeight: "bold" }}>Class-</span>{" "}
                       {student.student_class?.class_text}({student.student_class?.class_num})
                     </Typography>
                     <Typography gutterBottom variant="h5" component="div">
@@ -437,6 +446,10 @@ export default function Students() {
                     ></Typography>
                   </CardContent>
                 </CardActionArea>
+                <Box sx={{ display: "flex", justifyContent: "space-around", p: 1}}>
+    <Button sx={{color:'black', backgroundColor:'orange'}} variant="outlined"><EditIcon /></Button>
+    <Button sx={{color:'black', backgroundColor:'orange'}} variant="outlined"><DeleteIcon /></Button>
+  </Box>
               </Card>
             );
           })}
