@@ -179,6 +179,11 @@ module.exports = {
                     student[field]=fields[field][0]
                 })
                 student['student_image']=originalFilename
+                if(fields.password[0]){
+                   const salt = bcrypt.genSaltSync(10);
+                   const hashPassword = bcrypt.hashSync(fields.password[0],salt)
+                    student['password']= hashPassword;
+                }
             }
                 else{
                     Object.keys(fields).forEach((field) => {
