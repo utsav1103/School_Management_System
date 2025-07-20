@@ -16,15 +16,15 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { studentSchema } from "../../../yupSchema/studentSchema";
+import { studentEditSchema, studentSchema } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
 //icons
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function Students() {
+  const [edit, setEdit] = React.useState(false);
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
@@ -46,6 +46,25 @@ export default function Students() {
     setImageUrl(null);
   };
 
+  const handleEdit = (id) => {
+    setEdit(true);
+    const filteredStudent = students.filter((x) => x._id === id);
+    console.log("filtered student", filteredStudent);
+    Formik.setFieldValue("name", filteredStudent[0].name);
+    Formik.setFieldValue("student_class", filteredStudent[0].student_class._id);
+    Formik.setFieldValue("age", filteredStudent[0].age);
+    Formik.setFieldValue("gender", filteredStudent[0].gender);
+    Formik.setFieldValue("guardian", filteredStudent[0].guardian);
+    Formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
+  };
+
+  const handleDelete = (id) => {};
+
+  const cancelEdit = () => {
+    setEdit(false);
+    Formik.resetForm();
+  };
+
   const initialValues = {
     email: "",
     name: "",
@@ -59,13 +78,12 @@ export default function Students() {
   };
   const Formik = useFormik({
     initialValues,
-    validationSchema: studentSchema,
+    validationSchema: edit?studentEditSchema:studentSchema,
     onSubmit: (values) => {
       console.log("Register submit values", values);
 
-      if (file) {
+      if (edit) {
         const fd = new FormData();
-        fd.append("image", file, file.name);
         fd.append("name", values.name);
         fd.append("email", values.email);
         fd.append("gender", values.gender);
@@ -73,10 +91,16 @@ export default function Students() {
         fd.append("guardian", values.guardian);
         fd.append("guardian_phone", values.guardian_phone);
         fd.append("student_class", values.student_class);
-        fd.append("password", values.password);
+
+        if (file) {
+          fd.append("image", file, file.name);
+        }
+        if (values.password) {
+          fd.append("password", values.password);
+        }
 
         axios
-          .post(`http://localhost:3000/api/student/register`, fd)
+          .patch(`http://localhost:3000/api/student/update`, fd)
           .then((resp) => {
             console.log(resp);
             setMessage(resp.data.message);
@@ -90,8 +114,36 @@ export default function Students() {
             console.log("Error", e); //error handling
           });
       } else {
-        setMessage("Please select an image");
-        setMessageType("error");
+        if (file) {
+          const fd = new FormData();
+          fd.append("image", file, file.name);
+          fd.append("name", values.name);
+          fd.append("email", values.email);
+          fd.append("gender", values.gender);
+          fd.append("age", values.age);
+          fd.append("guardian", values.guardian);
+          fd.append("guardian_phone", values.guardian_phone);
+          fd.append("student_class", values.student_class);
+          fd.append("password", values.password);
+
+          axios
+            .post(`http://localhost:3000/api/student/register`, fd)
+            .then((resp) => {
+              console.log(resp);
+              setMessage(resp.data.message);
+              setMessageType("success");
+              Formik.resetForm();
+              handleClearFile();
+            })
+            .catch((e) => {
+              setMessage("Error in registring new student");
+              setMessageType("error");
+              console.log("Error", e); //error handling
+            });
+        } else {
+          setMessage("Please select an image");
+          setMessageType("error");
+        }
       }
     },
   });
@@ -143,7 +195,6 @@ export default function Students() {
     fetchClasses();
   }, []);
   React.useEffect(() => {
-    
     fetchStudents();
   }, [message, params]);
 
@@ -186,9 +237,16 @@ export default function Students() {
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
-        <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-          Add Student
-        </Typography>
+        {edit ? (
+          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
+            Edit Student Info...
+          </Typography>
+        ) : (
+          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
+            Add Student
+          </Typography>
+        )}
+
         <Typography>Add Student Picture</Typography>
 
         <TextField
@@ -351,9 +409,21 @@ export default function Students() {
           </p>
         )}
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" sx={{ width: "120px" }}>
           Submit
         </Button>
+        {edit && (
+          <Button
+            onClick={() => {
+              cancelEdit();
+            }}
+            type="button"
+            variant="outlined"
+            sx={{ width: "120px" }}
+          >
+            Cancel
+          </Button>
+        )}
       </Box>
       <Box
         component={"div"}
@@ -403,14 +473,21 @@ export default function Students() {
         {students &&
           students.map((student) => {
             return (
-              <Card key={student._id} sx={{ maxWidth: 345 }}>
+              <Card key={student._id} sx={{ width: 320 , flexShrink: 0 }}>
                 <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="330"
-                    image={`/images/uploaded/student/${student.student_image}`}
-                    alt="green iguana"
-                  />
+                  <Box sx={{ width: "100%", height: 350, overflow: "hidden" }}>
+                    <CardMedia
+                      component="img"
+                      image={`/images/uploaded/student/${student.student_image}`}
+                      alt="student image"
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Box>
+
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                       <span style={{ fontWeight: "bold" }}>Name-</span>
@@ -422,7 +499,8 @@ export default function Students() {
                     </Typography>
                     <Typography gutterBottom variant="h5" component="div">
                       <span style={{ fontWeight: "bold" }}>Class-</span>{" "}
-                      {student.student_class?.class_text}({student.student_class?.class_num})
+                      {student.student_class?.class_text}(
+                      {student.student_class?.class_num})
                     </Typography>
                     <Typography gutterBottom variant="h5" component="div">
                       <span style={{ fontWeight: "bold" }}>Age-</span>{" "}
@@ -446,10 +524,28 @@ export default function Students() {
                     ></Typography>
                   </CardContent>
                 </CardActionArea>
-                <Box sx={{ display: "flex", justifyContent: "space-around", p: 1}}>
-    <Button sx={{color:'black', backgroundColor:'orange'}} variant="outlined"><EditIcon /></Button>
-    <Button sx={{color:'black', backgroundColor:'orange'}} variant="outlined"><DeleteIcon /></Button>
-  </Box>
+                <Box
+                  sx={{ display: "flex", justifyContent: "space-around", p: 1 }}
+                >
+                  <Button
+                    onClick={() => {
+                      handleEdit(student._id);
+                    }}
+                    sx={{ color: "black", backgroundColor: "orange" }}
+                    variant="outlined"
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleDelete(student._id);
+                    }}
+                    sx={{ color: "black", backgroundColor: "orange" }}
+                    variant="outlined"
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </Box>
               </Card>
             );
           })}
