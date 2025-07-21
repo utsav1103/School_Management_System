@@ -25,6 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 export default function Students() {
   const [edit, setEdit] = React.useState(false);
+  const [editId, setEditId] = React.useState(null);
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
@@ -48,9 +49,12 @@ export default function Students() {
 
   const handleEdit = (id) => {
     setEdit(true);
+    setEditId(id)
     const filteredStudent = students.filter((x) => x._id === id);
     console.log("filtered student", filteredStudent);
     Formik.setFieldValue("name", filteredStudent[0].name);
+    Formik.setFieldValue("email", filteredStudent[0].email);
+    
     Formik.setFieldValue("student_class", filteredStudent[0].student_class._id);
     Formik.setFieldValue("age", filteredStudent[0].age);
     Formik.setFieldValue("gender", filteredStudent[0].gender);
@@ -62,6 +66,7 @@ export default function Students() {
 
   const cancelEdit = () => {
     setEdit(false);
+    setEditId(null);
     Formik.resetForm();
   };
 
@@ -100,7 +105,7 @@ export default function Students() {
         }
 
         axios
-          .patch(`http://localhost:3000/api/student/update`, fd)
+          .patch(`http://localhost:3000/api/student/update/${editId}`, fd)
           .then((resp) => {
             console.log(resp);
             setMessage(resp.data.message);
@@ -109,7 +114,7 @@ export default function Students() {
             handleClearFile();
           })
           .catch((e) => {
-            setMessage("Error in registring new student");
+            setMessage("Error in editing student");
             setMessageType("error");
             console.log("Error", e); //error handling
           });

@@ -149,7 +149,7 @@ module.exports = {
         
 
         try {
-            const id = req.user.id;
+            const id = req.params.id;
             const schoolId = req.user.schoolId;
             const form = new formidable.IncomingForm();
             form.parse(req, async(err, fields, files) => {
@@ -189,7 +189,7 @@ module.exports = {
                     Object.keys(fields).forEach((field) => {
                     student[field]=fields[field][0]
                 })
-                }
+                } 
 
                 await student.save();
                 res.status(200).json({success:true, message:"Student updated Successfully.", student})
