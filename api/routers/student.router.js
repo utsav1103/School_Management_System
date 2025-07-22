@@ -10,7 +10,7 @@ router.post("/login", loginStudent);
 router.patch("/update/:id",authMiddleware(["SCHOOL"]), updateStudent);// auth for update or not check
 router.get("/fetch-single",authMiddleware(["STUDENT"]), getStudentOwnData);
 router.get("/fetch/:id", authMiddleware(['SCHOOL']), getStudentWithID);
-router.delete("/delete /:id", authMiddleware(['SCHOOL']), deleteStudentWithId);
+router.delete("/delete/:id", authMiddleware(['SCHOOL']), deleteStudentWithId);
 
 
 
