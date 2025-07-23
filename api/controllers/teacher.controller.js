@@ -43,8 +43,7 @@ module.exports = {
                     name:fields.name[0],
                     age:fields.age[0],
                     gender:fields.gender[0],
-                    guardian:fields.guardian[0],
-                    guardian_phone:fields.guardian_phone[0], 
+                    qualification:fields.qualification[0],
                     teacher_image:originalFilename,
                     password:hashPassword,
                 })
@@ -79,8 +78,7 @@ module.exports = {
                     res.status(200).json({success:true, 
                         
                         user:{id:teacher._id,
-                            schoolId:teacher.school, 
-                            owner_name:teacher.owner_name,teacher_name:teacher.teacher_name,
+                            schoolId:teacher.school, teacher_name:teacher.teacher_name,
                         image_url:teacher.teacher_image,role:"TEACHER"},
                          message:"Teacher Logged In Successfully"})
                 }else{
