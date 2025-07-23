@@ -81,7 +81,7 @@ module.exports = {
                         
                         user:{id:student._id,
                             schoolId:student.school, 
-                            owner_name:student.owner_name,student_name:student.student_name,
+                            student_name:student.student_name,
                         image_url:student.student_image,role:"STUDENT"},
                          message:"Student Logged In Successfully"})
                 }else{
