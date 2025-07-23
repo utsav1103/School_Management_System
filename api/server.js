@@ -9,6 +9,7 @@ const schoolRouter = require("./routers/school.router")
 const classRouter = require("./routers/class.router")
 const subjectRouter = require("./routers/subject.router")
 const studentRouter = require("./routers/student.router")
+const teacherRouter = require("./routers/teacher.router")
 const app = express();
 app.use(express.json());  
 //if we pass any data to body to retrive the data we have to use this  
@@ -37,6 +38,7 @@ mongoose.connect(process.env.MONGODB_URL,
     app.use("/api/class", classRouter )
     app.use("/api/subject",subjectRouter)
     app.use("/api/student",studentRouter)
+    app.use("/api/teacher", teacherRouter )
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
