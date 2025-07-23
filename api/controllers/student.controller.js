@@ -207,7 +207,7 @@ module.exports = {
                 const schoolId = req.user.schoolId;
                 await Student.findOneAndDelete({_id:id, school:schoolId});
                 const students = await Student.find({school:schoolId});
-                res.status.json({success:true, message:"Student deleted succesfully...", students})
+                res.status(200).json({success:true, message:"Student deleted succesfully...", students})
 
             }catch(error){
                 res.status(500).json({success:false, message: "Error in deleting student"})
