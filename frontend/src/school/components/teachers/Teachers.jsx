@@ -180,12 +180,7 @@ export default function Teachers() {
   };
 
   const [params, setParams] = React.useState({});
-  const handleClass = (e) => {
-    setParams((prevParams) => ({
-      ...prevParams,
-      teacher_class: e.target.value || undefined,
-    }));
-  };
+  
   const handleSearch = (e) => {
     setParams((prevParams) => ({
       ...prevParams,
@@ -404,18 +399,6 @@ export default function Teachers() {
     onChange={handleSearch}
     variant="outlined"
   />
-  <FormControl sx={{ minWidth: 200 }}>
-    <InputLabel>Class</InputLabel>
-    <Select label="teacher Class" onChange={handleClass}>
-      <MenuItem value="">All teachers</MenuItem>
-      {classes &&
-        classes.map((x) => (
-          <MenuItem key={x._id} value={x._id}>
-            {x.class_text} ({x.class_num})
-          </MenuItem>
-        ))}
-    </Select>
-  </FormControl>
 </Box>
 
       <Box
