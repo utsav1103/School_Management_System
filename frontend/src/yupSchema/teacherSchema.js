@@ -1,12 +1,12 @@
 import * as yup from "yup";
 
 export const teacherSchema = yup.object({
-  name: yup.string().required("School Name is required"),
+  name: yup.string().required("Teacher Name is required"),
   email: yup
     .string()
     .email("Invalid email address")
     .required("Email is required"),
-  age: yup.string().required("Student age is required"),
+  age: yup.string().required("Teacher age is required"),
   gender: yup.string().required("Gender is required"),
   qualification: yup.string().required("Qualifiaction is required"),
   password: yup
@@ -20,12 +20,12 @@ export const teacherSchema = yup.object({
 });
 
 export const teacherEditSchema = yup.object({
-  name: yup.string().required("School Name is required"),
+  name: yup.string().required("Teacher Name is required"),
   email: yup
     .string()
     .email("Invalid email address")
     .required("Email is required"),
-  age: yup.string().required("Student age is required"),
+  age: yup.string().required("Teacher age is required"),
   gender: yup.string().required("Gender is required"),
   qualification: yup.string().required("Qualifiaction is required"),
   password: yup
