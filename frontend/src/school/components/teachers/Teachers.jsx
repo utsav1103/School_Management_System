@@ -54,12 +54,9 @@ export default function Teachers() {
     console.log("filtered teacher", filteredteacher);
     Formik.setFieldValue("name", filteredteacher[0].name);
     Formik.setFieldValue("email", filteredteacher[0].email);
-    
-    Formik.setFieldValue("teacher_class", filteredteacher[0].teacher_class._id);
     Formik.setFieldValue("age", filteredteacher[0].age);
     Formik.setFieldValue("gender", filteredteacher[0].gender);
-    Formik.setFieldValue("guardian", filteredteacher[0].guardian);
-    Formik.setFieldValue("guardian_phone", filteredteacher[0].guardian_phone);
+    Formik.setFieldValue("qualification", filteredteacher[0].qualification);
   };
 
   const handleDelete = (id) => {
