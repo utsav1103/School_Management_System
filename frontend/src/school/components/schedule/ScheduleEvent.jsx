@@ -1,8 +1,12 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useFormik } from "formik";
 import { periodSchema } from "../../../yupSchema/periodSchema";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
 
 export default function ScheduleEvent() {
@@ -24,7 +28,7 @@ export default function ScheduleEvent() {
       teacher:"",
       subject:"",
       period:"",
-      date:"",
+      date:new Date(),
 
     }
 
@@ -32,7 +36,7 @@ export default function ScheduleEvent() {
     initialValues,
     validationSchema: periodSchema,
     onSubmit: (values) => {
-      
+      console.log("schedule", values)
     },
   });
   const fetchData = async ()=>{
@@ -49,26 +53,28 @@ export default function ScheduleEvent() {
 
   return (
     <>
-      <h1>Schedule event</h1>
+    
+      
   
      <Box
       component="form"
       sx={{
-        width: "100%",
-        maxWidth: 600,
-        margin: "30px auto",
-        padding: "30px",
-        borderRadius: "16px",
-        background: "linear-gradient(to right, #f3e5f5, #e1bee7)",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
+    width: "100%",
+    maxWidth: 600,
+    margin: "30px auto",
+    padding: "30px",
+    borderRadius: "16px",
+    background: "linear-gradient(to right, #e0f7fa, #80deea)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+  }}
       noValidate
       autoComplete="off"
       onSubmit={Formik.handleSubmit}
     >
+      
 
   <FormControl fullWidth error={Boolean(Formik.touched.teacher && Formik.errors.teacher)}>
     <InputLabel>Teachers</InputLabel>
@@ -126,8 +132,9 @@ export default function ScheduleEvent() {
     >
       {periods &&
         periods.map((x) => (
-          <MenuItem key={x._id} value={x._id}>
-            {x.class_text} ({x.class_num})
+          <MenuItem key={x.id} value={`${x.startTime},${x.endTime}`}>
+
+            {x.label} 
           </MenuItem>
         ))}
     </Select>
@@ -137,6 +144,46 @@ export default function ScheduleEvent() {
       </Typography>
     )}
   </FormControl>
+
+
+     <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DatePicker
+    label="Select Date"
+    value={Formik.values.date ? dayjs(Formik.values.date) :null}
+    onChange={(value) => Formik.setFieldValue("date", value)}
+    slotProps={{
+      textField: {
+        fullWidth: true,
+        error: Boolean(Formik.touched.date && Formik.errors.date),
+        helperText: Formik.touched.date && Formik.errors.date,
+      }
+    }}
+  />
+</LocalizationProvider>
+
+
+    <Button
+  type="submit"
+  variant="contained"
+  sx={{
+    background: "linear-gradient(to right, #00acc1, #26c6da)",
+    color: "white",
+    padding: "10px 20px",
+    fontWeight: "600",
+    borderRadius: "8px",
+    textTransform: "none",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      background: "linear-gradient(to right, #0097a7, #00bcd4)",
+      boxShadow: "0 6px 14px rgba(0, 0, 0, 0.15)",
+    },
+  }}
+>
+  Submit
+</Button>
+
+
   </Box>
     </>
   );
