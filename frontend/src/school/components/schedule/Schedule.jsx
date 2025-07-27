@@ -1,7 +1,7 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ScheduleEvent from './ScheduleEvent';
 import axios from 'axios';
@@ -57,24 +57,38 @@ export default function Schedule() {
   📅 Schedule
 </h1>
 
- <FormControl fullWidth >
+ <Box
+  sx={{
+    width: "100%",
+    maxWidth: 600,
+    margin: "30px auto",
+    padding: "30px",
+    borderRadius: "16px",
+    background: "linear-gradient(to right, #e0f7fa, #80deea)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+  }}
+>
+  <FormControl fullWidth>
     <InputLabel>Class</InputLabel>
     <Select
       value={selectedClass || ""}
       label="Class"
-      onChange={(e)=>{
-        setSelectedClass(e.target.value)
+      onChange={(e) => {
+        setSelectedClass(e.target.value);
       }}
     >
       {classes &&
         classes.map((x) => (
-          <MenuItem  key={x._id} value={x._id}>
-            {x.class_text} 
+          <MenuItem key={x._id} value={x._id}>
+            {x.class_text}
           </MenuItem>
         ))}
     </Select>
-   
   </FormControl>
+</Box>
 
 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
   <Button
