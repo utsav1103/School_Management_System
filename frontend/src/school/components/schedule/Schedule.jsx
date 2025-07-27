@@ -1,13 +1,17 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { Button } from '@mui/material';
-import { useState } from 'react';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useEffect, useState } from 'react';
 import ScheduleEvent from './ScheduleEvent';
+import axios from 'axios';
+import { baseApi } from '../../../environment';
 const localizer = momentLocalizer(moment)
 
 
 export default function Schedule() {
+  const[classes, setClasses]=useState([]);
+  const[selectedClass, setSelectedClass]=useState(null)
     const [newPeriod, setNewPeriod]= useState(false);
     const date = new Date();
     const myEventsList = [
@@ -26,6 +30,15 @@ export default function Schedule() {
 
     ]
 
+    useEffect(()=>{
+      axios.get(`${baseApi}/class/all`).then(resp=>{
+        setClasses(resp.data.data);
+        setSelectedClass(resp.data.data[0]._id)
+      }).catch(e=>{
+        console.log("Fetch class failed",e)
+      })
+    },[])
+
 
     return (
         <>
@@ -43,6 +56,25 @@ export default function Schedule() {
 >
   📅 Schedule
 </h1>
+
+ <FormControl fullWidth >
+    <InputLabel>Class</InputLabel>
+    <Select
+      value={selectedClass || ""}
+      label="Class"
+      onChange={(e)=>{
+        setSelectedClass(e.target.value)
+      }}
+    >
+      {classes &&
+        classes.map((x) => (
+          <MenuItem  key={x._id} value={x._id}>
+            {x.class_text} 
+          </MenuItem>
+        ))}
+    </Select>
+   
+  </FormControl>
 
 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
   <Button
