@@ -24,7 +24,7 @@ module.exports = {
   },
 
 
-  //creating new Subjects
+  //creating new Schedule
   createSchedule: async (req, res) => {
     try {
       //  school:{type:mongoose.Schema.ObjectId, ref:'School'},
@@ -35,17 +35,21 @@ module.exports = {
 
       const newSubject = new Subject({
         school: req.user.schoolId,
-        subject_name: req.body.subject_name,
-        subject_codename: req.body.subject_codename,
+        teacher:req.body.teacher,
+        subject:req.body.subject,
+        class:req.body.selectedClass,
+        startTime:req.body.startTime,
+        endTime:req.body.endTime,
+        
       });
       await newSubject.save();
       res
         .status(200)
-        .json({ success: true, message: "Subjects created Successfully" });
+        .json({ success: true, message: "Schedule created Successfully" });
     } catch (err) {
       res
         .status(500)
-        .json({ success: false, message: "server error in creating Subjects." });
+        .json({ success: false, message: "server error in creating Schedule." });
     }
   },
   //update Subjects
