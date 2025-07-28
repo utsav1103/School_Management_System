@@ -57,18 +57,18 @@ module.exports = {
   updateScheduleWithId: async (req, res) => {
     try {
       let id = req.params.id;
-      await Subject.findOneAndUpdate({ _id: id }, { $set: { ...req.body } });
-      const SubjectAfterUpdate = await Subject.findOne({ _id: id });
+      await Schedule.findOneAndUpdate({ _id: id }, { $set: { ...req.body } });
+      const scheduleAfterUpdate = await Schedule.findOne({ _id: id });
       res.status(200).json({
         success: true,
-        message: "Subject updated successfully",
-        data: SubjectAfterUpdate,
+        message: "Schedule updated successfully",
+        data: scheduleAfterUpdate,
       });
     } catch (error) {
-      console.log("update Subjects error =>", error);
+      console.log("update Schedule error =>", error);
       res
         .status(500)
-        .json({ success: false, message: "Server error in updating Subjects." });
+        .json({ success: false, message: "Server error in updating Schedule." });
     }
   },
 
