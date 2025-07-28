@@ -79,23 +79,13 @@ module.exports = {
     let id = req.params.id;
     let schoolId = req.user.schoolId;
 
-    // Check how many students and exams are linked
+    
+      await Schedule.findOneAndDelete({ _id: id, school: schoolId });
+      res.status(200).json({ success: true, message: "Schedule deleted successfully" });
    
-    const SubjectExamCount = await Exam.countDocuments({ subject: id, school: schoolId });
-    const SubjectSchedule = await Schedule.findOne({ subject: id, school: schoolId }); 
-
-    if (SubjectExamCount === 0 && !SubjectSchedule) {
-      await Subject.findOneAndDelete({ _id: id, school: schoolId });
-      res.status(200).json({ success: true, message: "Subjects deleted successfully" });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "This Subjects is already in use and cannot be deleted.",
-      });
-    }
   } catch (error) {
-    console.log("Delete Subjects error =>", error);
-    res.status(500).json({ success: false, message: "Server error in deleting Subjects." });
+    console.log("Delete Schedules error =>", error);
+    res.status(500).json({ success: false, message: "Server error in deleting Schedule." });
   }
 }
 
