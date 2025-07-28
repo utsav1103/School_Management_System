@@ -83,7 +83,11 @@ export default function ScheduleEvent({ selectedClass }) {
         endTime: new Date(
           date.setHours(endTime.split(":")[0], endTime.split(":")[1])
         ),
-      });
+      }).then(resp=>{
+        console.log("response",resp);
+      }).catch(e=>{
+        console.log("error",e);
+      })
     },
   });
   const fetchData = async () => {
