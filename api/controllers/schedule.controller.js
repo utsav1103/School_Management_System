@@ -6,25 +6,26 @@ const Exam = require("../models/examination.model");
 const Schedule = require("../models/schedule.model");
 module.exports = {
 
-  //get all Subjects
+  //get all schedule
 
-  getAllSubjects:async (req, res)=> {
+  getSchedulesWithClass:async (req, res)=> {
 
     try{
+      const classId = req.params.id;  
       const schoolId = req.user.schoolId;
-      const allSubjects = await Subject.find({school:schoolId});
-      res.status(200).json({success:true, message:"Success in fetching all Subjects", data:allSubjects})
+      const schedules = await Schedule.find({school:schoolId,class:classId });
+      res.status(200).json({success:true, message:"Success in fetching all Subjects", data:schedules})
 
     }catch(error){
-      console.log("GetAllSubjects Error", error)
-      res.status(500).json({success:false, message:"Server Error in Getting all Subjects..."})
+      console.log("Get Schedule with class Error", error)
+      res.status(500).json({success:false, message:"Server Error in Getting Schedule with class"})
     }
 
   },
 
 
   //creating new Subjects
-  createSubject: async (req, res) => {
+  createSchedule: async (req, res) => {
     try {
       //  school:{type:mongoose.Schema.ObjectId, ref:'School'},
       //     Subjects_text:{type:String, required:true},
@@ -49,7 +50,7 @@ module.exports = {
   },
   //update Subjects
 
-  updateSubjectWithId: async (req, res) => {
+  updateScheduleWithId: async (req, res) => {
     try {
       let id = req.params.id;
       await Subject.findOneAndUpdate({ _id: id }, { $set: { ...req.body } });
@@ -69,7 +70,7 @@ module.exports = {
 
   //delete Subjects with id
 
- deleteSubjectWithId: async (req, res) => {
+ deleteScheduleWithId: async (req, res) => {
   try {
     let id = req.params.id;
     let schoolId = req.user.schoolId;
