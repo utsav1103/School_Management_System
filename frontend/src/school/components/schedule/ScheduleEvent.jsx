@@ -69,26 +69,37 @@ export default function ScheduleEvent({ selectedClass }) {
   const Formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
-    onSubmit: (values) => {
-      let date = values.date;
-      let startTime = values.period.split(",")[0];
-      let endTime = values.period.split(",")[1];
-      console.log("Schedule", { ...values, date, startTime, endTime });
-      axios.post(`${baseApi}/schedule/create`, {
-        ...values,
-        selectedClass,
-        startTime: new Date(
-          date.setHours(startTime.split(":")[0], startTime.split(":")[1])
-        ),
-        endTime: new Date(
-          date.setHours(endTime.split(":")[0], endTime.split(":")[1])
-        ),
-      }).then(resp=>{
-        console.log("response",resp);
-      }).catch(e=>{
-        console.log("error",e);
-      })
-    },
+   onSubmit: (values) => {
+  const dateValue = new Date(values.date);
+  const [startHour, startMinute] = values.period.split(",")[0].split(":");
+  const [endHour, endMinute] = values.period.split(",")[1].split(":");
+
+  const startTime = new Date(dateValue);
+  startTime.setHours(startHour, startMinute, 0);
+
+  const endTime = new Date(dateValue);
+  endTime.setHours(endHour, endMinute, 0);
+
+  const payload = {
+  teacher: values.teacher,
+  subject: values.subject,
+  class: selectedClass, // FIX: use correct key name
+  startTime,
+  endTime,
+  date: values.date, // optional, if you store original date
+};
+
+
+  axios
+    .post(`${baseApi}/schedule/create`, payload)
+    .then((resp) => {
+      console.log("response", resp);
+    })
+    .catch((e) => {
+      console.log("error", e);
+    });
+}
+
   });
   const fetchData = async () => {
     const teacherResponse = await axios.get(
