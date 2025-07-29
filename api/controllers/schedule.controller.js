@@ -14,7 +14,7 @@ module.exports = {
       const classId = req.params.id;  
       const schoolId = req.user.schoolId;
       const schedules = await Schedule.find({school:schoolId,class:classId });
-      res.status(200).json({success:true, message:"Success in fetching all Subjects", data:schedules})
+      res.status(200).json({success:true, message:"Success in fetching all Schedules", data:schedules})
 
     }catch(error){
       console.log("Get Schedule with class Error", error)
@@ -26,33 +26,36 @@ module.exports = {
 
   //creating new Schedule
   createSchedule: async (req, res) => {
-    try {
-      //  school:{type:mongoose.Schema.ObjectId, ref:'School'},
-      //     Subjects_text:{type:String, required:true},
-      //     Subjects_num:{type:Number, required:true},
-      //     attendee:{type:mongoose.Schema.ObjectId, ref:"Teacher"},
-      //     createAt: {type:Date, default: new Date()}
+  try {
+    const { teacher, subject, class: classId, date, startTime, endTime } = req.body;
 
-      const newSubject = new Subject({
-        school: req.user.schoolId,
-        teacher:req.body.teacher,
-        subject:req.body.subject,
-        class:req.body.selectedClass,
-        startTime:req.body.startTime,
-        endTime:req.body.endTime,
-        
-      });
-      await newSubject.save();
-      res
-        .status(200)
-        .json({ success: true, message: "Schedule created Successfully" });
-    } catch (err) {
-      res
-        .status(500)
-        .json({ success: false, message: "server error in creating Schedule." });
-    }
-  },
-  //update Subjects
+    // Construct proper Date objects
+    
+    const newSchedule = new Schedule({
+      school: req.user.schoolId,
+      teacher,
+      subject,
+      class: classId,
+      startTime,
+      endTime,
+    });
+
+    await newSchedule.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Schedule created Successfully",
+    });
+  } catch (err) {
+    console.error("Schedule creation error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error in creating Schedule.",
+    });
+  }
+},
+
+  //update Schedule
 
   updateScheduleWithId: async (req, res) => {
     try {

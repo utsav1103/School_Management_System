@@ -19,6 +19,7 @@ import { baseApi } from "../../../environment";
 export default function ScheduleEvent({ selectedClass }) {
   const periods = [
     {
+
       id: 1,
       label: "Period 1 (10:00 AM - 11:00 AM)",
       startTime: "10:00",
@@ -63,42 +64,50 @@ export default function ScheduleEvent({ selectedClass }) {
     teacher: "",
     subject: "",
     period: "",
-    date: new Date(),
+    date: dayjs().format("YYYY-MM-DD"),
   };
 
   const Formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
    onSubmit: (values) => {
-  const dateValue = new Date(values.date);
-  const [startHour, startMinute] = values.period.split(",")[0].split(":");
-  const [endHour, endMinute] = values.period.split(",")[1].split(":");
+  try {
+    const dateValue = new Date(values.date);
+    if (isNaN(dateValue)) throw new Error("Invalid date");
 
-  const startTime = new Date(dateValue);
-  startTime.setHours(startHour, startMinute, 0);
+    const [startTimeStr, endTimeStr] = values.period.split(",");
+    const [startHour, startMinute] = startTimeStr.trim().split(":").map(Number);
+    const [endHour, endMinute] = endTimeStr.trim().split(":").map(Number);
 
-  const endTime = new Date(dateValue);
-  endTime.setHours(endHour, endMinute, 0);
+    const startTime = new Date(dateValue);
+    startTime.setHours(startHour, startMinute, 0);
 
-  const payload = {
-  teacher: values.teacher,
-  subject: values.subject,
-  class: selectedClass, // FIX: use correct key name
-  startTime,
-  endTime,
-  date: values.date, // optional, if you store original date
-};
+    const endTime = new Date(dateValue);
+    endTime.setHours(endHour, endMinute, 0);
 
+    const payload = {
+      teacher: values.teacher,
+      subject: values.subject,
+      classId: selectedClass, // FIXED: use classId not class
+      startTime,
+      endTime,
+      date: values.date,
+    };
 
-  axios
-    .post(`${baseApi}/schedule/create`, payload)
-    .then((resp) => {
-      console.log("response", resp);
-    })
-    .catch((e) => {
-      console.log("error", e);
-    });
+    axios
+      .post(`${baseApi}/schedule/create`, payload)
+      .then((resp) => {
+        console.log("response", resp);
+      })
+      .catch((e) => {
+        console.log("error", e);
+      });
+
+  } catch (err) {
+    console.error("Schedule creation error:", err.message);
+  }
 }
+
 
   });
   const fetchData = async () => {
