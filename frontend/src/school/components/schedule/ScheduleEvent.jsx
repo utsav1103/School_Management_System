@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
-export default function ScheduleEvent({ selectedClass }) {
+export default function ScheduleEvent({ selectedClass , handleEventClose}) {
   const periods = [
     {
 
@@ -107,6 +107,7 @@ export default function ScheduleEvent({ selectedClass }) {
         setMessage(resp.data.message)
         setMessageType("success") 
         Formik.resetForm();
+        handleEventClose(); 
         
       })
       .catch((e) => {

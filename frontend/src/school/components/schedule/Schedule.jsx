@@ -34,6 +34,9 @@ export default function Schedule() {
       end: new Date(date.setHours(16, 30)),
     },
   ];
+  const handleEventClose = ()=>{
+    setNewPeriod(false)
+  }
 
   useEffect(() => {
     axios
@@ -118,7 +121,7 @@ export default function Schedule() {
         </Button>
       </div>
 
-      {newPeriod && <ScheduleEvent selectedClass={selectedClass} />}
+      {newPeriod && <ScheduleEvent selectedClass={selectedClass} handleEventClose={handleEventClose} />}
 
       <div
         style={{
