@@ -15,6 +15,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
+import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
 export default function ScheduleEvent({ selectedClass }) {
   const periods = [
@@ -56,6 +57,11 @@ export default function ScheduleEvent({ selectedClass }) {
       endTime: "16:00",
     },
   ];
+  const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("success");
+    const handleMessageClose = () => {
+      setMessage("");
+    };  
 
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -98,9 +104,13 @@ export default function ScheduleEvent({ selectedClass }) {
       .post(`${baseApi}/schedule/create`, payload)
       .then((resp) => {
         console.log("response", resp);
+        setMessage(resp.data.message)
+        setMessageType("success") 
       })
       .catch((e) => {
         console.log("error", e);
+        setMessage("Error in creating schedule")
+        setMessageType("Error")
       });
 
   } catch (err) {
@@ -126,6 +136,13 @@ export default function ScheduleEvent({ selectedClass }) {
 
   return (
     <>
+    {message && (
+                <MessageSnackbar
+                  message={message}
+                  type={messageType}
+                  handleClose={handleMessageClose}
+                />
+              )}
       <Box
         component="form"
         sx={{

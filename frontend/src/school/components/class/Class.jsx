@@ -102,7 +102,7 @@ const [message, setMessage] = useState("");
   }, [message]);
 
   return (
-    <>
+    <> 
     {message && (
             <MessageSnackbar
               message={message}
