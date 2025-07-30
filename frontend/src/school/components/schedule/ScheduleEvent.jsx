@@ -106,6 +106,8 @@ export default function ScheduleEvent({ selectedClass }) {
         console.log("response", resp);
         setMessage(resp.data.message)
         setMessageType("success") 
+        Formik.resetForm();
+        
       })
       .catch((e) => {
         console.log("error", e);
