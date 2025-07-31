@@ -9,6 +9,8 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+
 import { useEffect, useState } from "react";
 import ScheduleEvent from "./ScheduleEvent";
 import axios from "axios";
@@ -16,6 +18,16 @@ import { baseApi } from "../../../environment";
 const localizer = momentLocalizer(moment);
 
 export default function Schedule() {
+  const [message, setMessage] = useState("");
+      const [messageType, setMessageType] = useState("success");
+      const handleMessageClose = () => {
+        setMessage("");
+      };  
+  const handleMessageNew = (msg, type)=>{
+    setMessage(msg)
+    setMessageType(type)
+  }    
+  
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [newPeriod, setNewPeriod] = useState(false);
@@ -66,6 +78,14 @@ export default function Schedule() {
       >
         📅 Schedule
       </h1>
+      {message && (
+                <MessageSnackbar
+                  message={message}
+                  type={messageType}
+                  handleClose={handleMessageClose}
+                />
+              )}
+    
 
       <Box
         sx={{
@@ -121,7 +141,7 @@ export default function Schedule() {
         </Button>
       </div>
 
-      {newPeriod && <ScheduleEvent selectedClass={selectedClass} handleEventClose={handleEventClose} />}
+      {newPeriod && <ScheduleEvent selectedClass={selectedClass} handleEventClose={handleEventClose} handleMessageNew={handleMessageNew} />}
 
       <div
         style={{

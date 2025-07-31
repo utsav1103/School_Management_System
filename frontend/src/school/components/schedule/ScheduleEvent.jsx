@@ -15,9 +15,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
-import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
-export default function ScheduleEvent({ selectedClass , handleEventClose}) {
+export default function ScheduleEvent({ selectedClass , handleEventClose , handleMessageNew}) {
   const periods = [
     {
 
@@ -57,11 +56,7 @@ export default function ScheduleEvent({ selectedClass , handleEventClose}) {
       endTime: "16:00",
     },
   ];
-  const [message, setMessage] = useState("");
-    const [messageType, setMessageType] = useState("success");
-    const handleMessageClose = () => {
-      setMessage("");
-    };  
+  
 
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -104,16 +99,18 @@ export default function ScheduleEvent({ selectedClass , handleEventClose}) {
       .post(`${baseApi}/schedule/create`, payload)
       .then((resp) => {
         console.log("response", resp);
-        setMessage(resp.data.message)
-        setMessageType("success") 
+        //setMessage(resp.data.message)
+       // setMessageType("success") 
+       handleMessageNew(resp.data.message, "success")
         Formik.resetForm();
         handleEventClose(); 
         
       })
       .catch((e) => {
         console.log("error", e);
-        setMessage("Error in creating schedule")
-        setMessageType("Error")
+        handleMessageNew("Error in creating new schedule")
+        //setMessage("Error in creating schedule")
+        //setMessageType("Error")
       });
 
   } catch (err) {
@@ -139,13 +136,6 @@ export default function ScheduleEvent({ selectedClass , handleEventClose}) {
 
   return (
     <>
-    {message && (
-                <MessageSnackbar
-                  message={message}
-                  type={messageType}
-                  handleClose={handleMessageClose}
-                />
-              )}
       <Box
         component="form"
         sx={{
