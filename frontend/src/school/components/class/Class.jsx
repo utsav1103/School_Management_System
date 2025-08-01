@@ -99,7 +99,7 @@ const [message, setMessage] = useState("");
 
   useEffect(() => {
     FetchAllclasses();
-  }, [message]);
+  }, [message]); 
 
   return (
     <> 
