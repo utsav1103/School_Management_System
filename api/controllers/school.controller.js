@@ -99,7 +99,6 @@ module.exports = {
     },
     getSchoolOwnData: async (req, res) => {
         try{
-            console.log("here")
             const id= req.user.id;
             const school = await School.findOne({_id:id}).select(['-password']);
             if(school){

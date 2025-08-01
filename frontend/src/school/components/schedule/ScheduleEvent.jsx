@@ -56,7 +56,6 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
       endTime: "16:00",
     },
   ];
-  
 
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -95,10 +94,11 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
       date: values.date,
     };
 
+    
+
     axios
       .post(`${baseApi}/schedule/create`, payload)
       .then((resp) => {
-        console.log("response", resp);
         //setMessage(resp.data.message)
        // setMessageType("success") 
        handleMessageNew(resp.data.message, "success")

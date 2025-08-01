@@ -67,7 +67,6 @@ export default function Dashboard() {
     try {
       const data = await axios.get(`${baseApi}/school/fetch-single`,)
       const res = await data.data;
-        console.log(res)
       if (res?.success === true) {
         setSchool(res.school);
         setSchoolName(res.school.school_name)
@@ -88,9 +87,6 @@ export default function Dashboard() {
     };
   },[message]);
 
-  useEffect(() => {
-    console.log(school)
-  },[school])
   return (
     <>
       <h1>Dashboard</h1>

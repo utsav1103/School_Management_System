@@ -13,7 +13,8 @@ module.exports = {
     try{
       const classId = req.params.id;  
       const schoolId = req.user.schoolId;
-      const schedules = await Schedule.find({school:schoolId,class:classId });
+      const schedules = await Schedule.find({school:schoolId,class:classId }).populate(['teacher','subject']);//populated teacher and subject here
+      console.log(schedules)
       res.status(200).json({success:true, message:"Success in fetching all Schedules", data:schedules})
 
     }catch(error){
@@ -27,7 +28,7 @@ module.exports = {
   //creating new Schedule
   createSchedule: async (req, res) => {
   try {
-    const { teacher, subject, class: classId, date, startTime, endTime } = req.body;
+    const { teacher, subject, classId, date, startTime, endTime } = req.body;
 
     // Construct proper Date objects
     
@@ -39,6 +40,8 @@ module.exports = {
       startTime,
       endTime,
     });
+
+
 
     await newSchedule.save();
 

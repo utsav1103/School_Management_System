@@ -46,11 +46,13 @@ export default function Schedule() {
       end: new Date(date.setHours(16, 30)),
     },
   ];
+  const [events, setEvents] = useState(myEventsList)
   const handleEventClose = ()=>{
     setNewPeriod(false)
   }
 
   useEffect(() => {
+
     axios
       .get(`${baseApi}/class/all`)
       .then((resp) => {
@@ -61,6 +63,25 @@ export default function Schedule() {
         console.log("Fetch class failed", e);
       });
   }, []);
+
+  useEffect(()=>{
+    if(selectedClass){
+        axios.get(`${baseApi}/schedule/fetch-with-class/${selectedClass}`).then(resp=>{
+      const respData = resp.data.data.map(x=>{return({id:x._id,
+        title:`Sub: ${x.subject.subject_name},Teacher:${x.teacher.name}`,
+        start:new Date(x.startTime),
+        end:new Date(x.endTime),
+      })})  
+      setEvents(respData)
+    }).catch(e=>{
+      console.log("Error in fetching schedule",e)
+    })
+    }
+    
+  },[selectedClass])
+
+  useEffect(() => {
+  },[events])
 
   return (
     <>
@@ -155,7 +176,7 @@ export default function Schedule() {
       >
         <Calendar
           localizer={localizer}
-          events={myEventsList}
+          events={events}
           defaultView="week"
           views={["week", "day", "agenda"]}
           step={30}

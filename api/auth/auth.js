@@ -8,7 +8,6 @@ const authMiddleware =  (roles=[]) => {
              res.status(401).json({success:false, message:"No token , Authentication Failed"});
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded)
         if(decoded){
             req.user = decoded;
             if(roles.length > 0 && !roles.includes(req.user.role)){

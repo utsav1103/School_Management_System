@@ -22,7 +22,6 @@ const [message, setMessage] = useState("");
   const [editId, setEditId] = useState(null)
 
   const handleEdit = (id, class_text, class_num) => {
-    console.log(id);
     setEdit(true);
     setEditId(id);
     Formik.setFieldValue("class_text",class_text)

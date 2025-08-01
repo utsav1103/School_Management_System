@@ -51,7 +51,6 @@ export default function Students() {
     setEdit(true);
     setEditId(id)
     const filteredStudent = students.filter((x) => x._id === id);
-    console.log("filtered student", filteredStudent);
     Formik.setFieldValue("name", filteredStudent[0].name);
     Formik.setFieldValue("email", filteredStudent[0].email);
     
@@ -67,7 +66,6 @@ export default function Students() {
        axios
           .delete(`http://localhost:3000/api/student/delete/${id}`)
           .then((resp) => {
-            console.log(resp);
             setMessage(resp.data.message);
             setMessageType("success");
           })
@@ -101,7 +99,6 @@ export default function Students() {
     initialValues,
     validationSchema: edit?studentEditSchema:studentSchema,
     onSubmit: (values) => {
-      console.log("Register submit values", values);
 
       if (edit) {
         const fd = new FormData();
@@ -123,7 +120,6 @@ export default function Students() {
         axios
           .patch(`http://localhost:3000/api/student/update/${editId}`, fd)
           .then((resp) => {
-            console.log(resp);
             setMessage(resp.data.message);
             setMessageType("success");
             Formik.resetForm();
@@ -150,7 +146,6 @@ export default function Students() {
           axios
             .post(`http://localhost:3000/api/student/register`, fd)
             .then((resp) => {
-              console.log(resp);
               setMessage(resp.data.message);
               setMessageType("success");
               Formik.resetForm();
