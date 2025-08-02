@@ -75,6 +75,7 @@ export default function Schedule() {
       setEvents(respData)
     }).catch(e=>{
       console.log("Error in fetching schedule",e)
+      
     })
     }
     
