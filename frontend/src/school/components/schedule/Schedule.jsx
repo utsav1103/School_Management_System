@@ -19,15 +19,15 @@ const localizer = momentLocalizer(moment);
 
 export default function Schedule() {
   const [message, setMessage] = useState("");
-      const [messageType, setMessageType] = useState("success");
-      const handleMessageClose = () => {
-        setMessage("");
-      };  
-  const handleMessageNew = (msg, type)=>{
-    setMessage(msg)
-    setMessageType(type)
-  }    
-  
+  const [messageType, setMessageType] = useState("success");
+  const handleMessageClose = () => {
+    setMessage("");
+  };
+  const handleMessageNew = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+  };
+
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [newPeriod, setNewPeriod] = useState(false);
@@ -46,13 +46,12 @@ export default function Schedule() {
       end: new Date(date.setHours(16, 30)),
     },
   ];
-  const [events, setEvents] = useState(myEventsList)
-  const handleEventClose = ()=>{
-    setNewPeriod(false)
-  }
+  const [events, setEvents] = useState(myEventsList);
+  const handleEventClose = () => {
+    setNewPeriod(false);
+  };
 
   useEffect(() => {
-
     axios
       .get(`${baseApi}/class/all`)
       .then((resp) => {
@@ -64,26 +63,29 @@ export default function Schedule() {
       });
   }, []);
 
-  useEffect(()=>{
-    if(selectedClass){
-        axios.get(`${baseApi}/schedule/fetch-with-class/${selectedClass}`).then(resp=>{
-      const respData = resp.data.data.map(x=>{return({id:x._id,
-        title:`Sub: ${x.subject.subject_name},Teacher:${x.teacher.name}`,
-        start:new Date(x.startTime),
-        end:new Date(x.endTime),
-      })})  
-      setEvents(respData)
-    }).catch(e=>{
-      console.log("Error in fetching schedule",e)
-      
-    })
-    }
-    
-  },[selectedClass])
-
   useEffect(() => {
-  },[events])
+    if (selectedClass) {
+      axios
+        .get(`${baseApi}/schedule/fetch-with-class/${selectedClass}`)
+        .then((resp) => {
+          const respData = resp.data.data.map((x) => {
+            return {
+              id: x._id,
+              title: `Sub: ${x.subject.subject_name},Teacher:${x.teacher.name}`,
+              start: new Date(x.startTime),
+              end: new Date(x.endTime),
+            };
+          });
+          setEvents(respData);
+        })
+        .catch((e) => {
+          console.log("Error in fetching schedule", e);
+        });
+    }
+  }, [selectedClass,message]);
 
+  //useEffect(() => {}, [events]);
+  
   return (
     <>
       <h1
@@ -101,13 +103,12 @@ export default function Schedule() {
         📅 Schedule
       </h1>
       {message && (
-                <MessageSnackbar
-                  message={message}
-                  type={messageType}
-                  handleClose={handleMessageClose}
-                />
-              )}
-    
+        <MessageSnackbar
+          message={message}
+          type={messageType}
+          handleClose={handleMessageClose}
+        />
+      )}
 
       <Box
         sx={{
@@ -163,7 +164,13 @@ export default function Schedule() {
         </Button>
       </div>
 
-      {newPeriod && <ScheduleEvent selectedClass={selectedClass} handleEventClose={handleEventClose} handleMessageNew={handleMessageNew} />}
+      {newPeriod && (
+        <ScheduleEvent
+          selectedClass={selectedClass}
+          handleEventClose={handleEventClose}
+          handleMessageNew={handleMessageNew}
+        />
+      )}
 
       <div
         style={{
@@ -178,14 +185,14 @@ export default function Schedule() {
         <Calendar
           localizer={localizer}
           events={events}
-          defaultView="week"
-          views={["week", "day", "agenda"]}
+          defaultView="agenda"
+          views={["week","day","agenda"]}
           step={30}
           timeslots={1}
           startAccessor="start"
           endAccessor="end"
-          min={new Date(1970, 1, 1, 0, 0, 0)}
-          max={new Date(1970, 1, 1, 23, 59, 59)}
+          min={new Date(new Date().setHours(8, 0, 0, 0))}
+          max={new Date(new Date().setHours(18, 0, 0, 0))}
           defaultDate={new Date()}
           showMultiDayTimes
           style={{

@@ -233,14 +233,14 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
           <DatePicker
             label="Select Date"
             value={Formik.values.date ? dayjs(Formik.values.date) : null}
-            onChange={(value) => Formik.setFieldValue("date", value)}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                error: Boolean(Formik.touched.date && Formik.errors.date),
-                helperText: Formik.touched.date && Formik.errors.date,
-              },
-            }}
+            onChange={(newValue) => Formik.setFieldValue("date", newValue)}
+            // slotProps={{
+            //   textField: {
+            //     fullWidth: true,
+            //     error: Boolean(Formik.touched.date && Formik.errors.date),
+            //     helperText: Formik.touched.date && Formik.errors.date,
+            //   },
+            // }}
           />
         </LocalizationProvider>
 
