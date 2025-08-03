@@ -184,8 +184,8 @@ export default function Schedule() {
           timeslots={1}
           startAccessor="start"
           endAccessor="end"
-          min={new Date(1970, 1, 1, 10, 0, 0)}
-          max={new Date(1970, 1, 1, 17, 0, 0)}
+          min={new Date(1970, 1, 1, 0, 0, 0)}
+          max={new Date(1970, 1, 1, 23, 59, 59)}
           defaultDate={new Date()}
           showMultiDayTimes
           style={{
