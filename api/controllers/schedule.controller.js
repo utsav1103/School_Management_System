@@ -57,6 +57,20 @@ module.exports = {
     });
   }
 },
+getSchedulesWithId:async (req, res)=> {
+
+    try{
+      const id = req.params.id;  
+      const schoolId = req.user.schoolId;
+      const schedule = (await Schedule.find({school:schoolId,_id:id }))[0];
+      res.status(200).json({success:true, message:"Success in fetching Schedule with ID", data:schedule})
+
+    }catch(error){
+      console.log("Get Schedule with ID Error", error)
+      res.status(500).json({success:false, message:"Server Error in Getting Schedule with ID"})
+    }
+
+  },
 
   //update Schedule
 
