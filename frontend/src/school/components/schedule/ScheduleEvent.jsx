@@ -5,6 +5,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { periodSchema } from "../../../yupSchema/periodSchema";
@@ -16,7 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
 
-export default function ScheduleEvent({ selectedClass , handleEventClose , handleMessageNew}) {
+export default function ScheduleEvent({ selectedClass , handleEventClose , handleMessageNew , edit , selectedEventId}) {
   const periods = [
     {
 
@@ -132,8 +133,35 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
 
   useEffect(() => {
     fetchData();
-  }, []);
+  },  []);
+  const dateFormat = (date)=>{
+    const dateHours = date.getHours();
+    const dateMinutes = date.getMinutes()
+    return `${dateHours}:${dateMinutes < 10 ? '0' : ''}${dateMinutes}`
+  }
 
+  useEffect(()=>{
+    if(selectedEventId){
+      axios.get(`${baseApi}/schedule/fetch/${selectedEventId}`).then(resp=>{
+        
+         let start = new Date (resp.data.data.startTime);
+       let end = new Date (resp.data.data.endTime) 
+       
+        
+        Formik.setFieldValue("teacher",resp.data.data.teacher);
+        Formik.setFieldValue("subject",resp.data.data.subject);
+        Formik.setFieldValue("date",start)
+        const finalFormattedTime = dateFormat(start)+','+dateFormat(end)
+        Formik.setFieldValue("period",`${finalFormattedTime}`)
+       //console.log(start, end);
+        // Formik.setFieldValue("teacher",resp.data.schedule.teacher);
+        //console.log("response",resp)
+      }).catch(e=>{
+        console.log('Error',e)
+      })
+    }
+  },[selectedEventId])
+  
   return (
     <>
       <Box
@@ -154,6 +182,8 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
+        {edit? <Typography>Edit Period</Typography>:<Typography>Add new Period</Typography>}
+        
         <FormControl
           fullWidth
           error={Boolean(Formik.touched.teacher && Formik.errors.teacher)}
