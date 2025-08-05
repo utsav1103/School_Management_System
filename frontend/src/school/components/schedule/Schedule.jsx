@@ -47,9 +47,19 @@ export default function Schedule() {
     },
   ];
   const [events, setEvents] = useState(myEventsList);
+  
   const handleEventClose = () => {
     setNewPeriod(false);
   };
+
+  
+  const  [edit, setEdit]= useState(false)
+  const [selectedEventId, setSelectedEventId] = useState(null)
+  const handleSelectEvent=(event)=>{
+    setEdit(true);
+    setSelectedEventId(event.id)
+    console.log(event)
+  }
 
   useEffect(() => {
     axios
@@ -164,11 +174,11 @@ export default function Schedule() {
         </Button>
       </div>
 
-      {newPeriod && (
+      {(newPeriod || edit) && (
         <ScheduleEvent
           selectedClass={selectedClass}
           handleEventClose={handleEventClose}
-          handleMessageNew={handleMessageNew}
+          handleMessageNew={handleMessageNew} edit={edit} selectedEventId={selectedEventId}
         />
       )}
 
@@ -185,12 +195,13 @@ export default function Schedule() {
         <Calendar
           localizer={localizer}
           events={events}
-          defaultView="agenda"
+          defaultView="week"
           views={["week","day","agenda"]}
           step={30}
           timeslots={1}
           startAccessor="start"
           endAccessor="end"
+          onSelectEvent={handleSelectEvent}
           min={new Date(new Date().setHours(8, 0, 0, 0))}
           max={new Date(new Date().setHours(18, 0, 0, 0))}
           defaultDate={new Date()}
