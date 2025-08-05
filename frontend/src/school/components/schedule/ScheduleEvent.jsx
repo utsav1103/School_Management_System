@@ -95,10 +95,12 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
       date: values.date,
     };
 
-    
-
+    let BACKEND_URL = `${baseApi}/schedule/create`
+    if(edit){
+      BACKEND_URL = `${baseApi}/schedule/update/${selectedEventId}`
+    }
     axios
-      .post(`${baseApi}/schedule/create`, payload)
+      .post(BACKEND_URL, payload)
       .then((resp) => {
         //setMessage(resp.data.message)
        // setMessageType("success") 
