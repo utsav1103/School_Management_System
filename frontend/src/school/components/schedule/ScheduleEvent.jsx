@@ -57,6 +57,10 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
       endTime: "16:00",
     },
   ];
+  const handleCancel = ()=>{
+    Formik.resetForm();
+    handleEventClose()
+  }
 
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -295,6 +299,26 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
           }}
         >
           Submit
+        </Button>
+        <Button
+          type="button"
+          variant="outlined" onClick={handleCancel}
+          sx={{
+            background: "linear-gradient(to right, #00acc1, #26c6da)",
+            color: "white",
+            padding: "10px 20px",
+            fontWeight: "600",
+            borderRadius: "8px",
+            textTransform: "none",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              background: "linear-gradient(to right, #0097a7, #00bcd4)",
+              boxShadow: "0 6px 14px rgba(0, 0, 0, 0.15)",
+            },
+          }}
+        >
+          Cancel
         </Button>
       </Box>
     </>

@@ -50,6 +50,8 @@ export default function Schedule() {
   
   const handleEventClose = () => {
     setNewPeriod(false);
+    setEdit(false)
+    setSelectedEventId(null)
   };
 
   
