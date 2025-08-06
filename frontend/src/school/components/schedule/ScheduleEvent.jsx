@@ -17,10 +17,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { baseApi } from "../../../environment";
 
-export default function ScheduleEvent({ selectedClass , handleEventClose , handleMessageNew , edit , selectedEventId}) {
+export default function ScheduleEvent({
+  selectedClass,
+  handleEventClose,
+  handleMessageNew,
+  edit,
+  selectedEventId,
+}) {
   const periods = [
     {
-
       id: 1,
       label: "Period 1 (10:00 AM - 11:00 AM)",
       startTime: "10:00",
@@ -57,10 +62,22 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
       endTime: "16:00",
     },
   ];
-  const handleCancel = ()=>{
-    Formik.resetForm();
-    handleEventClose()
+  const handleDelete = ()=>{
+    if(confirm("Are you sure you want to delete ?")){
+      axios.delete(`${baseApi}/schedule/delete/${selectedEventId}`).then(resp=>{
+      handleMessageNew(resp.data.message, "success")
+      handleCancel()
+    }).catch((e)=>{
+      console.log("Error",e);
+      handleMessageNew("Error in deleting period","error")
+    })
+    }
+    
   }
+  const handleCancel = () => {
+    Formik.resetForm();
+    handleEventClose();
+  };
 
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -75,57 +92,56 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
   const Formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
-   onSubmit: (values) => {
-  try {
-    const dateValue = new Date(values.date);
-    if (isNaN(dateValue)) throw new Error("Invalid date");
+    onSubmit: (values) => {
+      try {
+        const dateValue = new Date(values.date);
+        if (isNaN(dateValue)) throw new Error("Invalid date");
 
-    const [startTimeStr, endTimeStr] = values.period.split(",");
-    const [startHour, startMinute] = startTimeStr.trim().split(":").map(Number);
-    const [endHour, endMinute] = endTimeStr.trim().split(":").map(Number);
+        const [startTimeStr, endTimeStr] = values.period.split(",");
+        const [startHour, startMinute] = startTimeStr
+          .trim()
+          .split(":")
+          .map(Number);
+        const [endHour, endMinute] = endTimeStr.trim().split(":").map(Number);
 
-    const startTime = new Date(dateValue);
-    startTime.setHours(startHour, startMinute, 0);
+        const startTime = new Date(dateValue);
+        startTime.setHours(startHour, startMinute, 0);
 
-    const endTime = new Date(dateValue);
-    endTime.setHours(endHour, endMinute, 0);
+        const endTime = new Date(dateValue);
+        endTime.setHours(endHour, endMinute, 0);
 
-    const payload = {
-      teacher: values.teacher,
-      subject: values.subject,
-      classId: selectedClass, // FIXED: use classId not class
-      startTime,
-      endTime,
-      date: values.date,
-    };
+        const payload = {
+          teacher: values.teacher,
+          subject: values.subject,
+          classId: selectedClass, // FIXED: use classId not class
+          startTime,
+          endTime,
+          date: values.date,
+        };
 
-    let BACKEND_URL = `${baseApi}/schedule/create`
-    if(edit){
-      BACKEND_URL = `${baseApi}/schedule/update/${selectedEventId}`
-    }
-    axios
-      .post(BACKEND_URL, payload)
-      .then((resp) => {
-        //setMessage(resp.data.message)
-       // setMessageType("success") 
-       handleMessageNew(resp.data.message, "success")
-        Formik.resetForm();
-        handleEventClose(); 
-        
-      })
-      .catch((e) => {
-        console.log("error", e);
-        handleMessageNew("Error in creating new schedule")
-        //setMessage("Error in creating schedule")
-        //setMessageType("Error")
-      });
-
-  } catch (err) {
-    console.error("Schedule creation error:", err.message);
-  }
-}
-
-
+        let BACKEND_URL = `${baseApi}/schedule/create`;
+        if (edit) {
+          BACKEND_URL = `${baseApi}/schedule/update/${selectedEventId}`;
+        }
+        axios
+          .post(BACKEND_URL, payload)
+          .then((resp) => {
+            //setMessage(resp.data.message)
+            // setMessageType("success")
+            handleMessageNew(resp.data.message, "success");
+            Formik.resetForm();
+            handleEventClose();
+          })
+          .catch((e) => {
+            console.log("error", e);
+            handleMessageNew("Error in creating new schedule");
+            //setMessage("Error in creating schedule")
+            //setMessageType("Error")
+          });
+      } catch (err) {
+        console.error("Schedule creation error:", err.message);
+      }
+    },
   });
   const fetchData = async () => {
     const teacherResponse = await axios.get(
@@ -139,35 +155,36 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
 
   useEffect(() => {
     fetchData();
-  },  []);
-  const dateFormat = (date)=>{
+  }, []);
+  const dateFormat = (date) => {
     const dateHours = date.getHours();
-    const dateMinutes = date.getMinutes()
-    return `${dateHours}:${dateMinutes < 10 ? '0' : ''}${dateMinutes}`
-  }
+    const dateMinutes = date.getMinutes();
+    return `${dateHours}:${dateMinutes < 10 ? "0" : ""}${dateMinutes}`;
+  };
 
-  useEffect(()=>{
-    if(selectedEventId){
-      axios.get(`${baseApi}/schedule/fetch/${selectedEventId}`).then(resp=>{
-        
-         let start = new Date (resp.data.data.startTime);
-       let end = new Date (resp.data.data.endTime) 
-       
-        
-        Formik.setFieldValue("teacher",resp.data.data.teacher);
-        Formik.setFieldValue("subject",resp.data.data.subject);
-        Formik.setFieldValue("date",start)
-        const finalFormattedTime = dateFormat(start)+','+dateFormat(end)
-        Formik.setFieldValue("period",`${finalFormattedTime}`)
-       //console.log(start, end);
-        // Formik.setFieldValue("teacher",resp.data.schedule.teacher);
-        //console.log("response",resp)
-      }).catch(e=>{
-        console.log('Error',e)
-      })
+  useEffect(() => {
+    if (selectedEventId) {
+      axios
+        .get(`${baseApi}/schedule/fetch/${selectedEventId}`)
+        .then((resp) => {
+          let start = new Date(resp.data.data.startTime);
+          let end = new Date(resp.data.data.endTime);
+
+          Formik.setFieldValue("teacher", resp.data.data.teacher);
+          Formik.setFieldValue("subject", resp.data.data.subject);
+          Formik.setFieldValue("date", start);
+          const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
+          Formik.setFieldValue("period", `${finalFormattedTime}`);
+          //console.log(start, end);
+          // Formik.setFieldValue("teacher",resp.data.schedule.teacher);
+          //console.log("response",resp)
+        })
+        .catch((e) => {
+          console.log("Error", e);
+        });
     }
-  },[selectedEventId])
-  
+  }, [selectedEventId]);
+
   return (
     <>
       <Box
@@ -188,8 +205,12 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
-        {edit? <Typography>Edit Period</Typography>:<Typography>Add new Period</Typography>}
-        
+        {edit ? (
+          <Typography>Edit Period</Typography>
+        ) : (
+          <Typography>Add new Period</Typography>
+        )}
+
         <FormControl
           fullWidth
           error={Boolean(Formik.touched.teacher && Formik.errors.teacher)}
@@ -300,9 +321,33 @@ export default function ScheduleEvent({ selectedClass , handleEventClose , handl
         >
           Submit
         </Button>
+
         <Button
           type="button"
-          variant="outlined" onClick={handleCancel}
+          variant="outlined"
+          onClick={handleDelete}
+          sx={{
+            background: "linear-gradient(to right, #ef5350, #ff7043)", // red-orange gradient
+            color: "white",
+            padding: "10px 20px",
+            fontWeight: "600",
+            borderRadius: "8px",
+            textTransform: "none",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              background: "linear-gradient(to right, #d32f2f, #e64a19)",
+              boxShadow: "0 6px 14px rgba(0, 0, 0, 0.15)",
+            },
+          }}
+        >
+          Delete
+        </Button>
+
+        <Button
+          type="button"
+          variant="outlined"
+          onClick={handleCancel}
           sx={{
             background: "linear-gradient(to right, #00acc1, #26c6da)",
             color: "white",
