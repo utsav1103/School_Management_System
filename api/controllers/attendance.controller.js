@@ -61,7 +61,7 @@ module.exports   = {
             }
             
         } catch (error) {
-             res.status(500).json({success:false,message:"Error in checking attendance"}) 
+             res.status(500).json({success:false,message:"Error in checking         attendance"}) 
         }
     }
 
