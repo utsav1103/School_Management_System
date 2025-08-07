@@ -1,5 +1,5 @@
 const Attendance = require("../models/attendance.model");
-
+const moment = require("moment")
 
 module.exports   = {
 
@@ -38,5 +38,25 @@ module.exports   = {
         
         }
 
+    },
+
+    checkAttendance: async (req,res)=>{
+        try {
+            const {classId} = req.params;
+            const attendanceForToday = await Attendance.findOne({
+                class:req.params.classId,
+                date:{
+                    $gte:"",
+                    $lt:""
+                }
+            })
+            
+        } catch (error) {
+            
+        }
     }
+
+    
+
+
 }
