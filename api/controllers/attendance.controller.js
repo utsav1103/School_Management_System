@@ -41,18 +41,27 @@ module.exports   = {
     },
 
     checkAttendance: async (req,res)=>{
+        const {classId} = req.params;
         try {
-            const {classId} = req.params;
+            
+            
+            const today = moment().startOf('day')
             const attendanceForToday = await Attendance.findOne({
                 class:req.params.classId,
                 date:{
-                    $gte:"",
-                    $lt:""
+                    $gte:today.toDate(),
+                    $lt:moment(today).endOf('day').toDate()
                 }
             })
+
+            if(attendanceForToday){
+                return res.status(200).json({attendanceTaken:true, message:"Attendace already taken"})
+            }else{
+                return res.status(200).json({attendanceTaken:false, message:"No attendance taken yet"})
+            }
             
         } catch (error) {
-            
+             res.status(500).json({success:false,message:"Error in checking attendance"}) 
         }
     }
 
