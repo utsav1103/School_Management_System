@@ -1,0 +1,28 @@
+const Attendance = require("../models/attendance.model");
+
+
+module.exports   = {
+
+    markAttendance: async(req ,res)=>{
+        
+        try{
+            const{studentId, date,status,classId}=req.body;
+        const schoolId = req.user.schoolId;
+
+        const newAttendance = new Attendance ({
+            student:studentId,
+            date,
+            status:status,
+            class:classId,
+            school:schoolId,
+
+        })
+
+        await newAttendance.save();
+        res.status(201).json(newAttendance)
+
+        }catch(error){
+            res.status(500).json({success:false,message:"Error in marking attendance"})
+        }
+    }
+}
