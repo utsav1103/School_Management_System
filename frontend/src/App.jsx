@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import School from "./school/School.jsx";
 import "./App.css";
-import Attendance from "./school/components/attendance/Attendance.jsx";
 import Dashboard from "./school/components/dashboard/Dashboard.jsx";
 import Class from "./school/components/class/Class.jsx";
 import Examinations from "./school/components/examinations/Examinations.jsx";
@@ -27,6 +26,7 @@ import AttendanceStudent from "./student/components/attendance/AttendanceStudent
 import ExaminationsStudent from "./student/components/examinations/ExaminationsStudent.jsx";
 import NoticeStudent from "./student/components/notice/NoticeStudent.jsx";
 import ProtectedRoute from "./assets/guard/ProtectedRoute.jsx";
+import AttendanceStudentList from "./school/components/attendance/AttendanceStudentList.jsx";
 import  {AuthProvider}  from "./context/AuthContext.jsx";
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
           <Route path="school" element={<ProtectedRoute allowedRoles={['SCHOOL']}><School /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="attendance" element={<Attendance />} />
+            <Route path="attendance" element={<AttendanceStudentList />} />
             <Route path="class" element={<Class />} />
 
             <Route path="examinations" element={<Examinations />} />
