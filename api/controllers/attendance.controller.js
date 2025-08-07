@@ -24,5 +24,19 @@ module.exports   = {
         }catch(error){
             res.status(500).json({success:false,message:"Error in marking attendance"})
         }
+    },
+
+
+    getAttendance:async(req,res)=>{
+
+        try {
+            const {studentId} = req.params;
+            const attendance = await Attendance.find({student:studentId}).populate('student');
+            res.status(200).json(attendance)
+        } catch (error) {
+            res.status(500).json({success:false,message:"Error in getting attendance"})
+        
+        }
+
     }
 }
