@@ -26,6 +26,7 @@ import MessageSnackbar from "../../../basic utility components/snackbar/MessageS
 
 
 const Item = styled(Paper)(({ theme }) => ({
+  
   backgroundColor: '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -41,7 +42,7 @@ export default function AttendanceStudentList() {
   const [editId, setEditId] = React.useState(null);
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
-  
+
   const [imageUrl, setImageUrl] = React.useState(null);
 
   const addImage = (event) => {
