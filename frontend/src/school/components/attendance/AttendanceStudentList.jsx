@@ -17,18 +17,31 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
 import axios from "axios";
 import { studentEditSchema, studentSchema } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
-//icons
 
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: (theme.vars ?? theme).palette.text.secondary,
+  ...theme.applyStyles('dark', {
+    backgroundColor: '#1A2027',
+  }),
+}));
 
 export default function AttendanceStudentList() {
   const [edit, setEdit] = React.useState(false);
   const [editId, setEditId] = React.useState(null);
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
+  
   const [imageUrl, setImageUrl] = React.useState(null);
 
   const addImage = (event) => {
@@ -241,6 +254,22 @@ export default function AttendanceStudentList() {
           Students Attendance
         </Typography>
       </Box>
+
+
+      <Grid container spacing={2}>
+        <Grid size={8}>
+          <Item>size=8</Item>
+        </Grid>
+        <Grid size={4}>
+          <Item>size=4</Item>
+        </Grid>
+        <Grid size={4}>
+          <Item>size=4</Item>
+        </Grid>
+        <Grid size={8}>
+          <Item>size=8</Item>
+        </Grid>
+      </Grid>
 
 
       <Box
