@@ -17,24 +17,23 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
 import axios from "axios";
-import { studentEditSchema, studentSchema } from "../../../yupSchema/studentSchema";
+import {
+  studentEditSchema,
+  studentSchema,
+} from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
-
-
-
 const Item = styled(Paper)(({ theme }) => ({
-  
-  backgroundColor: '#fff',
+  backgroundColor: "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: (theme.vars ?? theme).palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
   }),
 }));
 
@@ -65,11 +64,11 @@ export default function AttendanceStudentList() {
 
   const handleEdit = (id) => {
     setEdit(true);
-    setEditId(id)
+    setEditId(id);
     const filteredStudent = students.filter((x) => x._id === id);
     Formik.setFieldValue("name", filteredStudent[0].name);
     Formik.setFieldValue("email", filteredStudent[0].email);
-    
+
     Formik.setFieldValue("student_class", filteredStudent[0].student_class._id);
     Formik.setFieldValue("age", filteredStudent[0].age);
     Formik.setFieldValue("gender", filteredStudent[0].gender);
@@ -78,20 +77,19 @@ export default function AttendanceStudentList() {
   };
 
   const handleDelete = (id) => {
-    if(confirm("Are you sure , you want to delete?")) {
-       axios
-          .delete(`http://localhost:3000/api/student/delete/${id}`)
-          .then((resp) => {
-            setMessage(resp.data.message);
-            setMessageType("success");
-          })
-          .catch((e) => { 
-            setMessage("Error in deleting student");
-            setMessageType("error");
-            console.log("Error", e); //error handling
-          });
+    if (confirm("Are you sure , you want to delete?")) {
+      axios
+        .delete(`http://localhost:3000/api/student/delete/${id}`)
+        .then((resp) => {
+          setMessage(resp.data.message);
+          setMessageType("success");
+        })
+        .catch((e) => {
+          setMessage("Error in deleting student");
+          setMessageType("error");
+          console.log("Error", e); //error handling
+        });
     }
-   
   };
 
   const cancelEdit = () => {
@@ -113,9 +111,8 @@ export default function AttendanceStudentList() {
   };
   const Formik = useFormik({
     initialValues,
-    validationSchema: edit?studentEditSchema:studentSchema,
+    validationSchema: edit ? studentEditSchema : studentSchema,
     onSubmit: (values) => {
-
       if (edit) {
         const fd = new FormData();
         fd.append("name", values.name);
@@ -141,7 +138,7 @@ export default function AttendanceStudentList() {
             Formik.resetForm();
             handleClearFile();
           })
-          .catch((e) => { 
+          .catch((e) => {
             setMessage("Error in editing student");
             setMessageType("error");
             console.log("Error", e); //error handling
@@ -216,11 +213,45 @@ export default function AttendanceStudentList() {
     axios
       .get(`${baseApi}/student/fetch-with-query`, { params })
       .then((resp) => {
-        setStudents(resp.data.students);
+        setStudents(resp.data.students)
+        fetchAttendanceForStudents(resp.data.students)
       })
       .catch((e) => {
         console.log("error in fetching classes", e);
       });
+  };
+
+  const [attendacneData, setAttendanceData] = React.useState({});
+  const fetchAttendanceForStudents = async (studentsList) => {
+    const attendancePromises = studentsList.map((student) =>
+      fetchAttendanceForStudent(student._id)
+    );
+    const results = await Promise.all(attendancePromises);
+    const updatedAttendanceData = {};
+    results.forEach(({ studentId, attendancePercentage }) => {
+      updatedAttendanceData[studentId] = attendancePercentage;
+    });
+    setAttendanceData(updatedAttendanceData);
+  };
+
+  const fetchAttendanceForStudent = async (studentId) => {
+    try {
+      const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+      const attendanceRecords = response.data;
+      const totalClasses = attendanceRecords.length;
+      const presentCount = attendanceRecords.filter(
+        (record) => record.status === "Present"
+      ).length;
+      const attendancePercentage =
+        totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
+      return { studentId, attendancePercentage };
+    } catch (error) {
+      console.error(
+        `Error fetching attendacne for student ${studentId}:`,
+        error
+      );
+      return { studentId, attendancePercentage: 0 };
+    }
   };
 
   React.useEffect(() => {
@@ -234,8 +265,7 @@ export default function AttendanceStudentList() {
     <Box
       component={"div"}
       sx={{
-        background:
-          "",
+        background: "",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         height: "100%",
@@ -252,93 +282,93 @@ export default function AttendanceStudentList() {
       )}
 
       <Box sx={{ textAlign: "center", mt: 2 }}>
-        <Typography>
-          Students Attendance
-        </Typography>
+        <Typography>Students Attendance</Typography>
       </Box>
-
 
       <Grid container spacing={2}>
         <Grid size={4}>
-          <Item><Box
-  component="div"
-  sx={{
-    display: "flex",
-    flexDirection: { xs: "column", sm: "row" },
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 2,
-    marginTop: "30px",
-    padding: "10px",
-  }}
->
-  <TextField
-    label="Search"
-    onChange={handleSearch}
-    variant="outlined"
-  />
-  <FormControl sx={{ minWidth: 200 }}>
-    <InputLabel>Class</InputLabel>
-    <Select label="Student Class" onChange={handleClass}>
-      <MenuItem value="">All Students</MenuItem>
-      {classes &&
-        classes.map((x) => (
-          <MenuItem key={x._id} value={x._id}>
-            {x.class_text} ({x.class_num})
-          </MenuItem>
-        ))}
-    </Select>
-  </FormControl>
-</Box></Item>
+          <Item>
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 2,
+                marginTop: "30px",
+                padding: "10px",
+              }}
+            >
+              <TextField
+                label="Search"
+                onChange={handleSearch}
+                variant="outlined"
+              />
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Class</InputLabel>
+                <Select label="Student Class" onChange={handleClass}>
+                  <MenuItem value="">All Students</MenuItem>
+                  {classes &&
+                    classes.map((x) => (
+                      <MenuItem key={x._id} value={x._id}>
+                        {x.class_text} ({x.class_num})
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Item>
         </Grid>
         <Grid size={8}>
-          <Item> <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Gender</TableCell>
-            <TableCell align="right">Guardian Contact</TableCell>
-            <TableCell align="right">Class</TableCell>
-            <TableCell align="right">Percentage</TableCell>
-            <TableCell align="right">View</TableCell>
-          
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {students && students.map((student) => (
-            <TableRow
-              key={student._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {student.name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {student.gender}
-              </TableCell>
-              
-              <TableCell align="right">{student.guardian_phone}</TableCell>
-              <TableCell align="right">{student.student_class.class_text}</TableCell>
-              <TableCell align="right">percentage</TableCell>
-              <TableCell align="right">"view</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-</Item>
+          <Item>
+            {" "}
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="right">Gender</TableCell>
+                    <TableCell align="right">Guardian Contact</TableCell>
+                    <TableCell align="right">Class</TableCell>
+                    <TableCell align="right">Percentage</TableCell>
+                    <TableCell align="right">View</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {students &&
+                    students.map((student) => (
+                      <TableRow
+                        key={student._id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {student.name}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {student.gender}
+                        </TableCell>
+
+                        <TableCell align="right">
+                          {student.guardian_phone}
+                        </TableCell>
+                        <TableCell align="right">
+                          {student.student_class.class_text}
+                        </TableCell>
+                        <TableCell align="right">
+                          {attendacneData[student._id] !== undefined ? `${attendacneData[student._id].toFixed(2)}%`: "No Data"}
+                        </TableCell>
+                        <TableCell align="right">"view</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Item>
         </Grid>
-        
       </Grid>
-
-
-      
-
-
-        
-
-  
-</Box>
+    </Box>
   );
 }
