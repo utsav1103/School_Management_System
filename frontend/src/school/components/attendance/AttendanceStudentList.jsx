@@ -259,22 +259,8 @@ export default function AttendanceStudentList() {
 
 
       <Grid container spacing={2}>
-        <Grid size={8}>
-          <Item>size=8</Item>
-        </Grid>
         <Grid size={4}>
-          <Item>size=4</Item>
-        </Grid>
-        <Grid size={4}>
-          <Item>size=4</Item>
-        </Grid>
-        <Grid size={8}>
-          <Item>size=8</Item>
-        </Grid>
-      </Grid>
-
-
-      <Box
+          <Item><Box
   component="div"
   sx={{
     display: "flex",
@@ -303,10 +289,10 @@ export default function AttendanceStudentList() {
         ))}
     </Select>
   </FormControl>
-</Box>
-
-
-         <TableContainer component={Paper}>
+</Box></Item>
+        </Grid>
+        <Grid size={8}>
+          <Item> <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -341,7 +327,16 @@ export default function AttendanceStudentList() {
         </TableBody>
       </Table>
     </TableContainer>
+</Item>
+        </Grid>
+        
+      </Grid>
 
+
+      
+
+
+        
 
   
 </Box>
