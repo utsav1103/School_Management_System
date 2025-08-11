@@ -1,11 +1,29 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { baseApi } from "../../../environment";
 
-export default function Attendee(classId) {
+export default function Attendee({classId}) {
   const [teachers, setteachers] = React.useState([]);
-  const [selectedTeacher, setSelectedTeacher] = React.useState("")
+  const [selectedTeacher, setSelectedTeacher] = React.useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.patch(`${baseApi}/class/update/${classId}`, {
+        attendee: selectedTeacher,
+      });
+      console.log(response, "Submit attendee");
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
   const fetchteachers = () => {
     axios
       .get(`${baseApi}/teacher/fetch-with-query`, { params: {} })
@@ -28,19 +46,23 @@ export default function Attendee(classId) {
       <Box>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Teachers</InputLabel>
-          <Select label="Teacher"
-          value={selectedTeacher}
-          onChange={(e) =>{
-            setSelectedTeacher(e.target.value)
-          }}>
+          <Select
+            label="Teacher"
+            value={selectedTeacher}
+            onChange={(e) => {
+              setSelectedTeacher(e.target.value);
+            }}
+          >
             <MenuItem value="">All Teachers</MenuItem>
             {teachers &&
               teachers.map((x) => (
-                <MenuItem key={x._id} value={x._id}>{x.name}
+                <MenuItem key={x._id} value={x._id}>
+                  {x.name}
                 </MenuItem>
               ))}
           </Select>
         </FormControl>
+        <Button onClick={handleSubmit}>Submit</Button>
       </Box>
     </>
   );
