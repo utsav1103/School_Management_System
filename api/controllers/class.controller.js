@@ -22,6 +22,33 @@ module.exports = {
 
   },
 
+  //getSingleClass
+  // 
+  getSingleClass: async (req, res) => {
+  try {
+    const schoolId = req.user.schoolId;
+    const classId = req.params.id;
+
+    const singleClass = await Class.findOne({
+      school: schoolId,
+      _id: classId
+    }).populate("attendee", "name email"); // populate with the fields you want
+
+    res.status(200).json({
+      success: true,
+      message: "Success in fetching single class",
+      data: singleClass
+    });
+  } catch (error) {
+    console.log("GetSingleClass Error", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error in Getting single class..."
+    });
+  }
+},
+
+
 
   //creating new class
   createClass: async (req, res) => {
