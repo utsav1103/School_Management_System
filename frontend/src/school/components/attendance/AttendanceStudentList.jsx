@@ -123,8 +123,21 @@ export default function AttendanceStudentList() {
   React.useEffect(() => {
     fetchClasses();
   }, []);
+
+  const fetchClassDetails = async ()=>{
+    if(selectedClass){
+    try{
+      const response = await axios.get(`${baseApi}/class/single/${selectedClass}`)
+      console.log("single class",response)
+    }catch(error){
+      console.log("Error",error)
+    }
+    }
+  }
+
   React.useEffect(() => {
-    fetchStudents();
+    fetchClassDetails()
+    fetchStudents()
   }, [message, params]);
 
   return (
