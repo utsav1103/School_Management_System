@@ -25,6 +25,7 @@ import {
   studentSchema,
 } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+import Attendee from "./attendee";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -195,7 +196,9 @@ export default function AttendanceStudentList() {
   };
 
   const [params, setParams] = React.useState({});
+  const [selectedClass, setSelectedClass]= React.useState(null)
   const handleClass = (e) => {
+    setSelectedClass(e.target.value)
     setParams((prevParams) => ({
       ...prevParams,
       student_class: e.target.value || undefined,
@@ -318,6 +321,12 @@ export default function AttendanceStudentList() {
                 </Select>
               </FormControl>
             </Box>
+
+                    <Box>
+                      {selectedClass && <Attendee classId={selectedClass} />}
+                    </Box>
+
+
           </Item>
         </Grid>
         <Grid size={8}>
