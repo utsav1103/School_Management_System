@@ -47,6 +47,11 @@ export default function AttendanceStudentList() {
     setMessage("");
   };
 
+  const handleMessage = (message,type)=>{
+    setMessageType(type);
+    setMessage(message)
+  }
+
   const fetchClasses = () => {
     axios
       .get(`${baseApi}/class/all`)
@@ -189,7 +194,7 @@ export default function AttendanceStudentList() {
             </Box>
 
                     <Box>
-                      {selectedClass && <Attendee classId={selectedClass} />}
+                      {selectedClass && <Attendee classId={selectedClass} handleMessage={handleMessage} />}
                     </Box>
 
 
