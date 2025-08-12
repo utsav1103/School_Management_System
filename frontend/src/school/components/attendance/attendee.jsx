@@ -24,6 +24,19 @@ export default function Attendee({classId}) {
       console.log("Error", error);
     }
   };
+
+
+  const fetchClassDetails = async ()=>{
+      if(selectedClass){
+      try{
+        const response = await axios.get(`${baseApi}/class/single/${selectedClass}`)
+        console.log("single class",response)
+      }catch(error){
+        console.log("Error",error)
+      }
+      }
+    }
+
   const fetchteachers = () => {
     axios
       .get(`${baseApi}/teacher/fetch-with-query`, { params: {} })
@@ -37,6 +50,7 @@ export default function Attendee({classId}) {
 
   useEffect(() => {
     console.log("Class ID", classId);
+    fetchClassDetails()
     fetchteachers();
   }, [classId]);
   return (
