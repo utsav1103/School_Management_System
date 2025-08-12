@@ -5,9 +5,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { baseApi } from "../../../environment";
 
 export default function Attendee({classId}) {
@@ -25,11 +26,12 @@ export default function Attendee({classId}) {
     }
   };
 
-
+  const [attendee, setAttendee] = useState(null)
   const fetchClassDetails = async ()=>{
-      if(selectedClass){
+      if(classId){
       try{
-        const response = await axios.get(`${baseApi}/class/single/${selectedClass}`)
+        const response = await axios.get(`${baseApi}/class/single/${classId}`)
+        setAttendee(response.data.data.attendee?response.data.data.attendee:null)
         console.log("single class",response)
       }catch(error){
         console.log("Error",error)
@@ -58,6 +60,13 @@ export default function Attendee({classId}) {
       <h1>Attendee</h1>
 
       <Box>
+        {attendee && <Box sx={{display:'flex',flexDirection:'row',justifyContent:'center'}} component={'div'}>
+
+          <Typography variant="h6">Attendee Teacher :</Typography>
+          <Typography variant="h6">{attendee.name}</Typography>
+
+        </Box> }
+        
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Teachers</InputLabel>
           <Select
