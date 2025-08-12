@@ -11,17 +11,23 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseApi } from "../../../environment";
 
-export default function Attendee({classId}) {
+export default function Attendee({classId,handleMessage}) {
   const [teachers, setteachers] = React.useState([]);
   const [selectedTeacher, setSelectedTeacher] = React.useState("");
 
   const handleSubmit = async () => {
+    
     try {
+      if(selectedTeacher){
       const response = await axios.patch(`${baseApi}/class/update/${classId}`, {
         attendee: selectedTeacher,
       });
       console.log(response, "Submit attendee");
-    } catch (error) {
+      handleMessage("Successfully attendee save",'success ');
+    }else{
+      alert("Please select a teacher... ")
+    }
+      } catch (error) {
       console.log("Error", error);
     }
   };
@@ -84,8 +90,9 @@ export default function Attendee({classId}) {
                 </MenuItem>
               ))}
           </Select>
-        </FormControl>
-        <Button onClick={handleSubmit}>Submit</Button>
+        </FormControl> 
+
+        <Button onClick={handleSubmit}>{attendee?"Change Attendee":"Select Attendee"}</Button>
       </Box>
     </>
   );
