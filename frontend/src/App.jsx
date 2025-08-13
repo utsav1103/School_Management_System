@@ -28,6 +28,7 @@ import NoticeStudent from "./student/components/notice/NoticeStudent.jsx";
 import ProtectedRoute from "./assets/guard/ProtectedRoute.jsx";
 import AttendanceStudentList from "./school/components/attendance/AttendanceStudentList.jsx";
 import  {AuthProvider}  from "./context/AuthContext.jsx";
+import AttendanceDetails from "./school/components/attendance/AttendanceDetails.jsx";
 
 function App() {
   return (
@@ -39,8 +40,8 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="attendance" element={<AttendanceStudentList />} />
+            <Route path="attendance/:id" element={<AttendanceDetails />} />
             <Route path="class" element={<Class />} />
-
             <Route path="examinations" element={<Examinations />} />
             <Route path="notice" element={<Notice />} />
             <Route path="schedule" element={<Schedule />} />
