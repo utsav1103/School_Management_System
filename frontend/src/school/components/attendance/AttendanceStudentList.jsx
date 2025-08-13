@@ -194,7 +194,7 @@ export default function AttendanceStudentList() {
             </Box>
 
                     <Box>
-                      {selectedClass && <Attendee classId={selectedClass} handleMessage={handleMessage} />}
+                      {selectedClass && <Attendee classId={selectedClass} handleMessage={handleMessage} message={message} />}
                     </Box>
 
 

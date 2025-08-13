@@ -11,7 +11,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseApi } from "../../../environment";
 
-export default function Attendee({classId,handleMessage}) {
+export default function Attendee({classId,handleMessage,message  }) {
   const [teachers, setteachers] = React.useState([]);
   const [selectedTeacher, setSelectedTeacher] = React.useState("");
 
@@ -60,7 +60,7 @@ export default function Attendee({classId,handleMessage}) {
     console.log("Class ID", classId);
     fetchClassDetails()
     fetchteachers();
-  }, [classId]);
+  }, [classId , message]);
   return (
     <>
       <h1>Attendee</h1>
