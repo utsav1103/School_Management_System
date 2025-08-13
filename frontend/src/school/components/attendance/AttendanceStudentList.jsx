@@ -20,12 +20,13 @@ import {
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import {
-  studentEditSchema,
-  studentSchema,
-} from "../../../yupSchema/studentSchema";
+// import {
+//   studentEditSchema,
+//   studentSchema,
+// } from "../../../yupSchema/studentSchema";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 import Attendee from "./attendee";
+import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -240,7 +241,7 @@ export default function AttendanceStudentList() {
                         <TableCell align="right">
                           {attendacneData[student._id] !== undefined ? `${attendacneData[student._id].toFixed(2)}%`: "No Data"}
                         </TableCell>
-                        <TableCell align="right">"view</TableCell>
+                        <TableCell align="right"><Link to={`/school/attendance/${student._id}`}>Details</Link></TableCell>
                       </TableRow>
                     ))}
                 </TableBody>

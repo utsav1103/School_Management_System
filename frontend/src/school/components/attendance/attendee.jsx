@@ -21,7 +21,7 @@ export default function Attendee({classId,handleMessage,message  }) {
       if(selectedTeacher){
       const response = await axios.patch(`${baseApi}/class/update/${classId}`, {
         attendee: selectedTeacher,
-      });
+      }); 
       console.log(response, "Submit attendee");
       handleMessage("Successfully attendee save",'success ');
     }else{
