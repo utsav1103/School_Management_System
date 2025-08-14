@@ -1,4 +1,4 @@
-const Examination = require("../modles/examination.model")
+const Examination = require("../models/examination.model")
 
 
 module.exports = {
