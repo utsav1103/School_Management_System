@@ -12,7 +12,7 @@ const studentRouter = require("./routers/student.router")
 const teacherRouter = require("./routers/teacher.router")
 const scheduleRouter = require("./routers/schedule.router")
 const attendanceRouter = require("./routers/attendance.router")
-
+const examinationRouter = require("./routers/examination.router")
 
 const app = express();
 app.use(express.json());  
@@ -45,7 +45,7 @@ mongoose.connect(process.env.MONGODB_URL,
     app.use("/api/teacher", teacherRouter )
     app.use("/api/schedule",scheduleRouter)
     app.use("/api/attendance",attendanceRouter)
-    
+    app.use("/api/examination",examinationRouter)
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
