@@ -12,6 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { PieChart } from '@mui/x-charts/PieChart';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -60,7 +61,18 @@ const convertDate = (dateData)=>{
 
         <Grid container spacing={2}>
         <Grid size={6}>
-          <Item>Chart</Item>
+          <Item>  <PieChart
+      series={[
+        {
+          data: [
+            { id: 0, value: 10, label: 'Present' },
+            { id: 1, value: 15, label: 'Absent' },
+            ],
+        },
+      ]}
+      width={200}
+      height={200}
+    /></Item>
         </Grid>
         <Grid size={6}>
           <Item>
