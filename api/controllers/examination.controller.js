@@ -30,13 +30,30 @@ module.exports = {
         try {
             const schoolId = req.user.schoolId;
             //This is model small letter "examinations"
-            const examinations = await Examination.find(); 
-            res.status(200).json({success:true, examinations})
+            const examinations = await Examination.find({school:schoolId}); 
+            res.status(200).json({success:true, examinations
+
+            })
             
         } catch (error) {
             res.status(500).json({success: false,message:"Error in fetching Examinations."})
         }
-    }
+    },
 
+    getExaminationsByClass: async(req,res)=>{
+        try {
+            const schoolId = req.user.schoolId;
+            const classId = req.params.id;
+            //This is model small letter "examinations"
+            const examinations = await Examination.find({class:classId,school:schoolId}); 
+            res.status(200).json({success:true, examinations
+
+            })
+            
+        } catch (error) {
+            res.status(500).json({success: false,message:"Error in fetching Examinations."})
+        }
+    },
+    
 
 }
