@@ -54,6 +54,20 @@ module.exports = {
             res.status(500).json({success: false,message:"Error in fetching Examinations."})
         }
     },
-    
+
+    updateExaminationWithID : async(req,res)=>{
+        try {
+
+            const schoolId = req.user.schoolId;
+            const examinationId = req.params.id;
+            const {date , subjectId , examType} = req.body;
+            
+            await Examination.findOneAndUpdate({_id:examinationId,school:schoolId}, {$set:{examDate:date,subject:subjectId,examType:examType}})
+            
+        } catch (error) {
+            res.status(500).json({success: false,message:"Error in updating Examinations."})
+        
+        }
+    }
 
 }
