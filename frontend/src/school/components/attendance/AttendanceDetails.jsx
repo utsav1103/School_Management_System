@@ -26,6 +26,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function AttendanceDetails(){
+
+const [present, setPresent]=useState(0);
+const [absent, setAbsent]=useState(0);
+
 const [attendanceData , setAttendanceData] = useState([])
 const studentId = useParams().id;
 const navigate = useNavigate()
@@ -41,6 +45,13 @@ const convertDate = (dateData)=>{
         console.log("Response Attendance",response)
             setAttendanceData(response.data)
 
+            response.data.forEach(attendacne=>{
+              if(attendacne.status==='Present'){
+                setPresent(present+1)
+              }else if(attendacne.status==='Absent'){
+                setAbsent(absent+1)
+              }
+            })
         }catch(error){
             console.log("Error in fetchng student attendance.", error)
 
@@ -65,8 +76,8 @@ const convertDate = (dateData)=>{
       series={[
         {
           data: [
-            { id: 0, value: 10, label: 'Present' },
-            { id: 1, value: 15, label: 'Absent' },
+            { id: 0, value: present, label: 'Present' },
+            { id: 1, value: absent, label: 'Absent' },
             ],
         },
       ]}
