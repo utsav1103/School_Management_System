@@ -2,6 +2,7 @@ const Examination = require("../models/examination.model")
 
 
 module.exports = {
+    
  
     newExamination: async (req,res)=>{
 
