@@ -8,7 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, TextField } from '@mui/material';
 import { useState } from 'react';
-
+//date
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 
 export default function Examinations() {
@@ -24,8 +28,24 @@ export default function Examinations() {
       sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
       noValidate
       autoComplete="off"
+
     >
-      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Select Date"
+            value={Formik.values.date ? dayjs(Formik.values.date) : null}
+            onChange={(newValue) => Formik.setFieldValue("date", newValue)}
+            // slotProps={{
+            //   textField: {
+            //     fullWidth: true,
+            //     error: Boolean(Formik.touched.date && Formik.errors.date),
+            //     helperText: Formik.touched.date && Formik.errors.date,
+            //   },
+            // }}
+          />
+        </LocalizationProvider>
+      
       <TextField id="filled-basic" label="Filled" variant="filled" />
       <TextField id="standard-basic" label="Standard" variant="standard" />
     </Box>
