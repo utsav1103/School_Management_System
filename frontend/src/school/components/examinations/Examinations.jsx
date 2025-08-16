@@ -6,20 +6,32 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 //date
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-
+import {useFormik} from 'formik';
+import { examinationSchema } from '../../../yupSchema/examinationSchema';
+import { date } from 'yup';
 
 export default function Examinations() {
 
     const [examinations , setExaminations]=useState([])
-
-
+    const initialValues = {
+      date:"",
+      subject:"",
+      examType:"",
+    }
+    const Formik = useFormik({
+      initialValues:initialValues,
+      validationSchema: examinationSchema,
+      onSubmit:(value)=>{
+        console.log("Examination",value)
+      }
+    })
 
   return (
     <>
@@ -45,9 +57,15 @@ export default function Examinations() {
             // }}
           />
         </LocalizationProvider>
+        {Formik.touched.date && Formik.errors.date && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.date}</p>)}
       
-      <TextField id="filled-basic" label="Filled" variant="filled" />
-      <TextField id="standard-basic" label="Standard" variant="standard" />
+      <TextField name='subject' label="Subject" variant="filled" />
+      {Formik.touched.subject && Formik.errors.subject && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.subject}</p>)}
+      <TextField name='examType' onChange={Formik.handleChange} onBlur={Formik.handleChange} label="Exam Type" variant="standard" />
+      {Formik.touched.examType && Formik.errors.examType && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.examType}</p>)}
+   
+      <Button type='submit' variant='contained'>Submit</Button>
+
     </Box>
     
     <TableContainer component={Paper}>
