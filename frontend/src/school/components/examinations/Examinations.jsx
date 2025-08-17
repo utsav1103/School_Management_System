@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 //date
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -37,11 +37,12 @@ export default function Examinations() {
     <>
     <Box
       component="form"
-      sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
       noValidate
       autoComplete="off"
-
+      onSubmit={Formik.handleSubmit}
+      //style 
     >
+      <Typography variant='h4'>Add New Exam</Typography>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
@@ -59,9 +60,9 @@ export default function Examinations() {
         </LocalizationProvider>
         {Formik.touched.date && Formik.errors.date && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.date}</p>)}
       
-      <TextField name='subject' label="Subject" variant="filled" />
+      <TextField name='subject' onChange={Formik.handleChange} onBlur={Formik.handleChange} label="Subject" variant="filled" />
       {Formik.touched.subject && Formik.errors.subject && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.subject}</p>)}
-      <TextField name='examType' onChange={Formik.handleChange} onBlur={Formik.handleChange} label="Exam Type" variant="standard" />
+      <TextField name='examType' onChange={Formik.handleChange} onBlur={Formik.handleChange} label="Exam Type" variant="filled" />
       {Formik.touched.examType && Formik.errors.examType && (<p style={{color:"orange",textTransform:"capitalize"}}>{Formik.errors.examType}</p>)}
    
       <Button type='submit' variant='contained'>Submit</Button>
