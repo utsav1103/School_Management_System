@@ -14,6 +14,9 @@ import {
   Card,
   CardContent,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -45,13 +48,15 @@ export default function Examinations() {
 
   return (
     <>
+    <paper>
+
      <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
       bgcolor="#f4f6f8"
-    >
+      >
       <Card
         sx={{
           width: "100%",
@@ -60,7 +65,7 @@ export default function Examinations() {
           borderRadius: 4,
           p: 2,
         }}
-      >
+        >
         <CardContent>
           <Typography
             variant="h4"
@@ -68,7 +73,7 @@ export default function Examinations() {
             fontWeight="bold"
             gutterBottom
             sx={{ color: "primary.main" }}
-          >
+            >
             Add New Exam
           </Typography>
 
@@ -80,7 +85,7 @@ export default function Examinations() {
             display="flex"
             flexDirection="column"
             gap={3}
-          >
+            >
             {/* Date Picker */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -94,12 +99,14 @@ export default function Examinations() {
                     helperText: Formik.touched.date && Formik.errors.date,
                   },
                 }}
-              />
+                />
             </LocalizationProvider>
 
             {/* Subject */}
-            <TextField
-              name="subject"
+              <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Subject</InputLabel>
+        <Select
+          name="subject"
               label="Subject"
               variant="outlined"
               fullWidth
@@ -107,7 +114,12 @@ export default function Examinations() {
               onBlur={Formik.handleBlur}
               error={Boolean(Formik.touched.subject && Formik.errors.subject)}
               helperText={Formik.touched.subject && Formik.errors.subject}
-            />
+              >
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
 
             {/* Exam Type */}
             <TextField
@@ -119,7 +131,7 @@ export default function Examinations() {
               onBlur={Formik.handleBlur}
               error={Boolean(Formik.touched.examType && Formik.errors.examType)}
               helperText={Formik.touched.examType && Formik.errors.examType}
-            />
+              />
 
             {/* Submit Button */}
             <Button
@@ -133,13 +145,14 @@ export default function Examinations() {
                 fontSize: "1rem",
                 py: 1.2,
               }}
-            >
+              >
               Submit
             </Button>
           </Box>
         </CardContent>
       </Card>
     </Box>
+              </paper>
     
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
