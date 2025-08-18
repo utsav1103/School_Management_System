@@ -29,6 +29,8 @@ import dayjs from "dayjs";
 import {useFormik} from 'formik';
 import { examinationSchema } from '../../../yupSchema/examinationSchema';
 import { date } from 'yup';
+import axios from "axios";
+import { baseApi } from "../../../environment";
 
 export default function Examinations() {
 
@@ -38,6 +40,8 @@ export default function Examinations() {
       subject:"",
       examType:"",
     }
+
+    
     const Formik = useFormik({
       initialValues:initialValues,
       validationSchema: examinationSchema,
@@ -45,6 +49,20 @@ export default function Examinations() {
         console.log("Examination",value)
       }
     })
+    const fetchSubjects = async()=>{
+      try {
+        const response = await axios.get(`${baseApi}/subject/all`);
+        console.log("Examination subjects", response)
+      } catch (error) {
+        console.log("Error in fetching subjects => Examination component",error)
+      }
+      //console.log("Subjects", response)
+    }
+
+
+    React.useEffect(()=>{
+      fetchSubjects()
+    },[])
 
   return (
     <>
