@@ -35,6 +35,10 @@ import { baseApi } from "../../../environment";
 export default function Examinations() {
 
     const [examinations , setExaminations]=useState([])
+
+    const [subjects , setSubjects]= React.useState([])
+
+
     const initialValues = {
       date:"",
       subject:"",
@@ -52,7 +56,7 @@ export default function Examinations() {
     const fetchSubjects = async()=>{
       try {
         const response = await axios.get(`${baseApi}/subject/all`);
-        console.log("Examination subjects", response)
+        setSubjects(response.data.data)
       } catch (error) {
         console.log("Error in fetching subjects => Examination component",error)
       }
@@ -133,10 +137,11 @@ export default function Examinations() {
               error={Boolean(Formik.touched.subject && Formik.errors.subject)}
               helperText={Formik.touched.subject && Formik.errors.subject}
               >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
+          <MenuItem value={""}>Select Subject</MenuItem>
+          {subjects.map(subject=>{
+            return (<MenuItem key={subject._id} value={subject._id}>{subject.subject_name}</MenuItem>)
+          })}
+          </Select>
       </FormControl>
 
             {/* Exam Type */}
