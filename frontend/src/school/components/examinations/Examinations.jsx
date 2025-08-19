@@ -38,6 +38,7 @@ export default function Examinations() {
 
     const [subjects , setSubjects]= React.useState([])
 
+    const [classes, setClasses]= React.useState([])
 
     const initialValues = {
       date:"",
@@ -63,13 +64,73 @@ export default function Examinations() {
       //console.log("Subjects", response)
     }
 
+    const fetchClasses = async()=>{
+      try {
+        const response = await axios.get(`${baseApi}/class/all`);
+        setClasses(response.data.data)
+      } catch (error) {
+        console.log("Error in fetching Classes => Examination component",error)
+      }
+      //console.log("Subjects", response)
+    }
+
 
     React.useEffect(()=>{
       fetchSubjects()
+      fetchClasses()
     },[])
 
   return (
     <>
+    <Paper
+  elevation={4}
+  sx={{
+    p: 3,
+    borderRadius: 3,
+    background: "linear-gradient(135deg, #f5f7fa, #c3cfe2)",
+    boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
+    maxWidth: 400,
+    mx: "auto",
+    mt: 4
+  }}
+>
+  <Typography
+    variant="h5"
+    sx={{ mb: 2, fontWeight: "bold", color: "#333", textAlign: "center" }}
+  >
+    Select Class
+  </Typography>
+
+  <Box>
+    <FormControl fullWidth variant="outlined">
+      <InputLabel id="class-select-label">Class</InputLabel>
+      <Select
+        labelId="class-select-label"
+        name="subject"
+        value={Formik.values.subject}
+        onChange={Formik.handleChange}
+        error={Boolean(Formik.touched.subject && Formik.errors.subject)}
+        label="class"
+      >
+        <MenuItem value="">Select Class</MenuItem>
+        {classes.map((x) => (
+          <MenuItem key={x._id} value={x._id}>
+            {x.class_text}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+    {Formik.touched.subject && Formik.errors.subject && (
+      <Typography
+        variant="caption"
+        color="error"
+        sx={{ mt: 1, display: "block", textAlign: "center" }}
+      >
+        {Formik.errors.subject}
+      </Typography>
+    )}
+  </Box>
+</Paper>
     <paper>
 
      <Box
