@@ -17,6 +17,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  selectClasses,
   TextField,
   Typography,
 } from "@mui/material";
@@ -40,6 +41,8 @@ export default function Examinations() {
 
     const [classes, setClasses]= React.useState([])
 
+    const [selectedClass , setSelectedClass]= React.useState([])
+    
     const initialValues = {
       date:"",
       subject:"",
@@ -50,8 +53,16 @@ export default function Examinations() {
     const Formik = useFormik({
       initialValues:initialValues,
       validationSchema: examinationSchema,
-      onSubmit:(value)=>{
-        console.log("Examination",value)
+      onSubmit: async(value)=>{
+         try {
+          console.log("Examination",value)
+        const response = await axios.post(`${baseApi}/examination/create`,{date:value.date,subjectId:value.subject,classId:selectedClass,examType:value.examType})
+       console.log("RESPONSE NEW EXAMINSTION",response)
+          
+        } catch (error) {
+          console.log("Error in saving new data => Examination component",error)
+      
+        }
       }
     })
     const fetchSubjects = async()=>{
@@ -107,8 +118,8 @@ export default function Examinations() {
       <Select
         labelId="class-select-label"
         name="subject"
-        value={Formik.values.subject}
-        onChange={Formik.handleChange}
+        onChange={(e)=>{setSelectedClass(e.target.value)}}
+        value={selectedClass}
         error={Boolean(Formik.touched.subject && Formik.errors.subject)}
         label="class"
       >
