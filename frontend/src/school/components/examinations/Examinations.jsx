@@ -324,7 +324,7 @@ export default function Examinations() {
                 <TableCell align="right" component="th" scope="row">
                   {examination.examDate}
                 </TableCell>
-                <TableCell align="right">{examination.subject}</TableCell>
+                <TableCell align="right">{examination.subject?examination.subject.subject_name:""}</TableCell>
                 <TableCell align="right">{examination.examType}</TableCell>
                 <TableCell align="right">"ACTION"</TableCell>
               </TableRow>
