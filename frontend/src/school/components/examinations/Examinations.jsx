@@ -53,6 +53,13 @@ export default function Examinations() {
     setMessageType(type);
   };
 
+  const dateFormat = (dateData) => {
+    const date = new Date(dateData);
+    const dateHours = date.getHours();
+    const dateMinutes = date.getMinutes();
+    return date.getDate()+"-"+(+date.getMonth()+1)+"-"+date.getFullYear();
+  };
+
   const initialValues = {
     date: "",
     subject: "",
@@ -322,7 +329,7 @@ export default function Examinations() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="right" component="th" scope="row">
-                  {examination.examDate}
+                  {dateFormat(examination.examDate)}
                 </TableCell>
                 <TableCell align="right">{examination.subject?examination.subject.subject_name:""}</TableCell>
                 <TableCell align="right">{examination.examType}</TableCell>
