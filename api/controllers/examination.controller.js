@@ -46,7 +46,7 @@ module.exports = {
             const schoolId = req.user.schoolId;
             const classId = req.params.id;
             //This is model small letter "examinations"
-            const examinations = await Examination.find({class:classId,school:schoolId}); 
+            const examinations = await Examination.find({class:classId,school:schoolId}).populate("subject"); 
             res.status(200).json({success:true, examinations
 
             })
