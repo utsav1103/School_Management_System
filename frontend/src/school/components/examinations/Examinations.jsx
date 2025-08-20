@@ -102,10 +102,26 @@ export default function Examinations() {
     //console.log("Subjects", response)
   };
 
+  const fetchExaminations = async()=>{
+    try {
+      if(selectedClass){
+
+      const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
+      setExaminations(response.data.examinations)
+      }
+      
+    } catch (error) {
+      console.log("Error in fetching Examinations => Examination component", error);
+    
+    }
+  }
+
   React.useEffect(() => {
+    fetchExaminations();
     fetchSubjects();
     fetchClasses();
-  }, []);
+  }, [message,selectedClass]);
+
 
   return (
     <>
@@ -302,15 +318,15 @@ export default function Examinations() {
           <TableBody>
             {examinations.map((examination) => (
               <TableRow
-                key={examination.name}
+                key={examination._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="right" component="th" scope="row">
-                  {examination.name}
+                  {examination.examDate}
                 </TableCell>
-                <TableCell align="right">{examination.calories}</TableCell>
-                <TableCell align="right">{examination.fat}</TableCell>
-                <TableCell align="right">{examination.carbs}</TableCell>
+                <TableCell align="right">{examination.subject}</TableCell>
+                <TableCell align="right">{examination.examType}</TableCell>
+                <TableCell align="right">"ACTION"</TableCell>
               </TableRow>
             ))}
           </TableBody>
