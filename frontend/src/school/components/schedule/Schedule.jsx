@@ -117,7 +117,7 @@ export default function Schedule() {
       {message && (
         <MessageSnackbar
           message={message}
-          type={messageType}
+          messageType={messageType}
           handleClose={handleMessageClose}
         />
       )}
