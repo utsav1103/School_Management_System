@@ -103,30 +103,39 @@ export default function Examinations() {
     try {
       const response = await axios.get(`${baseApi}/class/all`);
       setClasses(response.data.data);
+      setSelectedClass(response.data.data[0]._id)
     } catch (error) {
       console.log("Error in fetching Classes => Examination component", error);
     }
     //console.log("Subjects", response)
   };
 
-  const fetchExaminations = async()=>{
+  const fetchExaminations = async () =>{
     try {
       if(selectedClass){
-
-      const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
-      setExaminations(response.data.examinations)
+       //console.log("Selected Class in fetchExaminations:", selectedClass);
+       
+       const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
+       const data = await response.data.examinations;
+       //console.log(data)
+       console.log(response)
+      setExaminations(data);
       }
       
     } catch (error) {
       console.log("Error in fetching Examinations => Examination component", error);
-    
+     throw error;
     }
   }
 
+  React.useEffect(()=>{
+    fetchClasses()
+  },[])
+
   React.useEffect(() => {
-    fetchExaminations();
+    if(selectedClass?.length !== 0) fetchExaminations();
     fetchSubjects();
-    fetchClasses();
+    //fetchClasses();
   }, [message,selectedClass]);
 
 
