@@ -42,7 +42,7 @@ export default function Examinations() {
   const [classes, setClasses] = React.useState([]);
 
   const [selectedClass, setSelectedClass] = React.useState([]);
-  const [showForm , setShowForm] = React.useState(false);
+  const [showForm, setShowForm] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [messageType, setMessageType] = useState("success");
   const [editId, setEditId] = React.useState(null);
@@ -67,35 +67,36 @@ export default function Examinations() {
     setEditId(id);
     setShowForm(true);
     const selectedExamination = examinations.filter((x) => x._id === id);
-    if(selectedExamination) {
-       Formik.setFieldValue("date", selectedExamination[0].examDate);
-    Formik.setFieldValue("subject", selectedExamination[0].subject._id);
-    Formik.setFieldValue("examType", selectedExamination[0].examType);
-   
+    if (selectedExamination) {
+      Formik.setFieldValue("date", selectedExamination[0].examDate);
+      Formik.setFieldValue("subject", selectedExamination[0].subject._id);
+      Formik.setFieldValue("examType", selectedExamination[0].examType);
     }
     //Formik.setFieldValue("date", selectedExamination[0].examDate);
   };
 
   const handleDelete = async (id) => {
-    if(confirm("Are you sure ??")){
+    if (confirm("Are you sure ??")) {
       try {
-        const response = await axios.delete(`${baseApi}/examination/delete/${id}`)
-        console.log('Delete response',response)
-        setMessage(response.data.message)
-        setMessageType("success")
+        const response = await axios.delete(
+          `${baseApi}/examination/delete/${id}`
+        );
+        console.log("Delete response", response);
+        setMessage(response.data.message);
+        setMessageType("success");
       } catch (error) {
         setMessage("Error in deleting examination");
-        setMessageType("error")
-        console.log("Error => Deleting examianiton",error)
+        setMessageType("error");
+        console.log("Error => Deleting examianiton", error);
       }
     }
   };
 
-  const handleEditCancel = ()=>{
+  const handleEditCancel = () => {
     setEditId(null);
     Formik.resetForm();
     setShowForm(false);
-  }
+  };
 
   const initialValues = {
     date: "",
@@ -108,10 +109,9 @@ export default function Examinations() {
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
       try {
-        let URL =`${baseApi}/examination/create`
-        if(editId){
-          URL =`${baseApi}/examination/update/${editId}`
-
+        let URL = `${baseApi}/examination/create`;
+        if (editId) {
+          URL = `${baseApi}/examination/update/${editId}`;
         }
         //console.log("Examination", value);
         const response = await axios.post(URL, {
@@ -222,7 +222,6 @@ export default function Examinations() {
             <Select
               labelId="class-select-label"
               name="subject"
-              
               onChange={(e) => {
                 setSelectedClass(e.target.value);
               }}
@@ -250,171 +249,173 @@ export default function Examinations() {
         </Box>
       </Paper>
       <Button
-  variant="contained"
-  color="primary"
-  sx={{ m: 2 }}
-  onClick={() => {
-    setShowForm(true);
-    setEditId(null); // make sure it's in add mode, not edit
-    Formik.resetForm(); // clear previous values
-  }}
->
-  Add Exam
-</Button>
-
-
+        variant="contained"
+        color="primary"
+        sx={{ m: 2 }}
+        onClick={() => {
+          setShowForm(true);
+          setEditId(null); // make sure it's in add mode, not edit
+          Formik.resetForm(); // clear previous values
+        }}
+      >
+        Add Exam
+      </Button>
 
       <paper>
         {showForm && (
-
           <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
-          bgcolor="#f4f6f8"
-        >
-          <Card
-            sx={{
-              width: "100%",
-              maxWidth: 500,
-              boxShadow: 6,
-              borderRadius: 4,
-              p: 2,
-            }}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+            bgcolor="#f4f6f8"
           >
-            
-            {editId ?  <Typography
-                variant="h4"
-                textAlign="center"
-                fontWeight="bold"
-                gutterBottom
-                sx={{ color: "primary.main" }}
-              >
-                Edit Exam
-              </Typography> : <Typography
-                variant="h4"
-                textAlign="center"
-                fontWeight="bold"
-                gutterBottom
-                sx={{ color: "primary.main" }}
-              >
-                Add New Exam
-              </Typography>
- }
-            <CardContent>
-              
-              <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-                onSubmit={Formik.handleSubmit}
-                display="flex"
-                flexDirection="column"
-                gap={3}
-              >
-                {/* Date Picker */}
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Select Date"
-                    value={
-                      Formik.values.date ? dayjs(Formik.values.date) : null
-                    }
-                    onChange={(newValue) =>
-                      Formik.setFieldValue("date", newValue)
-                    }
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: Boolean(
-                          Formik.touched.date && Formik.errors.date
-                        ),
-                        helperText: Formik.touched.date && Formik.errors.date,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
+            <Card
+              sx={{
+                width: "100%",
+                maxWidth: 500,
+                boxShadow: 6,
+                borderRadius: 4,
+                p: 2,
+              }}
+            >
+              {editId ? (
+                <Typography
+                  variant="h4"
+                  textAlign="center"
+                  fontWeight="bold"
+                  gutterBottom
+                  sx={{ color: "primary.main" }}
+                >
+                  Edit Exam
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h4"
+                  textAlign="center"
+                  fontWeight="bold"
+                  gutterBottom
+                  sx={{ color: "primary.main" }}
+                >
+                  Add New Exam
+                </Typography>
+              )}
+              <CardContent>
+                <Box
+                  component="form"
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={Formik.handleSubmit}
+                  display="flex"
+                  flexDirection="column"
+                  gap={3}
+                >
+                  {/* Date Picker */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Select Date"
+                      value={
+                        Formik.values.date ? dayjs(Formik.values.date) : null
+                      }
+                      onChange={(newValue) =>
+                        Formik.setFieldValue("date", newValue)
+                      }
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          error: Boolean(
+                            Formik.touched.date && Formik.errors.date
+                          ),
+                          helperText: Formik.touched.date && Formik.errors.date,
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
 
-                {/* Subject */}
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Subject</InputLabel>
-                  <Select
-                    name="subject"
-                    label="Subject"
-                    value={Formik.values.subject}
+                  {/* Subject */}
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Subject
+                    </InputLabel>
+                    <Select
+                      name="subject"
+                      label="Subject"
+                      value={Formik.values.subject}
+                      variant="outlined"
+                      fullWidth
+                      onChange={Formik.handleChange}
+                      onBlur={Formik.handleBlur}
+                      error={Boolean(
+                        Formik.touched.subject && Formik.errors.subject
+                      )}
+                      helperText={
+                        Formik.touched.subject && Formik.errors.subject
+                      }
+                    >
+                      <MenuItem value={""}>Select Subject</MenuItem>
+                      {subjects.map((subject) => {
+                        return (
+                          <MenuItem key={subject._id} value={subject._id}>
+                            {subject.subject_name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  {/* Exam Type */}
+                  <TextField
+                    name="examType"
+                    label="Exam Type"
                     variant="outlined"
+                    value={Formik.values.examType}
                     fullWidth
                     onChange={Formik.handleChange}
                     onBlur={Formik.handleBlur}
                     error={Boolean(
-                      Formik.touched.subject && Formik.errors.subject
+                      Formik.touched.examType && Formik.errors.examType
                     )}
-                    helperText={Formik.touched.subject && Formik.errors.subject}
+                    helperText={
+                      Formik.touched.examType && Formik.errors.examType
+                    }
+                  />
+
+                  {/* Submit Button */}
+                  {/* Cancel Button */}
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      mt: 2,
+                      borderRadius: 2,
+                      textTransform: "none",
+                      fontSize: "1rem",
+                      py: 1.2,
+                    }}
                   >
-                    <MenuItem value={""}>Select Subject</MenuItem>
-                    {subjects.map((subject) => {
-                      return (
-                        <MenuItem key={subject._id} value={subject._id}>
-                          {subject.subject_name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-
-                {/* Exam Type */}
-                <TextField
-                  name="examType"
-                  label="Exam Type"
-                  variant="outlined"
-                  value={Formik.values.examType}
-                  fullWidth
-                  onChange={Formik.handleChange}
-                  onBlur={Formik.handleBlur}
-                  error={Boolean(
-                    Formik.touched.examType && Formik.errors.examType
-                  )}
-                  helperText={Formik.touched.examType && Formik.errors.examType}
-                />
-
-                {/* Submit Button */}
-                {/* Cancel Button */}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    mt: 2,
-                    borderRadius: 2,
-                    textTransform: "none",
-                    fontSize: "1rem",
-                    py: 1.2,
-                  }}
-                >
-                 {editId ? "Update" : "Submit"}
-                </Button>
-                 <Button
-                  type="button"
-                  variant="contained"
-                  onClick={handleEditCancel}
-                  size="large"
-                  sx={{
-                    mt: 2,
-                    borderRadius: 2,
-                    textTransform: "none",
-                    fontSize: "1rem",
-                    py: 1.2,
-                  }}
-                >
-                  Cancel
-                </Button>
-                
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
+                    {editId ? "Update" : "Submit"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    onClick={handleEditCancel}
+                    size="large"
+                    sx={{
+                      mt: 2,
+                      borderRadius: 2,
+                      textTransform: "none",
+                      fontSize: "1rem",
+                      py: 1.2,
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
         )}
-        
       </paper>
 
       <TableContainer component={Paper}>
