@@ -72,7 +72,20 @@ export default function Examinations() {
     //Formik.setFieldValue("date", selectedExamination[0].examDate);
   };
 
-  const handleDelete = (id) => {};
+  const handleDelete = async (id) => {
+    if(confirm("Are you sure ??")){
+      try {
+        const response = await axios.delete(`${baseApi}/examination/delete/${id}`)
+        console.log('Delete response',response)
+        setMessage(response.data.message)
+        setMessageType("success")
+      } catch (error) {
+        setMessage("Error in deleting examination");
+        setMessageType("error")
+        console.log("Error => Deleting examianiton",error)
+      }
+    }
+  };
 
   const handleEditCancel = ()=>{
     setEditId(null);
