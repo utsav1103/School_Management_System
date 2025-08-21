@@ -45,6 +45,7 @@ export default function Examinations() {
 
   const [message, setMessage] = React.useState("");
   const [messageType, setMessageType] = useState("success");
+  const [editId, setEditId] = React.useState(null);
   const handleMessageClose = () => {
     setMessage("");
   };
@@ -57,8 +58,21 @@ export default function Examinations() {
     const date = new Date(dateData);
     const dateHours = date.getHours();
     const dateMinutes = date.getMinutes();
-    return date.getDate()+"-"+(+date.getMonth()+1)+"-"+date.getFullYear();
+    return (
+      date.getDate() + "-" + (+date.getMonth() + 1) + "-" + date.getFullYear()
+    );
   };
+
+  const handleEdit = (id) => {
+    setEditId(id);
+    const selectedExamination = examinations.filter((x) => x._id === id);
+    Formik.setFieldValue("date", selectedExamination[0].examDate);
+    Formik.setFieldValue("subject", selectedExamination[0].subject._id);
+    Formik.setFieldValue("examType", selectedExamination[0].examType);
+    //Formik.setFieldValue("date", selectedExamination[0].examDate);
+  };
+
+  const handleDelete = (id) => {};
 
   const initialValues = {
     date: "",
@@ -80,11 +94,11 @@ export default function Examinations() {
         });
         //console.log("RESPONSE NEW EXAMINSTION", response);
         setMessage(response.data.message);
-        setMessageType("success")
-        Formik.resetForm()
+        setMessageType("success");
+        Formik.resetForm();
       } catch (error) {
         setMessage("Error in saving new examination");
-        setMessageType("error")
+        setMessageType("error");
         console.log("Error in saving new data => Examination component", error);
       }
     },
@@ -103,52 +117,55 @@ export default function Examinations() {
     try {
       const response = await axios.get(`${baseApi}/class/all`);
       setClasses(response.data.data);
-      setSelectedClass(response.data.data[0]._id)
+      setSelectedClass(response.data.data[0]._id);
     } catch (error) {
       console.log("Error in fetching Classes => Examination component", error);
     }
-    //console.log("Subjects", response)
+    //console. ("Subjects", response)
   };
 
-  const fetchExaminations = async () =>{
+  const fetchExaminations = async () => {
     try {
-      if(selectedClass){
-       //console.log("Selected Class in fetchExaminations:", selectedClass);
-       
-       const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
-       const data = await response.data.examinations;
-       //console.log(data)
-       console.log(response)
-      setExaminations(data);
-      }
-      
-    } catch (error) {
-      console.log("Error in fetching Examinations => Examination component", error);
-     throw error;
-    }
-  }
+      if (selectedClass) {
+        //console.log("Selected Class in fetchExaminations:", selectedClass);
 
-  React.useEffect(()=>{
-    fetchClasses()
-  },[])
+        const response = await axios.get(
+          `${baseApi}/examination/class/${selectedClass}`
+        );
+        const data = await response.data.examinations;
+        //console.log(data)
+        //
+        console.log(response);
+        setExaminations(data);
+      }
+    } catch (error) {
+      console.log(
+        "Error in fetching Examinations => Examination component",
+        error
+      );
+      throw error;
+    }
+  };
 
   React.useEffect(() => {
-    if(selectedClass?.length !== 0) fetchExaminations();
+    fetchClasses();
+  }, []);
+
+  React.useEffect(() => {
+    if (selectedClass?.length !== 0) fetchExaminations();
     fetchSubjects();
     //fetchClasses();
-  }, [message,selectedClass]);
-
+  }, [message, selectedClass]);
 
   return (
     <>
-
-    {message && (
-            <MessageSnackbar
-              message={message}
-              messageType={messageType}
-              handleClose={handleMessageClose}
-            />
-          )}
+      {message && (
+        <MessageSnackbar
+          message={message}
+          messageType={messageType}
+          handleClose={handleMessageClose}
+        />
+      )}
 
       <Paper
         elevation={4}
@@ -175,6 +192,7 @@ export default function Examinations() {
             <Select
               labelId="class-select-label"
               name="subject"
+              
               onChange={(e) => {
                 setSelectedClass(e.target.value);
               }}
@@ -266,6 +284,7 @@ export default function Examinations() {
                   <Select
                     name="subject"
                     label="Subject"
+                    value={Formik.values.subject}
                     variant="outlined"
                     fullWidth
                     onChange={Formik.handleChange}
@@ -291,6 +310,7 @@ export default function Examinations() {
                   name="examType"
                   label="Exam Type"
                   variant="outlined"
+                  value={Formik.values.examType}
                   fullWidth
                   onChange={Formik.handleChange}
                   onBlur={Formik.handleBlur}
@@ -340,9 +360,26 @@ export default function Examinations() {
                 <TableCell align="right" component="th" scope="row">
                   {dateFormat(examination.examDate)}
                 </TableCell>
-                <TableCell align="right">{examination.subject?examination.subject.subject_name:""}</TableCell>
+                <TableCell align="right">
+                  {examination.subject ? examination.subject.subject_name : ""}
+                </TableCell>
                 <TableCell align="right">{examination.examType}</TableCell>
-                <TableCell align="right">"ACTION"</TableCell>
+                <TableCell align="right">
+                  <Button
+                    onClick={() => {
+                      handleEdit(examination._id);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleDelete(examination._id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
