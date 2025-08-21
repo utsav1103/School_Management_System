@@ -9,7 +9,7 @@ router.post("/create",authMiddleware(['SCHOOL']), newExamination);
 router.get("/all",authMiddleware(['SCHOOL']) ,getAllExaminations);
 router.get("/class/:id",authMiddleware(['SCHOOL','TEACHER','STUDENT']) ,getExaminationsByClass);
 
-router.patch("/update/:id",authMiddleware(["SCHOOL"]), updateExaminationWithID);// auth for update or not check
+router.post("/update/:id",authMiddleware(["SCHOOL"]), updateExaminationWithID);// auth for update or not check
 router.delete("/delete/:id",authMiddleware(["SCHOOL"]), deleteExaminationWithId);
 
 
