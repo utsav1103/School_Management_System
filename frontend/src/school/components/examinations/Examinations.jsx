@@ -90,8 +90,13 @@ export default function Examinations() {
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
       try {
+        let URL =`${baseApi}/examination/create`
+        if(editId){
+          URL =`${baseApi}/examination/update/${editId}`
+
+        }
         //console.log("Examination", value);
-        const response = await axios.post(`${baseApi}/examination/create`, {
+        const response = await axios.post(URL, {
           date: value.date,
           subjectId: value.subject,
           classId: selectedClass,
