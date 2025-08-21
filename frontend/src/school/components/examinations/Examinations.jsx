@@ -74,6 +74,11 @@ export default function Examinations() {
 
   const handleDelete = (id) => {};
 
+  const handleEditCancel = ()=>{
+    setEditId(null);
+    Formik.resetForm()
+  }
+
   const initialValues = {
     date: "",
     subject: "",
@@ -236,8 +241,15 @@ export default function Examinations() {
               p: 2,
             }}
           >
-            <CardContent>
-              <Typography
+            {editId ?  <Typography
+                variant="h4"
+                textAlign="center"
+                fontWeight="bold"
+                gutterBottom
+                sx={{ color: "primary.main" }}
+              >
+                Edit Exam
+              </Typography> : <Typography
                 variant="h4"
                 textAlign="center"
                 fontWeight="bold"
@@ -246,7 +258,9 @@ export default function Examinations() {
               >
                 Add New Exam
               </Typography>
-
+ }
+            <CardContent>
+              
               <Box
                 component="form"
                 noValidate
@@ -321,6 +335,7 @@ export default function Examinations() {
                 />
 
                 {/* Submit Button */}
+                {/* Cancel Button */}
                 <Button
                   type="submit"
                   variant="contained"
@@ -335,6 +350,22 @@ export default function Examinations() {
                 >
                   Submit
                 </Button>
+                {editId && <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleEditCancel}
+                  size="large"
+                  sx={{
+                    mt: 2,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontSize: "1rem",
+                    py: 1.2,
+                  }}
+                >
+                  Cancel
+                </Button>}
+                
               </Box>
             </CardContent>
           </Card>
