@@ -42,7 +42,7 @@ export default function Examinations() {
   const [classes, setClasses] = React.useState([]);
 
   const [selectedClass, setSelectedClass] = React.useState([]);
-
+  const [showForm , setShowForm] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [messageType, setMessageType] = useState("success");
   const [editId, setEditId] = React.useState(null);
@@ -65,10 +65,14 @@ export default function Examinations() {
 
   const handleEdit = (id) => {
     setEditId(id);
+    setShowForm(true);
     const selectedExamination = examinations.filter((x) => x._id === id);
-    Formik.setFieldValue("date", selectedExamination[0].examDate);
+    if(selectedExamination) {
+       Formik.setFieldValue("date", selectedExamination[0].examDate);
     Formik.setFieldValue("subject", selectedExamination[0].subject._id);
     Formik.setFieldValue("examType", selectedExamination[0].examType);
+   
+    }
     //Formik.setFieldValue("date", selectedExamination[0].examDate);
   };
 
@@ -89,7 +93,8 @@ export default function Examinations() {
 
   const handleEditCancel = ()=>{
     setEditId(null);
-    Formik.resetForm()
+    Formik.resetForm();
+    setShowForm(false);
   }
 
   const initialValues = {
@@ -119,6 +124,8 @@ export default function Examinations() {
         setMessage(response.data.message);
         setMessageType("success");
         Formik.resetForm();
+        setEditId(null);
+        setShowForm(false);
       } catch (error) {
         setMessage("Error in saving new examination");
         setMessageType("error");
@@ -242,8 +249,25 @@ export default function Examinations() {
           )}
         </Box>
       </Paper>
+      <Button
+  variant="contained"
+  color="primary"
+  sx={{ m: 2 }}
+  onClick={() => {
+    setShowForm(true);
+    setEditId(null); // make sure it's in add mode, not edit
+    Formik.resetForm(); // clear previous values
+  }}
+>
+  Add Exam
+</Button>
+
+
+
       <paper>
-        <Box
+        {showForm && (
+
+          <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
@@ -259,6 +283,7 @@ export default function Examinations() {
               p: 2,
             }}
           >
+            
             {editId ?  <Typography
                 variant="h4"
                 textAlign="center"
@@ -366,9 +391,9 @@ export default function Examinations() {
                     py: 1.2,
                   }}
                 >
-                  Submit
+                 {editId ? "Update" : "Submit"}
                 </Button>
-                {editId && <Button
+                 <Button
                   type="button"
                   variant="contained"
                   onClick={handleEditCancel}
@@ -382,12 +407,14 @@ export default function Examinations() {
                   }}
                 >
                   Cancel
-                </Button>}
+                </Button>
                 
               </Box>
             </CardContent>
           </Card>
         </Box>
+        )}
+        
       </paper>
 
       <TableContainer component={Paper}>
