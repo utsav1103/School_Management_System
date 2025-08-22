@@ -1,6 +1,6 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import { noticeSchema } from "../../../yupSchema/NoticeSchema";
+import { noticeSchema } from "../../../yupSchema/noticeSchema";
 import axios from "axios";
 import { baseApi } from "../../../environment";
 import { useEffect, useState } from "react";
@@ -23,18 +23,20 @@ const [message, setMessage] = useState("");
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null)
 
-  const handleEdit = (id, Notice_text, Notice_num) => {
+  const handleEdit = (id, title, message) => {
     setEdit(true);
     setEditId(id);
-    Formik.setFieldValue("Notice_text",Notice_text)
-    Formik.setFieldValue("Notice_num",Notice_num)
+    Formik.setFieldValue("title",title)
+    Formik.setFieldValue("message",message)
+    Formik.setFieldValue("audience",audience)
     
   };
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
-    Formik.setFieldValue("Notice_text","")
-    Formik.setFieldValue("Notice_num","")
+    //Formik.setFieldValue("title","")
+    //Formik.setFieldValue("message","")
+    Formik.resetForm()
     
   };  
   const handleDelete = (id) => {
@@ -50,7 +52,7 @@ const [message, setMessage] = useState("");
   };
 
   const Formik = useFormik({
-    initialValues: { Notice_text: "", Notice_num: "" },
+    initialValues: { title: "", message: "",audience: ""},
     validationSchema: noticeSchema,
     onSubmit: (values) => {
       console.log(values);
@@ -146,32 +148,62 @@ const [message, setMessage] = useState("");
         )}
 
         <TextField
-          name="Notice_text"
-          label="Notice Text"
-          value={Formik.values.Notice_text}
+          name="title"
+          label="Notice Title"
+          value={Formik.values.title}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
         />
 
-        {Formik.touched.Notice_text && Formik.errors.Notice_text && (
+        {Formik.touched.title && Formik.errors.title && (
           <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.Notice_text}
+            {Formik.errors.title}
           </p>
         )}
 
         <TextField
-          name="Notice_num"
-          label="Notice Number"
-          value={Formik.values.Notice_num}
+          multiline
+          rows={4}
+          name="message"
+          label="Message"
+          value={Formik.values.message}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
         />
 
-        {Formik.touched.Notice_num && Formik.errors.Notice_num && (
+        {Formik.touched.message && Formik.errors.message && (
           <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.Notice_num}
+            {Formik.errors.message}
           </p>
         )}
+
+        <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Audience
+                    </InputLabel>
+                    <Select
+                      name="audience"
+                      label="Audience"
+                      value={Formik.values.audience}
+                      variant="outlined"
+                      fullWidth
+                      onChange={Formik.handleChange}
+                      onBlur={Formik.handleBlur}
+                      error={Boolean(
+                        Formik.touched.audience && Formik.errors.audience
+                      )}
+                      helperText={
+                        Formik.touched.audience && Formik.errors.audience
+                      }
+                    >
+                      <MenuItem value={""}>Select Audience</MenuItem>
+                      <MenuItem value={"teacher"}>Teacher</MenuItem>
+                      <MenuItem value={"student"}>Student</MenuItem>
+                      
+                    </Select>
+                  </FormControl>
+
+
         <Button
         sx={{width:'120px'}}
             type="submit"
@@ -205,13 +237,13 @@ const [message, setMessage] = useState("");
                 <Box component={"div"}>
                   {" "}
                   <Typography>
-                    Notice:{x.Notice_text}[{x.Notice_num}]
+                    Notice:{x.title}[{x.message}]
                   </Typography> 
                 </Box>
                 <Box component={"div"}>
                   <Button
                     onClick={() => {
-                      handleEdit(x._id,x.Notice_text,x.Notice_num);
+                      handleEdit(x._id,x.title,x.message);
                     }}
                   >
                     <EditIcon />
