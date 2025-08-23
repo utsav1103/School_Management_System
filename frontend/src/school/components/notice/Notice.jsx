@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Box,createTheme,ThemeProvider, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { noticeSchema } from "../../../yupSchema/noticeSchema";
 import axios from "axios";
@@ -11,6 +11,21 @@ import { useEffect, useState } from "react";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import EditIcon from "@mui/icons-material/Edit";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: { main: "#00bcd4" }, // cyan
+    secondary: { main: "#ff4081" }, // pink
+    background: { default: "#121212", paper: "#1e1e1e" },
+    text: { primary: "#e0e0e0" },
+  },
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
+    button: { textTransform: "none", fontSize: "1rem" },
+  },
+});
 export default function Notice() {
 
 const [message, setMessage] = useState("");
@@ -120,6 +135,17 @@ const filteredNotices = notices.filter((n) => {
 
   return (
     <> 
+        <ThemeProvider theme={darkTheme}>
+          <Box
+        sx={{
+          minHeight: "100vh",
+          p: 4,
+          bgcolor: "background.default",
+          color: "text.primary",
+        }}
+      >
+
+      
     {message && (
             <MessageSnackbar
               message={message}
@@ -244,6 +270,12 @@ const filteredNotices = notices.filter((n) => {
   <Button 
     variant={filter === "student" ? "contained" : "outlined"} 
     onClick={() => setFilter("student")}
+    sx={{
+              borderRadius: 3,
+              px: 3,
+              py: 1,
+              "&:hover": { backgroundColor: "#007c91" },
+            }}
   >
     Student Notice
   </Button>
@@ -251,6 +283,12 @@ const filteredNotices = notices.filter((n) => {
   <Button 
     variant={filter === "teacher" ? "contained" : "outlined"} 
     onClick={() => setFilter("teacher")}
+     sx={{
+              borderRadius: 3,
+              px: 3,
+              py: 1,
+              "&:hover": { backgroundColor: "#b0003a" },
+            }}
   >
     Teacher Notice
   </Button>
@@ -258,6 +296,12 @@ const filteredNotices = notices.filter((n) => {
   <Button 
     variant={filter === "all" ? "contained" : "outlined"} 
     onClick={() => setFilter("all")}
+    sx={{
+              borderRadius: 3,
+              px: 3,
+              py: 1,
+              "&:hover": { backgroundColor: "#333" },
+            }}
   >
     All Notice
   </Button>
@@ -266,29 +310,47 @@ const filteredNotices = notices.filter((n) => {
 
       <Box
         component={"div"}
-        sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 3,
+            justifyContent: "center",
+          }}
       >
         {filteredNotices.length > 0 ?(
           filteredNotices.map((x)=> (
 
-             <Paper key={x._id} sx={{m:2,p:2}}>
+             <Paper key={x._id} elevation={6} sx={{
+                  p: 3,
+                  width: 300,
+                  borderRadius: 4,
+                  bgcolor: "background.paper",
+                  transition: "all 0.3s ease",
+                  "&:hover": { transform: "translateY(-5px)", boxShadow: 10 },
+                }}>
                 <Box component={"div"}>
                   
-                  <Typography>
+                  <Typography variant="h6" sx={{ color: "primary.main", mb: 1 }}>
                    <b>Title :</b> {x.title}
                   </Typography> 
 
-                  <Typography>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
                    <b>Message :</b> {x.message}
                   </Typography>
 
-                  <Typography>
+                  <Typography  variant="caption"
+                  sx={{ color: "secondary.main", fontWeight: "bold" }}>
                    <b>For :</b> {x.audience}
                   </Typography>
 
                 </Box>
-                <Box component={"div"}>
+                <Box component={"div"}  sx={{ display: "flex", gap: 1, mt: 2 }}>
                   <Button
+                  sx={{
+                      borderRadius: 3,
+                      px: 2,
+                      "&:hover": { bgcolor: "primary.dark" },
+                    }}
                     onClick={() => {
                       handleEdit(x._id,x.title,x.message,x.audience);
                     }}
@@ -296,10 +358,15 @@ const filteredNotices = notices.filter((n) => {
                     <EditIcon />
                   </Button>
                   <Button
+                  sx={{
+                      borderRadius: 3,
+                      px: 2,
+                      "&:hover": { bgcolor: "secondary.dark" },
+                    }}
                     onClick={() => {
                       handleDelete(x._id);
                     }}
-                      sx={{color:"red"}}
+    
                   >
                     <DeleteSweepIcon />
                   </Button>
@@ -312,6 +379,8 @@ const filteredNotices = notices.filter((n) => {
         
           )}
       </Box> 
+      </Box>
+        </ThemeProvider>
     </>
   );
 }
