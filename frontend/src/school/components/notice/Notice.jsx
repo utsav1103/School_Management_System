@@ -1,4 +1,4 @@
-import { Box,createTheme,ThemeProvider, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Box,Stack,Fab,Tooltip,createTheme,ThemeProvider, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { noticeSchema } from "../../../yupSchema/noticeSchema";
 import axios from "axios";
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 //icons
 
-
+import AddIcon from "@mui/icons-material/Add";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import EditIcon from "@mui/icons-material/Edit";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
@@ -37,6 +37,7 @@ const [message, setMessage] = useState("");
   const [notices, setNotices] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null)
+  const [showForm, setShowForm] = useState(false);
 
   //filtering audience
   const [filter, setFilter] = useState("all"); // all | student | teacher
@@ -47,6 +48,12 @@ const filteredNotices = notices.filter((n) => {
   return n.audience === filter;
 });
 
+
+  const handleAdd = () => {
+  setEditId(null);          // make sure we're not in edit mode
+  Formik.resetForm();       // clear old values
+  setShowForm(true);        // show the Add Notice form
+};
 
   const handleEdit = (id, title, message,audience) => {
     setEdit(true);
@@ -66,6 +73,7 @@ const filteredNotices = notices.filter((n) => {
     //Formik.setFieldValue("title","")
     //Formik.setFieldValue("message","")
     Formik.resetForm()
+    setShowForm(false);
     
   };  
   const handleDelete = (id) => {
@@ -108,6 +116,7 @@ const filteredNotices = notices.filter((n) => {
           console.log("Notice add response", resp);
           setMessage(resp.data.message)
           setMessageType("success")
+          FetchAllNotices();
         })
         .catch((e) => {
           console.log("Error in Notice", e);
@@ -153,29 +162,54 @@ const filteredNotices = notices.filter((n) => {
               handleClose={handleMessageClose}
             />
           )}
-      <h1>Notice</h1>
-      <Box
+      <Typography
+  variant="h3"
+  sx={{
+    textAlign: "center",
+    fontWeight: "bold",
+    mb: 4,
+    color: "primary.main",
+    letterSpacing: "1px",
+    textShadow: "0px 2px 8px rgba(0, 188, 212, 0.5)", // subtle cyan glow
+  }}
+>
+  Notice Board
+</Typography>
+
+      {showForm && (
+        <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1 },
-          display: "flex",
-          minHeight: "80vh",
-          flexDirection: "column",
-          width: "50vw",
-          minWidth: "230px",
-          margin: "auto",
-          padding: "1rem",
-          backgroundColor: "rgba(221, 183, 239, 0.22)",
-        }}
+      display: "flex",
+      flexDirection: "column",
+      gap: 2, // replaces the messy & > :not(style)
+      width: { xs: "90%", sm: "70%", md: "50%" },
+      margin: "auto",
+      p: 3,
+      borderRadius: 4,
+      bgcolor: "background.paper",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      transition: "all 0.3s ease",
+      "&:hover": {
+        boxShadow: "0 12px 32px rgba(0,0,0,0.6)",
+        transform: "translateY(-3px)"
+      },
+    }}
         noValidate
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
         {edit ? (
           <Typography
-            variant="h6"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
-          >
+            variant="h5"
+            sx={{
+        textAlign: "center",
+        fontWeight: "bold",
+        mb: 1,
+        color: "primary.main",
+        letterSpacing: "0.5px"
+      }}>
             Edit Notice
           </Typography>
         ) : (
@@ -266,30 +300,52 @@ const filteredNotices = notices.filter((n) => {
           </Button>
         )}
       </Box>
-      <Box sx={{ display: "flex", gap: 2, mb: 2, justifyContent: "center" }}>
-  <Button 
+      )}
+      
+      <paper 
+      elevation={6}
+      sx={{
+    display: "flex",
+    justifyContent: "center", // centers buttons horizontally
+    alignItems: "center",
+    gap: 2, // spacing between buttons
+    p: 2,
+    mb: 4,
+    borderRadius: 3,
+    bgcolor: "background.paper",
+    border: "1px solid rgba(255,255,255,0.08)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+  }}
+      >
+        <Stack
+        direction="row"          // ✅ keep them horizontal
+    spacing={2}              // ✅ adds gap between buttons
+    justifyContent="center"  // ✅ center horizontally
+    alignItems="center" >
+
+        <Button 
     variant={filter === "student" ? "contained" : "outlined"} 
     onClick={() => setFilter("student")}
     sx={{
-              borderRadius: 3,
-              px: 3,
-              py: 1,
-              "&:hover": { backgroundColor: "#007c91" },
-            }}
-  >
+      borderRadius: 3,
+      px: 3,
+      py: 1,
+      "&:hover": { backgroundColor: "#007c91" },
+    }}
+    >
     Student Notice
   </Button>
 
   <Button 
     variant={filter === "teacher" ? "contained" : "outlined"} 
     onClick={() => setFilter("teacher")}
-     sx={{
-              borderRadius: 3,
-              px: 3,
-              py: 1,
-              "&:hover": { backgroundColor: "#b0003a" },
-            }}
-  >
+    sx={{
+      borderRadius: 3,
+      px: 3,
+      py: 1,
+      "&:hover": { backgroundColor: "#b0003a" },
+    }}
+    >
     Teacher Notice
   </Button>
 
@@ -297,15 +353,17 @@ const filteredNotices = notices.filter((n) => {
     variant={filter === "all" ? "contained" : "outlined"} 
     onClick={() => setFilter("all")}
     sx={{
-              borderRadius: 3,
-              px: 3,
-              py: 1,
-              "&:hover": { backgroundColor: "#333" },
-            }}
-  >
+      borderRadius: 3,
+      px: 3,
+      py: 1,
+      "&:hover": { backgroundColor: "#333" },
+    }}
+    >
     All Notice
   </Button>
-</Box>
+
+    </Stack>
+      </paper>
 
 
       <Box
@@ -315,6 +373,7 @@ const filteredNotices = notices.filter((n) => {
             flexWrap: "wrap",
             gap: 3,
             justifyContent: "center",
+            mt:4
           }}
       >
         {filteredNotices.length > 0 ?(
@@ -328,7 +387,8 @@ const filteredNotices = notices.filter((n) => {
                   transition: "all 0.3s ease",
                   "&:hover": { transform: "translateY(-5px)", boxShadow: 10 },
                 }}>
-                <Box component={"div"}>
+                <Box component={"div"}
+                >
                   
                   <Typography variant="h6" sx={{ color: "primary.main", mb: 1 }}>
                    <b>Title :</b> {x.title}
@@ -379,6 +439,27 @@ const filteredNotices = notices.filter((n) => {
         
           )}
       </Box> 
+      <Tooltip title="Add Notice">
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={handleAdd}
+            sx={{
+              position: "fixed",
+              bottom: 30,
+              right: 30,
+              bgcolor: "primary.main",
+              color: "white",
+              "&:hover": {
+                bgcolor: "primary.dark",
+                transform: "scale(1.1)",
+              },
+              transition: "all 0.2s ease-in-out",
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </Box>
         </ThemeProvider>
     </>
