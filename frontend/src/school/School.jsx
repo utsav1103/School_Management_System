@@ -34,7 +34,8 @@ import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import WavingHandRoundedIcon from '@mui/icons-material/WavingHandRounded';
 //class
 import FormatListNumberedRoundedIcon from '@mui/icons-material/FormatListNumberedRounded';
-
+//logout
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -131,8 +132,8 @@ export default function School() {
   };
 
   const navArr = [
-    {link: "/school",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
     {link: "/",component:"Home", icon:HomeRoundedIcon},
+    {link: "/school",component:"Dashboard", icon:DashboardCustomizeRoundedIcon},
     {link: "/school/class",component:"Class", icon:FormatListNumberedRoundedIcon},
     {link: "/school/subjects",component:"Subject", icon:LibraryBooksRoundedIcon},
     {link: "/school/students",component:"Students", icon:SchoolRoundedIcon},
@@ -141,6 +142,7 @@ export default function School() {
     {link: "/school/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
     {link: "/school/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
     {link: "/school/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
+    {link:"/school/logout",component:"Log Out",icon:LogoutIcon}
 ]
 
   const navigate = useNavigate()

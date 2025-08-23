@@ -29,6 +29,7 @@ import ProtectedRoute from "./assets/guard/ProtectedRoute.jsx";
 import AttendanceStudentList from "./school/components/attendance/AttendanceStudentList.jsx";
 import  {AuthProvider}  from "./context/AuthContext.jsx";
 import AttendanceDetails from "./school/components/attendance/AttendanceDetails.jsx";
+import LogOut from "./client/components/logout/LogOut.jsx";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="logout" element={<LogOut />} />
             
           </Route>
         </Routes>
