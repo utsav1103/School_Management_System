@@ -49,6 +49,8 @@ function App() {
             <Route path="students" element={<Students />} />
             <Route path="subjects" element={<Subjects />} />
             <Route path="teachers" element={<Teachers />} />
+
+            <Route path="logout" element={<LogOut />} />
           </Route>
 
           {/*Student Routes*/}
@@ -60,6 +62,7 @@ function App() {
             <Route path="examinations" element={<ExaminationsStudent/>} />
             <Route path="notice" element={<NoticeStudent/>} />
 
+            <Route path="logout" element={<LogOut />} />
 
           </Route>
 
@@ -72,7 +75,7 @@ function App() {
             <Route path="examinations" element={<ExaminationsTeacher/>} />
             <Route path="notice" element={<NoticeTeacher/>} />
 
-
+            <Route path="logout" element={<LogOut />} />
           </Route>
 
           {/*Clients Routes*/}
