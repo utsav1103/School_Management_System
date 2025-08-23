@@ -23,12 +23,26 @@ const [message, setMessage] = useState("");
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null)
 
-  const handleEdit = (id, title, message) => {
+  //filtering audience
+  const [filter, setFilter] = useState("all"); // all | student | teacher
+
+// Filtered notices before rendering
+const filteredNotices = notices.filter((n) => {
+  if (filter === "all") return true;
+  return n.audience === filter;
+});
+
+
+  const handleEdit = (id, title, message,audience) => {
     setEdit(true);
     setEditId(id);
-    Formik.setFieldValue("title",title)
-    Formik.setFieldValue("message",message)
-    Formik.setFieldValue("audience",audience)
+    Formik.setValues({
+      title,
+      message,
+      audience,
+    });
+   // Formik.setFieldValue("message",message)
+   // Formik.setFieldValue("audience",audience)
     
   };
   const cancelEdit = () => {
@@ -149,7 +163,7 @@ const [message, setMessage] = useState("");
 
         <TextField
           name="title"
-          label="Notice Title"
+          label="Title"
           value={Formik.values.title}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
@@ -203,20 +217,21 @@ const [message, setMessage] = useState("");
                     </Select>
                   </FormControl>
 
+                  
+
 
         <Button
         sx={{width:'120px'}}
             type="submit"
             variant="contained"
           >
-            Submit
+            {edit ? "Update" : "Submit"}
           </Button>
 
         {edit && (
           <Button
-            onClick={() => {
-              cancelEdit();
-            }}
+            onClick={
+              cancelEdit}
             type="button  "
             variant="outlined"
             sx={{width:'120px'}}
@@ -225,25 +240,57 @@ const [message, setMessage] = useState("");
           </Button>
         )}
       </Box>
+      <Box sx={{ display: "flex", gap: 2, mb: 2, justifyContent: "center" }}>
+  <Button 
+    variant={filter === "student" ? "contained" : "outlined"} 
+    onClick={() => setFilter("student")}
+  >
+    Student Notice
+  </Button>
+
+  <Button 
+    variant={filter === "teacher" ? "contained" : "outlined"} 
+    onClick={() => setFilter("teacher")}
+  >
+    Teacher Notice
+  </Button>
+
+  <Button 
+    variant={filter === "all" ? "contained" : "outlined"} 
+    onClick={() => setFilter("all")}
+  >
+    All Notice
+  </Button>
+</Box>
+
 
       <Box
         component={"div"}
         sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
-        {notices &&
-          notices.map((x) => {
-            return (
-              <Paper key={x._id} sx={{m:2,p:2}}>
+        {filteredNotices.length > 0 ?(
+          filteredNotices.map((x)=> (
+
+             <Paper key={x._id} sx={{m:2,p:2}}>
                 <Box component={"div"}>
-                  {" "}
+                  
                   <Typography>
-                    Notice:{x.title}[{x.message}]
+                   <b>Title :</b> {x.title}
                   </Typography> 
+
+                  <Typography>
+                   <b>Message :</b> {x.message}
+                  </Typography>
+
+                  <Typography>
+                   <b>For :</b> {x.audience}
+                  </Typography>
+
                 </Box>
                 <Box component={"div"}>
                   <Button
                     onClick={() => {
-                      handleEdit(x._id,x.title,x.message);
+                      handleEdit(x._id,x.title,x.message,x.audience);
                     }}
                   >
                     <EditIcon />
@@ -257,9 +304,13 @@ const [message, setMessage] = useState("");
                     <DeleteSweepIcon />
                   </Button>
                 </Box>
-              </Paper>  
-            );
-          })}
+              </Paper>
+
+          ))
+        ): (
+          <Typography sx={{m:2}}>No notices</Typography>
+        
+          )}
       </Box> 
     </>
   );
