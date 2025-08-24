@@ -70,7 +70,7 @@ module.exports = {
                     const token = jwt.sign({
                         id:teacher._id,
                         schoolId:teacher.school,
-                        name:teacher.teacher_name,
+                        name:teacher.name,
                         image_url:teacher.teacher_image,
                         role:"TEACHER"
                     }, jwtSecret);
@@ -78,7 +78,7 @@ module.exports = {
                     res.status(200).json({success:true, 
                         
                         user:{id:teacher._id,
-                            schoolId:teacher.school, teacher_name:teacher.teacher_name,
+                            schoolId:teacher.school, name:teacher.name,
                         image_url:teacher.teacher_image,role:"TEACHER"},
                          message:"Teacher Logged In Successfully"})
                 }else{
