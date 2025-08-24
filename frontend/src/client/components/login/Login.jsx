@@ -34,7 +34,7 @@ export default function Login() {
         axios
           .post(URL,{...values})
           .then((resp) => {
-          const token = resp.headers.get("Authorization");	
+          const token = resp.headers["authorization"];
 
           if(token){
             localStorage.setItem("token", token)
@@ -44,11 +44,15 @@ export default function Login() {
           if(user){
             localStorage.setItem("user",JSON.stringify(user))
             login(user)
+
+            setTimeout(() =>{
+              navigate(`/${role}`);
+            },0);
           }
             setMessage(resp.data.message);
             setMessageType("success");
             Formik.resetForm();
-            navigate("/school");	
+            	
           })
           .catch((e) => {
             setMessage(e.response.data.message);
