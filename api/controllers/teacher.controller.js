@@ -116,7 +116,7 @@ module.exports = {
             const id= req.user.id;  
             const schoolId = req.user.schoolId;
             const teacher = await Teacher.findOne({_id:id,school:schoolId}).select(['-password']);
-            if(teacher){
+            if(teacher){ 
                 res.status(200).json({success:true, teacher})
             }else{
                 res.status(404).json({success:false, message:"Teacher not found"})
