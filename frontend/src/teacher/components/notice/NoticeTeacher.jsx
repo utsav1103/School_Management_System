@@ -36,33 +36,80 @@ export default function NoticeTeacher() {
   );
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell><b>Title</b></TableCell>
-            <TableCell><b>Message</b></TableCell>
-            <TableCell><b>Audience</b></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {teacherNotices.length > 0 ? (
-            teacherNotices.map((notice) => (
-              <TableRow key={notice._id}>
-                <TableCell>{notice.title}</TableCell>
-                <TableCell>{notice.message}</TableCell>
-                <TableCell>{notice.audience}</TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={3} align="center">
-                No notices available
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="notice-container">
+      <h2 className="notice-title">📢 Teacher Notices</h2>
+
+      <TableContainer component={Paper} className="notice-table">
+        <Table sx={{ minWidth: 650 }} aria-label="teacher notices">
+          <TableBody>
+            {notices.map((notice) => (
+              <React.Fragment key={notice._id}>
+                <TableRow className="notice-row">
+                  <TableCell className="notice-cell">
+                    <b>{notice.title}</b>
+                  </TableCell>
+                  <TableCell className="notice-cell" align="right">
+                    {notice.message}
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Custom Styling */}
+      <style>
+        {`
+        .notice-container {
+          background: url('/images/dark-wood.jpg');
+          background-size: cover;
+          min-height: 100vh;
+          padding: 2rem;
+          color: white;
+        }
+
+        .notice-title {
+          text-align: center;
+          font-size: 1.8rem;
+          font-weight: bold;
+          margin-bottom: 1.5rem;
+          color: #fff;
+          text-shadow: 0 0 10px rgba(255,255,255,0.4);
+        }
+
+        .notice-table {
+          background: rgba(20, 20, 20, 0) !important;
+          backdrop-filter: blur(8px);
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        .notice-row {
+          transition: all 0.3s ease;
+        }
+
+        .notice-row:hover {
+          background: rgba(255,255,255,0.08) !important;
+          transform: scale(1.01);
+        }
+
+.notice-cell {
+  color: #ddd !important;
+  font-size: 1rem;
+}
+
+.notice-cell b {
+  color: #FFD700; /* gold for titles */
+  text-shadow: 0 0 8px rgba(255,215,0,0.5);
+}
+
+.notice-cell * {
+  color: #ddd !important; /* makes sure messages stay light */
+}
+      `}
+      </style>
+    </div>
   );
 }

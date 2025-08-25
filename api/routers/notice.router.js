@@ -4,7 +4,7 @@ const { createNotice, getAllNotices, updateNoticeWithId, deleteNoticeWithId } = 
 const router = express.Router();
 
 router.post("/create",authMiddleware(['SCHOOL']), createNotice);
-router.get("/all",authMiddleware(['SCHOOL']) ,getAllNotices);
+router.get("/all",authMiddleware(['SCHOOL','TEACHER','STUDENT']) ,getAllNotices);
 //router.get("/single/:id",authMiddleware(['SCHOOL']) ,getSingleClass);
 
 router.patch("/update/:id",authMiddleware(["SCHOOL"]), updateNoticeWithId);// auth for update or not check
