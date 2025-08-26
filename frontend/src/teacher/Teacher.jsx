@@ -17,6 +17,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 //ICONS
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -133,12 +135,12 @@ export default function Teacher() {
   const navArr = [
     {link: "/",component:"Home", icon:HomeRoundedIcon},
     {link: "/teacher",component:"Your Details", icon:DashboardCustomizeRoundedIcon},
-    
-    
     {link: "/teacher/schedule",component:"Schedule", icon:CalendarMonthRoundedIcon},
     {link: "/teacher/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
     {link: "/teacher/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
     {link: "/teacher/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
+    {link:"/school/logout",component:"Log Out",icon:LogoutIcon}
+
 ]
 
   const navigate = useNavigate()
