@@ -54,7 +54,7 @@ getAttendeeClass: async (req, res) => {
     const schoolId = req.user.schoolId;
     const attendeeId = req.user.id;
 
-    const classes = await Class.findOne({
+    const classes = await Class.find({
       school: schoolId,
       attendee: attendeeId
     }).populate("attendee", "name email"); // populate with the fields you want
