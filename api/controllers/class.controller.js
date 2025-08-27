@@ -52,7 +52,7 @@ module.exports = {
 getAttendeeClass: async (req, res) => {
   try {
     const schoolId = req.user.schoolId;
-    const attendeeId = req.params.id;
+    const attendeeId = req.user.id;
 
     const classes = await Class.findOne({
       school: schoolId,
