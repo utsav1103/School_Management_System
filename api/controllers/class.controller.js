@@ -49,6 +49,30 @@ module.exports = {
 },
 
 
+getAttendeeClass: async (req, res) => {
+  try {
+    const schoolId = req.user.schoolId;
+    const attendeeId = req.params.id;
+
+    const classes = await Class.findOne({
+      school: schoolId,
+      attendee: attendeeId
+    }).populate("attendee", "name email"); // populate with the fields you want
+
+    res.status(200).json({
+      success: true,
+      message: "Success in fetching attendee class",
+      data: classes
+    });
+  } catch (error) {
+    console.log("GetAttendee Class Error", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error in Getting attendee  class..."
+    });
+  }
+},
+
 
   //creating new class
   createClass: async (req, res) => {
