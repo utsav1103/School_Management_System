@@ -6,6 +6,6 @@ const router = express.Router();
 router.post("/mark",authMiddleware(['TEACHER']),markAttendance);
 router.get("/:studentId",authMiddleware(['SCHOOL','TEACHER']),getAttendance);
 
-router.get("/check/:classId",authMiddleware(["SCHOOL"]),checkAttendance);
+router.get("/check/:classId",authMiddleware(["SCHOOL",'TEACHER']),checkAttendance);
 
 module.exports = router;

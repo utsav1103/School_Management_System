@@ -26,6 +26,7 @@ export default function AttendanceTeacher() {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({}); // { studentId: true/false }
   const [saving, setSaving] = useState(false);
+  const [attendanceTaken, setAttendanceTaken] = useState(false);
 
 
   const fetchAttendeeClass = async () => {
@@ -65,7 +66,21 @@ export default function AttendanceTeacher() {
   }, []);
 
   useEffect(() => {
+    if (!selectedClass) return;
+    setAttendanceTaken(false);
     fetchStudents(selectedClass);
+
+     axios
+    .get(`${baseApi}/attendance/check/${selectedClass}`)
+    .then((resp) => {
+      setAttendanceTaken(resp.data.attendanceTaken);
+      if (resp.data.attendanceTaken) {
+        alert("Attendance for this class has already been taken today ✅");
+      }
+    })
+    .catch((e) => console.log("Error checking attendance:", e));
+
+
   }, [selectedClass]);
 
   const handleAttendanceChange = (studentId) => {
@@ -173,9 +188,9 @@ export default function AttendanceTeacher() {
             color="primary"
             sx={{ mt: 2 }}
             onClick={saveAttendance}
-            disabled={saving}
+            disabled={saving || attendanceTaken}
           >
-            {saving ? "Saving..." : "Save Attendance"}
+            {attendanceTaken ? "Attendance Already Taken ✅" : saving ? "Saving..." : "Save Attendance"}
           </Button>
         </>
       )}
