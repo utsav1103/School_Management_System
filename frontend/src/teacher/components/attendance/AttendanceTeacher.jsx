@@ -17,7 +17,23 @@ import {
   Checkbox,
   Typography,
   Button,
+  Snackbar,
+ Alert as MuiAlert,
 } from "@mui/material";
+
+
+const MessageSnackbar = ({ message, type, open, handleClose }) => (
+  <Snackbar
+    open={open}
+    autoHideDuration={4000}
+    onClose={handleClose}
+    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+  >
+    <MuiAlert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
+      {message}
+    </MuiAlert>
+  </Snackbar>
+);
 
 export default function AttendanceTeacher() {
   const [classes, setClasses] = useState([]);
@@ -28,6 +44,12 @@ export default function AttendanceTeacher() {
   const [saving, setSaving] = useState(false);
   const [attendanceTaken, setAttendanceTaken] = useState(false);
 
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleMessageClose = () => setOpenSnackbar(false);
 
   const fetchAttendeeClass = async () => {
     try {
@@ -75,12 +97,17 @@ export default function AttendanceTeacher() {
     .then((resp) => {
       setAttendanceTaken(resp.data.attendanceTaken);
       if (resp.data.attendanceTaken) {
-        alert("Attendance for this class has already been taken today ✅");
+      setMessage("Attendance for this class has already been taken today ✅");
+          setMessageType("info");
+          setOpenSnackbar(true);  
       }
     })
-    .catch((e) => console.log("Error checking attendance:", e));
-
-
+    .catch((e) => {
+       console.log("Error checking attendance:", e);
+        setMessage("Error checking attendance ❌");
+        setMessageType("error");
+        setOpenSnackbar(true);
+      });
   }, [selectedClass]);
 
   const handleAttendanceChange = (studentId) => {
@@ -104,11 +131,15 @@ export default function AttendanceTeacher() {
       };
 
       const resp = await axios.post(`${baseApi}/attendance/mark`, payload);
-      alert(resp.data.message || "Attendance saved successfully ✅");
-    } catch (error) {
+       setMessage(resp.data.message || "Attendance saved successfully ✅");
+      setMessageType("success");
+      setOpenSnackbar(true);} 
+      catch (error) {
       console.error("Error saving attendance", error);
-      alert("Failed to save attendance ❌");
-    } finally {
+      setMessage("Failed to save attendance ❌");
+      setMessageType("error");
+      setOpenSnackbar(true);} 
+      finally {
       setSaving(false);
     }
   };
@@ -193,6 +224,14 @@ export default function AttendanceTeacher() {
             {attendanceTaken ? "Attendance Already Taken ✅" : saving ? "Saving..." : "Save Attendance"}
           </Button>
         </>
+      )}
+       {message && (
+        <MessageSnackbar
+          message={message}
+          type={messageType}
+          open={openSnackbar}
+          handleClose={handleMessageClose}
+        />
       )}
     </>
   );
