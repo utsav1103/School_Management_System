@@ -16,6 +16,7 @@ import {
   Paper,
   Checkbox,
   Typography,
+  Button,
 } from "@mui/material";
 
 export default function AttendanceTeacher() {
@@ -24,6 +25,8 @@ export default function AttendanceTeacher() {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({}); // { studentId: true/false }
+  const [saving, setSaving] = useState(false);
+
 
   const fetchAttendeeClass = async () => {
     try {

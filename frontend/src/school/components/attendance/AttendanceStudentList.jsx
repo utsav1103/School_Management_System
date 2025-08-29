@@ -107,24 +107,30 @@ export default function AttendanceStudentList() {
   };
 
   const fetchAttendanceForStudent = async (studentId) => {
-    try {
-      const response = await axios.get(`${baseApi}/attendance/${studentId}`);
-      const attendanceRecords = response.data;
-      const totalClasses = attendanceRecords.length;
-      const presentCount = attendanceRecords.filter(
-        (record) => record.status === "Present"
-      ).length;
-      const attendancePercentage =
-        totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
-      return { studentId, attendancePercentage };
-    } catch (error) {
-      console.error(
-        `Error fetching attendacne for student ${studentId}:`,
-        error
-      );
-      return { studentId, attendancePercentage: 0 };
-    }
-  };
+  try {
+    const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+    
+    // FIX: use response.data.attendance instead of response.data
+    const attendanceRecords = response.data.attendance || [];
+    
+    const totalClasses = attendanceRecords.length;
+    const presentCount = attendanceRecords.filter(
+      (record) => record.status === "Present"
+    ).length;
+
+    const attendancePercentage =
+      totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
+
+    return { studentId, attendancePercentage };
+  } catch (error) {
+    console.error(
+      `Error fetching attendance for student ${studentId}:`,
+      error
+    );
+    return { studentId, attendancePercentage: 0 };
+  }
+};
+
 
   React.useEffect(() => {
     fetchClasses();

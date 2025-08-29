@@ -39,25 +39,29 @@ const convertDate = (dateData)=>{
     const date = new Date()
     return date.getDate() + "-" + (+date.getMonth()+1) + "-" + date.getFullYear();
 }
-    const fetchAttendanceData = async()=>{
-        try{
-        const response = await axios.get(`${baseApi}/attendance/${studentId}`)
-        console.log("Response Attendance",response)
-            setAttendanceData(response.data)
+    const fetchAttendanceData = async () => {
+  try {
+    const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+    console.log("Response Attendance", response.data);
 
-            response.data.forEach(attendacne=>{
-              if(attendacne.status==='Present'){
-                setPresent(present+1)
-              }else if(attendacne.status==='Absent'){
-                setAbsent(absent+1)
-              }
-            })
-        }catch(error){
-            console.log("Error in fetchng student attendance.", error)
+    // Use the attendance array inside the object
+    const records = response.data.attendance || [];
+    setAttendanceData(records);
 
-            navigate('/school/attendance')
-        }
-    }
+    let presentCount = 0, absentCount = 0;
+    records.forEach((a) => {
+      if (a.status === "Present") presentCount++;
+      else if (a.status === "Absent") absentCount++;
+    });
+
+    setPresent(presentCount);
+    setAbsent(absentCount);
+  } catch (error) {
+    console.log("Error in fetching student attendance.", error);
+    navigate("/school/attendance");
+  }
+};
+
     useEffect(()=>{
         
         fetchAttendanceData()
