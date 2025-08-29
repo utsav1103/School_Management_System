@@ -1,105 +1,148 @@
-import { useEffect } from "react"
-import { baseApi } from "../../../environment"
-import axios from "axios"
-import { useState } from "react"
-import { FormControl, InputLabel, MenuItem, Select, Alert } from "@mui/material"
+import { useEffect, useState } from "react";
+import { baseApi } from "../../../environment";
+import axios from "axios";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Checkbox,
+  Typography,
+} from "@mui/material";
 
-export default  function AttendanceTeacher()
-{
-    const [classes , setClasses] = useState([])
-    const [selectedClass , setSelectedClass] = useState("");
-    const [loading , setLoading]= useState(true);
-    const fetchAttendeeClass = async () =>{
-       
-      try {
-        const response = await axios.get(`${baseApi}/class/attendee`)
-        console.log("attende class response",response)
+export default function AttendanceTeacher() {
+  const [classes, setClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [students, setStudents] = useState([]);
+  const [attendance, setAttendance] = useState({}); // { studentId: true/false }
+  
+  const fetchAttendeeClass = async () => {
+    try {
+      const response = await axios.get(`${baseApi}/class/attendee`);
+      console.log("attende class response", response);
+      setClasses(response.data.data || []);
+    } catch (error) {
+      console.log("Error => fetching attendee class", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        
-        setClasses(response.data.data || []);
-        
-      } catch (error) {
-        console.log("Error => fetching attendee class",error)
-      } finally{
-        setLoading(false);
-      }
-    };
+  const fetchStudents = (classId) => {
+    if (!classId) {
+      setStudents([]);
+      return;
+    }
 
-    
+    axios
+      .get(`${baseApi}/student/fetch-with-query`, {
+        params: { student_class: classId },
+      })
+      .then((resp) => {
+        setStudents(resp.data.students || []);
+        setAttendance({}); // reset attendance when class changes
+        console.log("student response", resp);
+      })
+      .catch((e) => {
+        console.log("error in fetching students", e);
+      });
+  };
 
+  useEffect(() => {
+    fetchAttendeeClass();
+  }, []);
 
-    useEffect(()=>{
-        fetchAttendeeClass()
-    },[])
+  useEffect(() => {
+    fetchStudents(selectedClass);
+  }, [selectedClass]);
 
-    const [students, setStudents] = useState([]);
+  const handleAttendanceChange = (studentId) => {
+    setAttendance((prev) => ({
+      ...prev,
+      [studentId]: !prev[studentId],
+    }));
+  };
 
-const fetchStudents = (classId) => {
-  if (!classId) {
-    setStudents([]); // reset if no class is selected
-    return;
-  }
+  return (
+    <>
+      <h1>Attendance Teacher</h1>
 
-  axios
-    .get(`${baseApi}/student/fetch-with-query`, {
-      params: { student_class: classId },
-    })
-    .then((resp) => {
-      setStudents(resp.data.students || []);
-      console.log("student response", resp)
-    })
-    .catch((e) => {
-      console.log("error in fetching students", e);
-    });
-};
-
-useEffect(() => {
-  fetchStudents(selectedClass);
-}, [selectedClass]); // 🔑 depends on selectedClass
-
-
-    return (
-        <>
-        <h1>Attendance Teacher </h1>
-
-        {!loading && classes.length === 0 &&(<Alert severity="warning" sx={{mb:2}}>
+      {!loading && classes.length === 0 && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
           You are not assigned to any class now.
-        </Alert>)}
+        </Alert>
+      )}
 
-
-         {!loading && classes.length > 0 && (
+      {!loading && classes.length > 0 && (
         <Alert severity="info" sx={{ mb: 2 }}>
           ✅ You are attendee of <strong>{classes.length}</strong> class
           {classes.length > 1 ? "es" : ""}:{" "}
           {classes.map((c) => c.class_text).join(", ")}
         </Alert>
       )}
-        
-        {classes.length > 0 && (
 
-          <FormControl fullWidth variant="outlined">
-                    <InputLabel id="class-select-label">Class</InputLabel>
-                    <Select
-                      labelId="class-select-label"
-                      name="subject"
-                      onChange={(e) => {
-                        setSelectedClass(e.target.value);
-                      }}
-                      value={selectedClass}
-                      label="class"
-                    >
-                      <MenuItem value="">Select Class</MenuItem>
-                      {classes.map((x) => (
-                        <MenuItem key={x._id} value={x._id}>
-                          {x.class_text}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+      {classes.length > 0 && (
+        <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
+          <InputLabel id="class-select-label">Class</InputLabel>
+          <Select
+            labelId="class-select-label"
+            onChange={(e) => setSelectedClass(e.target.value)}
+            value={selectedClass}
+            label="class"
+          >
+            <MenuItem value="">Select Class</MenuItem>
+            {classes.map((x) => (
+              <MenuItem key={x._id} value={x._id}>
+                {x.class_text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
 
-        )}
+      {/* Students Table */}
+      {students.length > 0 && (
+        <>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Students of {classes.find((c) => c._id === selectedClass)?.class_text}
+          </Typography>
 
-        
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Roll No.</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Attendance</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {students.map((student, index) => (
+                  <TableRow key={student._id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={attendance[student._id] || false}
+                        onChange={() => handleAttendanceChange(student._id)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </>
-    )
+      )}
+    </>
+  );
 }
