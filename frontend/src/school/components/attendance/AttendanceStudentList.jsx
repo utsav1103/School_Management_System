@@ -144,118 +144,112 @@ export default function AttendanceStudentList() {
 
   return (
     <Box
-      component={"div"}
-      sx={{
-        background: "",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        height: "100%",
-        paddingTop: "10px",
-        paddingBottom: "10px",
-      }}
-    >
-      {message && (
-        <MessageSnackbar
-          message={message}
-          type={messageType}
-          handleClose={handleMessageClose}
-        />
-      )}
+  component={"div"}
+  sx={{
+    background: "",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    height: "100%",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+  }}
+>
+  {message && (
+    <MessageSnackbar
+      message={message}
+      type={messageType}
+      handleClose={handleMessageClose}
+    />
+  )}
 
-      <Box sx={{ textAlign: "center", mt: 2 }}>
-        <Typography>Students Attendance</Typography>
-      </Box>
+  {/* Page Heading */}
+  <Box sx={{ textAlign: "center", mt: 2 }}>
+    <Typography variant="h5" fontWeight="bold">
+      Students Attendance
+    </Typography>
+  </Box>
 
-      <Grid container spacing={2}>
-        <Grid size={4}>
-          <Item>
-            <Box
-              component="div"
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 2,
-                marginTop: "30px",
-                padding: "10px",
-              }}
-            >
-              <TextField
-                label="Search"
-                onChange={handleSearch}
-                variant="outlined"
-              />
-              <FormControl sx={{ minWidth: 200 }}>
-                <InputLabel>Class</InputLabel>
-                <Select label="Student Class" onChange={handleClass}>
-                  <MenuItem value="">All Students</MenuItem>
-                  {classes &&
-                    classes.map((x) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.class_text} ({x.class_num})
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-            </Box>
+  {/* Controls (Search + Class Select + Attendee) */}
+  <Box
+    component="div"
+    sx={{
+      display: "flex",
+      flexDirection: { xs: "column", sm: "row" },
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 2,
+      mt: 3,
+      mb: 3,
+    }}
+  >
+    <TextField
+      label="Search"
+      onChange={handleSearch}
+      variant="outlined"
+    />
+    <FormControl sx={{ minWidth: 200 }}>
+      <InputLabel>Class</InputLabel>
+      <Select label="Student Class" onChange={handleClass}>
+        <MenuItem value="">All Students</MenuItem>
+        {classes &&
+          classes.map((x) => (
+            <MenuItem key={x._id} value={x._id}>
+              {x.class_text} ({x.class_num})
+            </MenuItem>
+          ))}
+      </Select>
+    </FormControl>
+  </Box>
 
-                    <Box>
-                      {selectedClass && <Attendee classId={selectedClass} handleMessage={handleMessage} message={message} />}
-                    </Box>
-
-
-          </Item>
-        </Grid>
-        <Grid size={8}>
-          <Item>
-            {" "}
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">Gender</TableCell>
-                    <TableCell align="right">Guardian Contact</TableCell>
-                    <TableCell align="right">Class</TableCell>
-                    <TableCell align="right">Percentage</TableCell>
-                    <TableCell align="right">View</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {students &&
-                    students.map((student) => (
-                      <TableRow
-                        key={student._id}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {student.name}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {student.gender}
-                        </TableCell>
-
-                        <TableCell align="right">
-                          {student.guardian_phone}
-                        </TableCell>
-                        <TableCell align="right">
-                          {student.student_class.class_text}
-                        </TableCell>
-                        <TableCell align="right">
-                          {attendacneData[student._id] !== undefined ? `${attendacneData[student._id].toFixed(2)}%`: "No Data"}
-                        </TableCell>
-                        <TableCell align="right"><Link to={`/school/attendance/${student._id}`}>Details</Link></TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Item>
-        </Grid>
-      </Grid>
+  {/* Attendee component (moved below Select) */}
+  {selectedClass && (
+    <Box sx={{ mb: 3, textAlign: "center" }}>
+      <Attendee
+        classId={selectedClass}
+        handleMessage={handleMessage}
+        message={message}
+      />
     </Box>
+  )}
+
+  {/* Attendance Table */}
+  <TableContainer component={Paper}>
+    <Table sx={{ minWidth: 650 }} aria-label="attendance table">
+      <TableHead>
+        <TableRow>
+          <TableCell><strong>Name</strong></TableCell>
+          <TableCell align="right"><strong>Gender</strong></TableCell>
+          <TableCell align="right"><strong>Guardian Contact</strong></TableCell>
+          <TableCell align="right"><strong>Class</strong></TableCell>
+          <TableCell align="right"><strong>Percentage</strong></TableCell>
+          <TableCell align="right"><strong>View</strong></TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {students &&
+          students.map((student) => (
+            <TableRow
+              key={student._id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell>{student.name}</TableCell>
+              <TableCell align="right">{student.gender}</TableCell>
+              <TableCell align="right">{student.guardian_phone}</TableCell>
+              <TableCell align="right">{student.student_class.class_text}</TableCell>
+              <TableCell align="right">
+                {attendacneData[student._id] !== undefined
+                  ? `${attendacneData[student._id].toFixed(2)}%`
+                  : "No Data"}
+              </TableCell>
+              <TableCell align="right">
+                <Link to={`/school/attendance/${student._id}`}>Details</Link>
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+</Box>
+
   );
 }

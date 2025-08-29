@@ -5,7 +5,7 @@ import { baseApi } from "../../../environment"
 
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { styled } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -66,7 +66,17 @@ const convertDate = (dateData)=>{
         
         fetchAttendanceData()
 
-    },[])
+    },[]);
+
+    const total = present + absent;
+  const percentage = total > 0 ? ((present / total) * 100).toFixed(2) : 0;
+
+
+  const getColor = () => {
+  if (percentage >= 75) return "#4ade80";   // Tailwind's green-400 (light green, glows on dark)
+  if (percentage >= 50) return "#facc15";   // Tailwind's yellow-400 (bright gold, looks good on dark)
+  return "#f87171";                         // Tailwind's red-400 (light red, stands out)
+};
 
     return (
         <>
@@ -74,47 +84,57 @@ const convertDate = (dateData)=>{
 
 
 
-        <Grid container spacing={2}>
-        <Grid size={6}>
-          <Item>  <PieChart
-      series={[
-        {
-          data: [
-            { id: 0, value: present, label: 'Present' },
-            { id: 1, value: absent, label: 'Absent' },
-            ],
-        },
-      ]}
-      width={200}
-      height={200}
-    /></Item>
-        </Grid>
-        <Grid size={6}>
+ <Grid container spacing={2}>
+        {/* Pie Chart Section */}
+        <Grid item xs={12} md={6}>
           <Item>
-        <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {attendanceData.map((attendacne) => (
-            <TableRow
-              key={attendacne._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {convertDate(attendacne.date)}
-              </TableCell>
-              <TableCell align="right">{attendacne.status}</TableCell>
-              
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 0, value: present, label: 'Present',color:getColor() },
+                    { id: 1, value: absent, label: 'Absent',color:"#94a3b8" },
+                  ],
+                },
+              ]}
+              width={250}
+              height={250}
+            />
+
+            {/* ✅ Percentage below chart */}
+            <Typography variant="h6" sx={{ 
+    mt: 2, 
+    color: getColor(), 
+    fontSize: "20px", 
+    fontWeight: "bold" 
+  }}>
+              Attendance: {percentage}%
+            </Typography>
+          </Item>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Item>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell align="right">Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {attendanceData.map((attendance) => (
+                    <TableRow key={attendance._id}>
+                      <TableCell component="th" scope="row">
+                        {convertDate(attendance.date)}
+                      </TableCell>
+                      <TableCell align="right">{attendance.status}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Item>
         </Grid>
         
