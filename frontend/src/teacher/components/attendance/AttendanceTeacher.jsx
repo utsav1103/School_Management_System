@@ -24,7 +24,7 @@ export default function AttendanceTeacher() {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({}); // { studentId: true/false }
-  
+
   const fetchAttendeeClass = async () => {
     try {
       const response = await axios.get(`${baseApi}/class/attendee`);
@@ -70,6 +70,29 @@ export default function AttendanceTeacher() {
       ...prev,
       [studentId]: !prev[studentId],
     }));
+  };
+
+  const saveAttendance = async () => {
+    if (!selectedClass) return;
+
+    setSaving(true);
+    try {
+      const payload = {
+        classId: selectedClass,
+        attendance: students.map((s) => ({
+          studentId: s._id,
+          present: attendance[s._id] || false,
+        })),
+      };
+
+      const resp = await axios.post(`${baseApi}/attendance/mark`, payload);
+      alert(resp.data.message || "Attendance saved successfully ✅");
+    } catch (error) {
+      console.error("Error saving attendance", error);
+      alert("Failed to save attendance ❌");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -141,6 +164,16 @@ export default function AttendanceTeacher() {
               </TableBody>
             </Table>
           </TableContainer>
+
+           <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={saveAttendance}
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Attendance"}
+          </Button>
         </>
       )}
     </>
