@@ -91,7 +91,7 @@ export default function StudentDetails() {
                 <TableRow>
                   <TableCell><b>Class :</b></TableCell>
                   <TableCell align="right">
-                    {studentDetails.student_class?.name || "Not Assigned"}
+                    {studentDetails.student_class.class_text}
                   </TableCell>
                 </TableRow>
               </TableBody>
