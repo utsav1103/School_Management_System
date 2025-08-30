@@ -72,7 +72,7 @@ module.exports = {
                     const token = jwt.sign({
                         id:student._id,
                         schoolId:student.school,
-                        name:student.student_name,
+                        name:student.name,
                         image_url:student.student_image,
                         role:"STUDENT"
                     }, jwtSecret);
