@@ -19,8 +19,8 @@ app.use(express.json());
 //if we pass any data to body to retrive the data we have to use this  
 app.use(express.urlencoded({extended: true}));
 const corsOption  = {
-   // origin: "http://localhost:5173", // your React app
-//  credentials: true,
+     origin: "http://localhost:5173",
+      credentials: true,
     exposedHeaders:"Authorization"}
 app.use(cors(corsOption));
 app.use(cookieParser());
