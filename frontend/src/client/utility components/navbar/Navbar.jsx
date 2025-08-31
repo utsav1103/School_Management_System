@@ -9,21 +9,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 
 import Button from '@mui/material/Button';
+import { AuthContext } from "../../../context/AuthContext";
 
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+ 
 
-// const pages = ['Products', 'Pricing', 'Blog'];
-const pages = [
+function Navbar() {
+  const { user, authenticated } = React.useContext(AuthContext)
+  const [pages,setPages]=React.useState([
     {link:"/", component:"Home"},
     {link:"/login", component:"Login"},
     {link:"/register", component:"Register"},
 
-];
-
-
-function Navbar() {
+])
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   
 
@@ -38,10 +38,27 @@ function Navbar() {
     navigate(link)
   };
 
+  React.useEffect(()=>{
+    if(authenticated){
+      setPages([
+    {link:"/", component:"Home"},
+    {link:"/logout", component:"Log Out"},
+    {link:`${user.role.toLowerCase()}`, component:"Dashboard"},
+
+])
+    }
+  },[])
+
   
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" 
+     
+  sx={{
+    background: "linear-gradient(90deg, #0f2027, #203a43, #2c5364)", // dark gradient
+    boxShadow: "0 4px 20px rgba(0,0,0,0.6)",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+  }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -91,7 +108,15 @@ function Navbar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page, i) => (
-                <MenuItem key={i} onClick={()=>{handleCloseNavMenu(page.link)}}>
+                <MenuItem key={i} onClick={()=>{handleCloseNavMenu(page.link)}} 
+                 sx={{
+    color: "#ddd",
+    "&:hover": {
+      background: "rgba(255,255,255,0.08)",
+      color: "#FFD700",
+    },
+  }}
+  >
                   <Typography sx={{ textAlign: 'center' }}>{page.component}</Typography>
                 </MenuItem>
               ))}
@@ -121,7 +146,18 @@ function Navbar() {
               <Button
                 key={i}
                 onClick={()=>{handleCloseNavMenu(page.link)}}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+    my: 2,
+    color: "#FFD700", // gold text
+    display: "block",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    "&:hover": {
+      color: "#fff",
+      background: "rgba(255, 215, 0, 0.2)", // gold hover
+      borderRadius: "8px",
+    },
+  }}
               >
                 {page.component}
               </Button>
