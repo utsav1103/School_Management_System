@@ -34,7 +34,7 @@ const [attendanceData , setAttendanceData] = useState([])
 
 
 const convertDate = (dateData)=>{
-    const date = new Date()
+    const date = new Date(dateData)
     return date.getDate() + "-" + (+date.getMonth()+1) + "-" + date.getFullYear();
 }
 
