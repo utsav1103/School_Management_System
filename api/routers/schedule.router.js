@@ -5,7 +5,7 @@ const { createSchedule, getSchedulesWithClass, updateScheduleWithId, deleteSched
 const router = express.Router();
 
 router.post("/create",authMiddleware(['SCHOOL']), createSchedule);
-router.get("/fetch-with-class/:id",authMiddleware(['SCHOOL','TEACHER']) ,getSchedulesWithClass);
+router.get("/fetch-with-class/:id",authMiddleware(['SCHOOL','TEACHER','STUDENT']) ,getSchedulesWithClass);
 
 router.get("/fetch/:id",authMiddleware(["SCHOOL"]), getSchedulesWithId);// auth for update or not check
 router.post("/update/:id",authMiddleware(["SCHOOL"]), updateScheduleWithId);// auth for update or not check
