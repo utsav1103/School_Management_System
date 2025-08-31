@@ -16,7 +16,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import LogoutIcon from '@mui/icons-material/Logout';
 
 //ICONS
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
@@ -61,7 +60,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -141,8 +139,6 @@ export default function Student() {
     {link: "/student/attendance",component:"Attendance", icon:WavingHandRoundedIcon},
     {link: "/student/examinations",component:"Examinations", icon:BorderColorRoundedIcon},
     {link: "/student/notice", component:"Notice", icon:NotificationsActiveRoundedIcon},
-    {link:"/school/logout",component:"Log Out",icon:LogoutIcon}
-
 ]
 
   const navigate = useNavigate()
