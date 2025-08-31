@@ -39,12 +39,12 @@ export default function NoticeTeacher() {
     <div className="notice-container">
       <h2 className="notice-title">📢 Teacher Notices</h2>
 
-      <TableContainer component={Paper} className="notice-table">
+        <TableContainer component={Paper} className="notice-table">
         <Table sx={{ minWidth: 650 }} aria-label="teacher notices">
           <TableBody>
-            {notices.map((notice) => (
-              <React.Fragment key={notice._id}>
-                <TableRow className="notice-row">
+            {teacherNotices.length > 0 ? (
+              teacherNotices.map((notice) => (
+                <TableRow key={notice._id} className="notice-row">
                   <TableCell className="notice-cell">
                     <b>{notice.title}</b>
                   </TableCell>
@@ -52,8 +52,14 @@ export default function NoticeTeacher() {
                     {notice.message}
                   </TableCell>
                 </TableRow>
-              </React.Fragment>
-            ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={2} align="center" className="notice-cell">
+                  No notices available
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
