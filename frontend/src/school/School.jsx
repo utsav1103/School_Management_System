@@ -159,8 +159,7 @@ export default function School() {
   backgroundPosition: "center",
   boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
   borderBottom: "1px solid rgba(255,255,255,0.08)",
-}}
- open={open}>
+}} open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -181,7 +180,16 @@ export default function School() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} PaperProps={{
+    sx: {
+      backgroundImage:
+        "linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('/images/dark-wood.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      color: "#fff",
+      borderRight: "1px solid rgba(255,255,255,0.1)",
+    },
+  }} >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -192,36 +200,35 @@ export default function School() {
           {navArr.map((navItem, index) => (
             <ListItem key={index} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: 'initial',
-                      }
-                    : {
-                        justifyContent: 'center',
-                      },
-                ]}
+                sx={{
+          borderRadius: "12px",
+          margin: "6px 8px",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            transform: "translateX(6px)",
+          },
+          "&.Mui-selected": {
+            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            boxShadow: "0 0 12px rgba(0, 150, 255, 0.6)",
+          },
+        }}
 
                 onClick={() =>{handleNavigation(navItem.link)}}
               >
                 <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: 'auto',
-                        },
-                  ]}
+                  sx={{
+            color: "rgba(255,255,255,0.9)",
+            minWidth: "40px",
+            "& svg": {
+              fontSize: "1.6rem",
+              transition: "0.3s",
+            },
+            ".Mui-selected & svg": {
+              color: "#00d4ff",
+              filter: "drop-shadow(0 0 8px #00d4ff)",
+            },
+          }}
                 >
                     {<navItem.icon/>}
                   </ListItemIcon>
