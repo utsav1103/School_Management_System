@@ -151,7 +151,14 @@ export default function Teacher() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" sx={{
+  backgroundImage: "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/dark-wood.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+  borderBottom: "1px solid rgba(255,255,255,0.08)",
+}}
+ open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
