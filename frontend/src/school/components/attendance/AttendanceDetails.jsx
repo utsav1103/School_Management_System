@@ -34,7 +34,7 @@ export default function AttendanceDetails() {
   const navigate = useNavigate();
 
   const convertDate = (dateData) => {
-    const date = new Date();
+    const date = new Date(dateData);
     return (
       date.getDate() + "-" + (+date.getMonth() + 1) + "-" + date.getFullYear()
     );
@@ -71,9 +71,9 @@ export default function AttendanceDetails() {
   const percentage = total > 0 ? ((present / total) * 100).toFixed(2) : 0;
 
   const getColor = () => {
-    if (percentage >= 75) return "#4ade80"; // Tailwind's green-400 (light green, glows on dark)
-    if (percentage >= 50) return "#facc15"; // Tailwind's yellow-400 (bright gold, looks good on dark)
-    return "#f87171"; // Tailwind's red-400 (light red, stands out)
+    if (percentage >= 75) return "#fde047"; 
+    if (percentage >= 50) return "#facc15";  
+    return "#f87171"; 
   };
 
   return (
@@ -128,6 +128,19 @@ export default function AttendanceDetails() {
               ]}
               width={250}
               height={250}
+              slotProps={{
+  legend: {
+    sx: {
+      color: 'white',
+      fontSize: 14,
+
+      // Customize the mark (icon) color
+      [`.MuiChartsLegend-mark`]: {
+        fill: 'white',
+      },
+    },
+  },
+}}
             />
             {/* ✅ Percentage below chart */}
             <Typography
@@ -161,15 +174,21 @@ export default function AttendanceDetails() {
                     <TableCell align="right" sx={{ color: "#FFD700", fontWeight: "bold" }}>Status</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody >
                   {attendanceData.map((attendance) => (
                     <TableRow key={attendance._id} sx={{
                         "&:hover": { backgroundColor: "rgba(255,255,255,0.05)" },
                       }}>
-                      <TableCell sx={{ color: "white" }}>
+                      <TableCell sx={{ color: "white !important" }}>
                         {convertDate(attendance.date)}
                       </TableCell>
-                      <TableCell align="right">{attendance.status} sx={{ color: attendance.status === "Present" ? "#4ade80" : "#f87171" }}</TableCell>
+                      <TableCell align="right" sx={{
+              color:
+                attendance.status === "Present"
+                  ? "#facc15 !important" 
+                  : "#f87171 !important", 
+              fontWeight: "bold",
+            }}>{attendance.status}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
