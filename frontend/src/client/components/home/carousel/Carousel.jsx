@@ -45,41 +45,76 @@ export default function Carousel(){
         setActiveIndex((prevIndex) => prevIndex === 0 ? carouselItems.length - 1 : prevIndex - 1);
     };
     return (
-        <Box sx = {{ position:"relative",width:"100%" }}>
+        <Box  sx={{ position: "relative", width: "100%", overflow: "hidden" }}>
             <SwipeableViews 
             index={activeIndex} onChangeIndex={(index) => setActiveIndex(index)}>
                 {carouselItems.map((item, index) => (
                     <Box
-                    key={index} sx={{ position: 'relative', textAlign: 'center', justifyContent: 'center', color: '#fff' }}>
+                    key={index} sx={{
+    position: "relative",
+    textAlign: "center",
+    justifyContent: "center",
+    color: "#fff",
+    backgroundImage: "url('/images/dark-wood.jpg')",  // wooden background
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}>
                         <img src={item.image} alt={item.title}
-                        style={{ width: '100%', height: '70vh',minHeight: '400px', objectFit: 'cover' }} 
+                         style={{
+      width: "100%",
+      height: "70vh",
+      minHeight: "400px",
+      objectFit: "cover", // use contain for full for future references
+    }} 
                         />
                         
                             
                         
 
-                    <Box sx={{ position: 'absolute',
-        bottom: 20,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',  // semi-transparent black background
-        padding: '10px 20px',
-        borderRadius: 1, }}>
-                        <Typography variant="h5">{item.title}</Typography>
-                        <Typography variant="body1">{item.description}</Typography>
+                    <Box sx={{
+      position: "absolute",
+      bottom: 20,
+      left: "50%",
+      transform: "translateX(-50%)",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      padding: "10px 20px",
+      borderRadius: 1,
+    }}>
+                        <Typography variant="h5" sx={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }} >{item.title}</Typography>
+                        <Typography variant="body1" sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.8)" }}>{item.description}</Typography>
                     </Box>
                     
                     </Box>
                 ))}
                 </SwipeableViews>
                 {/* navigation button */}
-                <Box sx={{position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
-                    <Button variant="contained" onClick={handleBack}>
+                <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)', zIndex: 2 }}>
+                    <Button sx={{
+            minWidth: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "rgba(255, 215, 0, 0.8)",
+              color: "#000",
+            },
+          }} onClick={handleBack}>
                         <ArrowBackIosIcon />
                     </Button>
                     </Box>
                     <Box sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1 }}>
-                    <Button variant="contained" onClick={handleNext}>
+                    <Button sx={{
+            minWidth: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "rgba(255, 215, 0, 0.8)",
+              color: "#000",
+            },
+          }} onClick={handleNext}>
                         <ArrowForwardIosIcon />
                     </Button>
                     </Box>
