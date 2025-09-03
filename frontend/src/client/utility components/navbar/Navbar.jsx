@@ -55,9 +55,14 @@ function Navbar() {
     <AppBar position="static" 
      
   sx={{
-    background: "linear-gradient(90deg, #0f2027, #203a43, #2c5364)", // dark gradient
-    boxShadow: "0 4px 20px rgba(0,0,0,0.6)",
-    borderBottom: "1px solid rgba(255,255,255,0.1)",
+    background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 40%, #262626 100%)", // deep dark gradient
+    backgroundImage: "url(/images/dark-wood.jpg)", // reuse wooden texture
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    color: "white",
+    boxShadow: "0 4px 25px rgba(0,0,0,0.8)", // heavy shadow for depth
+    borderBottom: "1px solid rgba(255, 255, 255, 0.15)", // subtle metallic edge
+    backdropFilter: "blur(6px)", // glassy feel
   }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
