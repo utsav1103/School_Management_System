@@ -5,28 +5,28 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const carouselItems = [
-    {
-        image:'https://img.freepik.com/premium-vector/school-building-illustration_638438-385.jpg?semt=ais_items_boosted&w=740',
+    {   
+        image:'https://thumbs.dreamstime.com/b/modern-school-exterior-clean-architecture-green-lawn-sentimental-dusk-scene-359267261.jpg',
         title:'explore our classroom',
         description:'Engaging and Inspirational Learning Experiences',
     },
     {
-        image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrN8ca7djoyClAewQL1_L0m1sBt17epMZdhKcOlHAO1LDjRTVII09yCco&s',
+        image:'https://thumbs.dreamstime.com/b/dark-class-room-interior-chairs-row-blackboard-screen-window-black-white-classroom-table-side-view-mock-up-copy-space-282630479.jpg',
         title:'Empower Your Learning Journey',
         description:'We believe in the power of education.',
     },
     {
-        image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJoG1Q6_u8PiLw1yt97JddGbDj0p0_gSGLAx9kunjJEhCFYhP3RTvkap4&s',
+        image:'https://buildingbooklove.com/wp-content/uploads/2024/07/Dark-Academia-Classroom-Blog-Post-1024x1024.jpg',
         title:'learning tools',
         description:'enthusiasm and creativity.',
     },
     {
-        image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7zO4vaPxC6o93dwBFuzEeGWMAb_70zLs1wDfnhjNmagKFojAeVd_Iuf0&s',
+        image:'https://pbs.twimg.com/media/EgSp7pNXsAAE1fx.jpg',
         title:'great learning',
         description:'open your mind.',
     },
     {
-        image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThwObAhjLQeIn8MWukad-2Zxx0_cnW-vD1KJF9_8e6FmVEnfmDlTNmY4U&s',
+        image:'https://imgcdn.stablediffusionweb.com/2024/2/21/abfdc066-f9ac-4a86-9a48-1161e3c5d7fd.jpg',
         title:'Lots of Fun',
         description:'books and games.',
     },
