@@ -87,12 +87,30 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+                size="large"
+  aria-label="account of current user"
+  aria-controls="menu-appbar"
+  aria-haspopup="true"
+  onClick={handleOpenNavMenu}
+  color="inherit"
+  sx={{
+    color:"#ffffff", // default gold
+    border: "2px solid rgba(255,215,0,0.5)",
+    borderRadius: "8px",
+    transition: "all 0.4s ease",
+    "&:hover": {
+      background: "rgba(255,215,0,0.1)",
+      boxShadow: "0 0 15px rgba(255, 215, 0, 0.8)",
+    },
+    "& svg": {
+      transition: "all 0.4s ease",
+    },
+    "&:hover svg": {
+      background: "linear-gradient(45deg, #FFD700, #FFFFFF)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent", // makes the gradient visible
+    },
+  }}
             >
               <MenuIcon />
             </IconButton>
@@ -110,14 +128,22 @@ function Navbar() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
+              sx={{
+    display: { xs: 'block', md: 'none' },
+    "& .MuiPaper-root": {
+      backgroundColor: "rgba(20,20,20,0.95)", // dark semi-transparent
+      color: "#fff", // white text
+      boxShadow: "0 4px 20px rgba(0,0,0,0.8)",
+      borderRadius: "12px",
+    },
+  }}
             >
               {pages.map((page, i) => (
                 <MenuItem key={i} onClick={()=>{handleCloseNavMenu(page.link)}} 
                  sx={{
-    color: "#ddd",
+    color: "#fff",
     "&:hover": {
-      background: "rgba(255,255,255,0.08)",
+      background: "rgba(255,255,255,0.01)",
       color: "#FFD700",
     },
   }}
