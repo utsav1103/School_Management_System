@@ -146,13 +146,12 @@ export default function AttendanceStudentList() {
     <Box
   component={"div"}
   sx={{
-    background: "",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    height: "100%",
-    paddingTop: "10px",
-    paddingBottom: "10px",
-  }}
+        background: `url(/images/dark-wood.jpg)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
 >
   {message && (
     <MessageSnackbar
@@ -163,33 +162,58 @@ export default function AttendanceStudentList() {
   )}
 
   {/* Page Heading */}
-  <Box sx={{ textAlign: "center", mt: 2 }}>
-    <Typography variant="h5" fontWeight="bold">
-      Students Attendance
-    </Typography>
-  </Box>
-
-  {/* Controls (Search + Class Select + Attendee) */}
+  <Typography
+        variant="h4"
+        sx={{
+          textAlign: "center",
+          mb: 4,
+          fontWeight: "bold",
+          color: "white",
+          textShadow: "0 0 10px rgba(255,255,255,0.6)",
+        }}
+      >
+        Students Attendance
+      </Typography>
+  
   <Box
     component="div"
     sx={{
-      display: "flex",
-      flexDirection: { xs: "column", sm: "row" },
-      justifyContent: "center",
-      alignItems: "center",
-      gap: 2,
-      mt: 3,
-      mb: 3,
-    }}
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2,
+          mb: 4,
+        }}
   >
     <TextField
       label="Search"
       onChange={handleSearch}
       variant="outlined"
+      sx={{
+            input: { color: "white" },
+            label: { color: "rgba(255,255,255,0.8)" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+              "&:hover fieldset": { borderColor: "#FFD700" },
+              "&.Mui-focused fieldset": { borderColor: "#FFD700" },
+            },
+          }}
     />
     <FormControl sx={{ minWidth: 200 }}>
-      <InputLabel>Class</InputLabel>
-      <Select label="Student Class" onChange={handleClass}>
+      <InputLabel sx={{ color: "rgba(255,255,255,0.8)" }}>Class</InputLabel>
+      <Select label="Student Class" onChange={handleClass} sx={{
+              color: "white",
+              ".MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.3)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#FFD700",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#FFD700",
+              },
+            }}>
         <MenuItem value="">All Students</MenuItem>
         {classes &&
           classes.map((x) => (
@@ -200,8 +224,7 @@ export default function AttendanceStudentList() {
       </Select>
     </FormControl>
   </Box>
-
-  {/* Attendee component (moved below Select) */}
+  {/* attendee*/ }
   {selectedClass && (
     <Box sx={{ mb: 3, textAlign: "center" }}>
       <Attendee
@@ -212,17 +235,24 @@ export default function AttendanceStudentList() {
     </Box>
   )}
 
-  {/* Attendance Table */}
-  <TableContainer component={Paper}>
+  {/* attendance table */}
+  <Box sx={{
+          backgroundColor: "rgba(0,0,0,0.6)",
+          backdropFilter: "blur(10px)",
+          borderRadius: "16px",
+          p: 3,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+        }}>
+<TableContainer component={Paper} sx={{ background: "transparent", boxShadow: "none" }}>
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
       <TableHead>
-        <TableRow>
+        <TableRow sx={{ background: "rgba(255,255,255,0.05)" }}>
           <TableCell><strong>Name</strong></TableCell>
-          <TableCell align="right"><strong>Gender</strong></TableCell>
-          <TableCell align="right"><strong>Guardian Contact</strong></TableCell>
-          <TableCell align="right"><strong>Class</strong></TableCell>
-          <TableCell align="right"><strong>Percentage</strong></TableCell>
-          <TableCell align="right"><strong>View</strong></TableCell>
+          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Gender</strong></TableCell>
+          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Guardian Contact</strong></TableCell>
+          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Class</strong></TableCell>
+          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Percentage</strong></TableCell>
+          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>View</strong></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -230,25 +260,29 @@ export default function AttendanceStudentList() {
           students.map((student) => (
             <TableRow
               key={student._id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              sx={{
+                    "&:hover": { background: "rgba(255,215,0,0.08)" },
+                  }}
             >
-              <TableCell>{student.name}</TableCell>
-              <TableCell align="right">{student.gender}</TableCell>
-              <TableCell align="right">{student.guardian_phone}</TableCell>
-              <TableCell align="right">{student.student_class.class_text}</TableCell>
-              <TableCell align="right">
+              <TableCell sx={{ color: "white" }}>{student.name}</TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>{student.gender}</TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>{student.guardian_phone}</TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>{student.student_class.class_text}</TableCell>
+              <TableCell align="right" sx={{ color: "#FFD700", fontWeight: "bold" }}>
                 {attendacneData[student._id] !== undefined
                   ? `${attendacneData[student._id].toFixed(2)}%`
                   : "No Data"}
               </TableCell>
               <TableCell align="right">
-                <Link to={`/school/attendance/${student._id}`}>Details</Link>
+                <Link to={`/school/attendance/${student._id}`} style={{ color: "white", textDecoration: "underline" }}>Details</Link>
               </TableCell>
             </TableRow>
           ))}
       </TableBody>
     </Table>
   </TableContainer>
+  </Box>
+  
 </Box>
 
   );

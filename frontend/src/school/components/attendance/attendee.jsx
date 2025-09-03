@@ -62,18 +62,50 @@ export default function Attendee({classId,handleMessage,message  }) {
     fetchteachers();
   }, [classId , message]);
   return (
-    <>
-      <h1>Attendee</h1>
+    <Box sx={{
+        background: `url(/images/dark-wood.jpg)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        borderRadius: "16px",
+        padding: "20px",
+        mt: 3,
+        boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+        textAlign: "center",
+      }}>
+       <Typography
+        variant="h5"
+        sx={{
+          mb: 3,
+          fontWeight: "bold",
+          color: "white",
+          textShadow: "0 0 10px rgba(255,255,255,0.7)",
+        }}
+      >
+        Attendee
+      </Typography>
 
-      <Box>
-        {attendee && <Box sx={{display:'flex',flexDirection:'row',justifyContent:'center'}} component={'div'}>
+      
+        {attendee && <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 1,
+            mb: 3,
+          }}>
 
-          <Typography variant="h6">Attendee Teacher :</Typography>
-          <Typography variant="h6">{attendee.name}</Typography>
+          <Typography variant="h6" sx={{ color: "#FFD700" }}>Attendee Teacher :</Typography>
+          <Typography variant="h6" sx={{ color: "white", textShadow: "0 0 8px rgba(255,255,255,0.6)" }}>{attendee.name}</Typography>
 
         </Box> }
         
-        <FormControl sx={{ minWidth: 200 }}>
+        <FormControl sx={{
+          minWidth: 220,
+          backgroundColor: "rgba(0,0,0,0.6)",
+          borderRadius: "10px",
+          "& .MuiInputLabel-root": { color: "white" },
+          "& .MuiSelect-select": { color: "white" },
+          "& .MuiSvgIcon-root": { color: "white" },
+          mb: 3,
+        }}>
           <InputLabel>Teachers</InputLabel>
           <Select
             label="Teacher"
@@ -91,9 +123,28 @@ export default function Attendee({classId,handleMessage,message  }) {
               ))}
           </Select>
         </FormControl> 
+        <Box sx={{ mt: 2 }}>
+              <Button variant="contained"
+          onClick={handleSubmit}
+          sx={{
+            background: "linear-gradient(135deg, #434343, #000000)",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "12px",
+            px: 3,
+            py: 1,
+            boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
+            "&:hover": {
+              background: "linear-gradient(135deg, #FFD700, #b8860b)",
+              color: "black",
+              boxShadow: "0 4px 20px rgba(255,215,0,0.6)",
+            },
+          }}>{attendee?"Change Attendee":"Select Attendee"}</Button>
+      
+        </Box>
 
-        <Button onClick={handleSubmit}>{attendee?"Change Attendee":"Select Attendee"}</Button>
-      </Box>
-    </>
+        
+    
+    </Box>
   );
 }

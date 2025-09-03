@@ -1,147 +1,183 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import { baseApi } from "../../../environment"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { baseApi } from "../../../environment";
 
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { styled, Typography } from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { PieChart } from '@mui/x-charts/PieChart';
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import { Box, styled, Typography } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fff',
+  backgroundColor: "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: (theme.vars ?? theme).palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
   }),
 }));
 
-export default function AttendanceDetails(){
+export default function AttendanceDetails() {
+  const [present, setPresent] = useState(0);
+  const [absent, setAbsent] = useState(0);
 
-const [present, setPresent]=useState(0);
-const [absent, setAbsent]=useState(0);
+  const [attendanceData, setAttendanceData] = useState([]);
+  const studentId = useParams().id;
+  const navigate = useNavigate();
 
-const [attendanceData , setAttendanceData] = useState([])
-const studentId = useParams().id;
-const navigate = useNavigate()
+  const convertDate = (dateData) => {
+    const date = new Date();
+    return (
+      date.getDate() + "-" + (+date.getMonth() + 1) + "-" + date.getFullYear()
+    );
+  };
+  const fetchAttendanceData = async () => {
+    try {
+      const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+      console.log("Response Attendance", response.data);
 
+      // Use the attendance array inside the object
+      const records = response.data.attendance || [];
+      setAttendanceData(records);
 
-const convertDate = (dateData)=>{
-    const date = new Date()
-    return date.getDate() + "-" + (+date.getMonth()+1) + "-" + date.getFullYear();
-}
-    const fetchAttendanceData = async () => {
-  try {
-    const response = await axios.get(`${baseApi}/attendance/${studentId}`);
-    console.log("Response Attendance", response.data);
+      let presentCount = 0,
+        absentCount = 0;
+      records.forEach((a) => {
+        if (a.status === "Present") presentCount++;
+        else if (a.status === "Absent") absentCount++;
+      });
 
-    // Use the attendance array inside the object
-    const records = response.data.attendance || [];
-    setAttendanceData(records);
+      setPresent(presentCount);
+      setAbsent(absentCount);
+    } catch (error) {
+      console.log("Error in fetching student attendance.", error);
+      navigate("/school/attendance");
+    }
+  };
 
-    let presentCount = 0, absentCount = 0;
-    records.forEach((a) => {
-      if (a.status === "Present") presentCount++;
-      else if (a.status === "Absent") absentCount++;
-    });
+  useEffect(() => {
+    fetchAttendanceData();
+  }, []);
 
-    setPresent(presentCount);
-    setAbsent(absentCount);
-  } catch (error) {
-    console.log("Error in fetching student attendance.", error);
-    navigate("/school/attendance");
-  }
-};
-
-    useEffect(()=>{
-        
-        fetchAttendanceData()
-
-    },[]);
-
-    const total = present + absent;
+  const total = present + absent;
   const percentage = total > 0 ? ((present / total) * 100).toFixed(2) : 0;
 
-
   const getColor = () => {
-  if (percentage >= 75) return "#4ade80";   // Tailwind's green-400 (light green, glows on dark)
-  if (percentage >= 50) return "#facc15";   // Tailwind's yellow-400 (bright gold, looks good on dark)
-  return "#f87171";                         // Tailwind's red-400 (light red, stands out)
-};
+    if (percentage >= 75) return "#4ade80"; // Tailwind's green-400 (light green, glows on dark)
+    if (percentage >= 50) return "#facc15"; // Tailwind's yellow-400 (bright gold, looks good on dark)
+    return "#f87171"; // Tailwind's red-400 (light red, stands out)
+  };
 
-    return (
-        <>
-        <h1>Attendance Details</h1>
+  return (
+    <Box
+      sx={{
+        background: `url(/images/dark-wood.jpg)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: "center",
+          mb: 4,
+          fontWeight: "bold",
+          color: "white",
+          textShadow: "0 0 10px rgba(255,255,255,0.6)",
+        }}
+      >
+        Attendance Details
+      </Typography>
 
-
-
- <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {/* Pie Chart Section */}
         <Grid item xs={12} md={6}>
-          <Item>
+          <Box
+            sx={{
+              backgroundColor: "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(10px)",
+              borderRadius: "16px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+              textAlign: "center",
+            }}
+          >
             <PieChart
               series={[
                 {
                   data: [
-                    { id: 0, value: present, label: 'Present',color:getColor() },
-                    { id: 1, value: absent, label: 'Absent',color:"#94a3b8" },
+                    {
+                      id: 0,
+                      value: present,
+                      label: "Present",
+                      color: getColor(),
+                    },
+                    { id: 1, value: absent, label: "Absent", color: "#94a3b8" },
                   ],
                 },
               ]}
               width={250}
               height={250}
             />
-
             {/* ✅ Percentage below chart */}
-            <Typography variant="h6" sx={{ 
-    mt: 2, 
-    color: getColor(), 
-    fontSize: "20px", 
-    fontWeight: "bold" 
-  }}>
+            <Typography
+              variant="h6"
+              sx={{
+                mt: 2,
+                color: getColor(),
+                fontSize: "20px",
+                fontWeight: "bold",
+                textShadow: "0 0 10px rgba(0,0,0,0.8)",
+              }}
+            >
               Attendance: {percentage}%
             </Typography>
-          </Item>
+          </Box>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Item>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Box sx={{
+              backgroundColor: "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(10px)",
+              borderRadius: "16px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+            }}>
+            <TableContainer component={Paper} sx={{ background: "transparent", boxShadow: "none" }}>
+              <Table sx={{ minWidth: 650 }} aria-label="attendance table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell align="right">Status</TableCell>
+                    <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }}>Date</TableCell>
+                    <TableCell align="right" sx={{ color: "#FFD700", fontWeight: "bold" }}>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {attendanceData.map((attendance) => (
-                    <TableRow key={attendance._id}>
-                      <TableCell component="th" scope="row">
+                    <TableRow key={attendance._id} sx={{
+                        "&:hover": { backgroundColor: "rgba(255,255,255,0.05)" },
+                      }}>
+                      <TableCell sx={{ color: "white" }}>
                         {convertDate(attendance.date)}
                       </TableCell>
-                      <TableCell align="right">{attendance.status}</TableCell>
+                      <TableCell align="right">{attendance.status} sx={{ color: attendance.status === "Present" ? "#4ade80" : "#f87171" }}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-          </Item>
+          </Box>
         </Grid>
-        
       </Grid>
-
-
-      
-        </>
-    )
+    </Box>
+  );
 }
