@@ -1,5 +1,18 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;   /* ensures full page background */
+  width: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif; /* keeps UI consistent with MUI */
+}
+
+body {
+  background: url("/images/dark-wood.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: white; /* ensures default text is visible on dark wood */
 }

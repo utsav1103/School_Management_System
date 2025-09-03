@@ -30,12 +30,20 @@ import AttendanceStudentList from "./school/components/attendance/AttendanceStud
 import  {AuthProvider}  from "./context/AuthContext.jsx";
 import AttendanceDetails from "./school/components/attendance/AttendanceDetails.jsx";
 import LogOut from "./client/components/logout/LogOut.jsx";
+import { Box } from "@mui/material";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter> 
-        <Routes>
+      <Box sx={{
+    background: `url(/images/dark-wood.jpg)`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    minHeight: "100vh",
+    width: "100%",
+  }}>
+<Routes>
           {/*School Routes*/}
           <Route path="school" element={<ProtectedRoute allowedRoles={['SCHOOL']}><School /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
@@ -88,6 +96,8 @@ function App() {
             
           </Route>
         </Routes>
+      </Box>
+        
       </BrowserRouter>
     </AuthProvider>
   );
