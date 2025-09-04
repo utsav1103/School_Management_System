@@ -199,26 +199,35 @@ export default function Examinations() {
 
       <Paper
         elevation={4}
-        sx={{
-          p: 3,
-          borderRadius: 3,
-          background: "linear-gradient(135deg, #f5f7fa, #c3cfe2)",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-          maxWidth: 400,
-          mx: "auto",
-          mt: 4,
-        }}
+         sx={{
+    p: 3,
+    borderRadius: 3,
+    background: "rgba(0, 0, 0, 0.7)", // semi-transparent dark background
+    backdropFilter: "blur(6px)", // glass effect
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    boxShadow: "0px 6px 20px rgba(0,0,0,0.6)",
+    maxWidth: 400,
+    mx: "auto",
+    mt: 4,
+    color: "white",
+  }}
       >
         <Typography
           variant="h5"
-          sx={{ mb: 2, fontWeight: "bold", color: "#333", textAlign: "center" }}
+           sx={{
+      mb: 2,
+      fontWeight: "bold",
+      color: "#ff9800", // warm orange for contrast
+      textAlign: "center",
+      textShadow: "0 0 8px rgba(255,152,0,0.7)", // glowing title
+    }}
         >
           Select Class
         </Typography>
 
         <Box>
           <FormControl fullWidth variant="outlined">
-            <InputLabel id="class-select-label">Class</InputLabel>
+            <InputLabel id="class-select-label"  sx={{ color: "#fff" }}>Class</InputLabel>
             <Select
               labelId="class-select-label"
               name="subject"
@@ -228,6 +237,13 @@ export default function Examinations() {
               value={selectedClass}
               error={Boolean(Formik.touched.subject && Formik.errors.subject)}
               label="class"
+              sx={{
+          color: "#fff",
+          ".MuiOutlinedInput-notchedOutline": { borderColor: "rgba(255,255,255,0.3)" },
+          "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#ff9800" },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#ff5722" },
+          ".MuiSvgIcon-root": { color: "#fff" },
+        }}
             >
               <MenuItem value="">Select Class</MenuItem>
               {classes.map((x) => (
@@ -251,12 +267,28 @@ export default function Examinations() {
       <Button
         variant="contained"
         color="primary"
-        sx={{ m: 2 }}
-        onClick={() => {
-          setShowForm(true);
-          setEditId(null); // make sure it's in add mode, not edit
-          Formik.resetForm(); // clear previous values
-        }}
+        sx={{
+    m: 2,
+    px: 3,
+    py: 1.2,
+    fontWeight: "bold",
+    fontSize: "1rem",
+    borderRadius: "12px",
+    background: "linear-gradient(90deg, #ff9800, #ff5722)", // warm orange gradient
+    color: "white",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+    textTransform: "none", // keep normal casing
+    transition: "all 0.3s ease",
+    "&:hover": {
+      background: "linear-gradient(90deg, #2a5298, #1e3c72)", // shifts to deep blue gradient
+      transform: "translateY(-2px) scale(1.05)", // slight pop effect
+      boxShadow: "0 8px 20px rgba(0,0,0,0.6)",
+    },
+  }} onClick={() => {
+    setShowForm(true);   // ✅ show the form
+    setEditId(null);     // ✅ reset to add mode
+    Formik.resetForm();  // ✅ clear old values
+  }}
       >
         Add Exam
       </Button>
@@ -268,16 +300,21 @@ export default function Examinations() {
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
-            bgcolor="#f4f6f8"
+             sx={{
+        background: "transparent", // ✅ remove white background, let wood show
+        backdropFilter: "blur(6px)", // ✅ frosted glass effect
+      }}
           >
             <Card
               sx={{
-                width: "100%",
-                maxWidth: 500,
-                boxShadow: 6,
-                borderRadius: 4,
-                p: 2,
-              }}
+          width: "100%",
+          maxWidth: 500,
+          boxShadow: "0 8px 30px rgba(0,0,0,0.6)", // ✅ strong depth
+          borderRadius: 4,
+          p: 2,
+          background: "rgba(30, 30, 30, 0.85)", // ✅ semi-transparent dark card
+          border: "1px solid rgba(255,255,255,0.1)", // ✅ subtle glowing border
+        }}
             >
               {editId ? (
                 <Typography
@@ -285,7 +322,10 @@ export default function Examinations() {
                   textAlign="center"
                   fontWeight="bold"
                   gutterBottom
-                  sx={{ color: "primary.main" }}
+                  sx={{
+              color: "white",
+              textShadow: "0px 2px 6px rgba(255, 193, 7, 0.7)", // ✅ golden glow
+            }}                                               
                 >
                   Edit Exam
                 </Typography>
@@ -295,7 +335,10 @@ export default function Examinations() {
                   textAlign="center"
                   fontWeight="bold"
                   gutterBottom
-                  sx={{ color: "primary.main" }}
+                   sx={{
+              color: "white",
+              textShadow: "0px 2px 6px rgba(255, 193, 7, 0.7)",
+            }}
                 >
                   Add New Exam
                 </Typography>
@@ -327,6 +370,12 @@ export default function Examinations() {
                             Formik.touched.date && Formik.errors.date
                           ),
                           helperText: Formik.touched.date && Formik.errors.date,
+                          sx: {
+                      bgcolor: "rgba(255,255,255,0.1)",
+                      borderRadius: 2,
+                      input: { color: "white" },
+                      label: { color: "white" },
+                    },
                         },
                       }}
                     />
@@ -334,7 +383,7 @@ export default function Examinations() {
 
                   {/* Subject */}
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
+                    <InputLabel sx={{ color: "white" }}>
                       Subject
                     </InputLabel>
                     <Select
@@ -348,9 +397,11 @@ export default function Examinations() {
                       error={Boolean(
                         Formik.touched.subject && Formik.errors.subject
                       )}
-                      helperText={
-                        Formik.touched.subject && Formik.errors.subject
-                      }
+                       sx={{
+                  bgcolor: "rgba(255,255,255,0.1)",
+                  borderRadius: 2,
+                  color: "white",
+                }}
                     >
                       <MenuItem value={""}>Select Subject</MenuItem>
                       {subjects.map((subject) => {
@@ -375,39 +426,55 @@ export default function Examinations() {
                     error={Boolean(
                       Formik.touched.examType && Formik.errors.examType
                     )}
-                    helperText={
-                      Formik.touched.examType && Formik.errors.examType
-                    }
+                     sx={{
+                bgcolor: "rgba(255,255,255,0.1)",
+                borderRadius: 2,
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+                    
                   />
 
                   {/* Submit Button */}
                   {/* Cancel Button */}
                   <Button
                     type="submit"
-                    variant="contained"
                     size="large"
                     sx={{
-                      mt: 2,
-                      borderRadius: 2,
-                      textTransform: "none",
-                      fontSize: "1rem",
-                      py: 1.2,
-                    }}
+                mt: 2,
+                borderRadius: 3,
+                fontWeight: "bold",
+                textTransform: "none",
+                fontSize: "1rem",
+                py: 1.2,
+                background: "linear-gradient(90deg, #ff9800, #ff5722)",
+                color: "white",
+                "&:hover": {
+                  background: "linear-gradient(90deg, #2a5298, #1e3c72)",
+                  transform: "translateY(-2px) scale(1.05)",
+                },
+              }}
                   >
                     {editId ? "Update" : "Submit"}
                   </Button>
                   <Button
                     type="button"
-                    variant="contained"
                     onClick={handleEditCancel}
                     size="large"
                     sx={{
-                      mt: 2,
-                      borderRadius: 2,
-                      textTransform: "none",
-                      fontSize: "1rem",
-                      py: 1.2,
-                    }}
+                mt: 2,
+                borderRadius: 3,
+                fontWeight: "bold",
+                textTransform: "none",
+                fontSize: "1rem",
+                py: 1.2,
+                border: "2px solid #ff9800",
+                color: "#ff9800",
+                "&:hover": {
+                  background: "rgba(255,152,0,0.1)",
+                  transform: "translateY(-2px) scale(1.05)",
+                },
+              }}
                   >
                     Cancel
                   </Button>
@@ -418,38 +485,72 @@ export default function Examinations() {
         )}
       </paper>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} sx={{
+    mt: 4,
+    borderRadius: 3,
+    overflow: "hidden",
+    boxShadow: "0px 6px 20px rgba(0,0,0,0.35)",
+    background: "rgba(0,0,0,0.6)",
+  }}>
+        <Table>
           <TableHead>
-            <TableRow>
-              <TableCell align="right">Exam Date</TableCell>
-              <TableCell align="right">Subject</TableCell>
-              <TableCell align="right">Exam Type</TableCell>
-              <TableCell align="right">Actions</TableCell>
+            <TableRow sx={{
+          background: "linear-gradient(90deg, #ff9800, #ff5722)", // 🔥 orange gradient
+        }}>
+              <TableCell sx={{ color: "white", fontWeight: "bold", textAlign: "center" }} align="right">Exam Date</TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold", textAlign: "center" }} align="right">Subject</TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold", textAlign: "center" }} align="right">Exam Type</TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold", textAlign: "center" }} align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {examinations.map((examination) => (
+            {examinations.map((examination, index) => (
               <TableRow
                 key={examination._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                 sx={{
+            backgroundColor:
+              index % 2 === 0
+                ? "rgba(255, 255, 255, 0.05)" // subtle dark gray
+                : "rgba(255, 152, 0, 0.15)", // light orange tint
+            transition: "all 0.3s ease",
+            "&:hover": { backgroundColor: "rgba(255, 87, 34, 0.25)" }, // 🔥 deeper orange hover
+          }}
               >
-                <TableCell align="right" component="th" scope="row">
+                <TableCell align="center" sx={{ color: "white" }}>
                   {dateFormat(examination.examDate)}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center" sx={{ color: "white" }}>
                   {examination.subject ? examination.subject.subject_name : ""}
                 </TableCell>
-                <TableCell align="right">{examination.examType}</TableCell>
-                <TableCell align="right">
-                  <Button
+                <TableCell align="center" sx={{ color: "white" }}>{examination.examType}</TableCell>
+                <TableCell align="center">
+                  <Button variant="contained"
+              sx={{
+                mr: 1,
+                py: 0.5,
+                px: 2,
+                borderRadius: 2,
+                fontSize: "0.85rem",
+                fontWeight: "bold",
+                background: "linear-gradient(90deg, #ff9800, #ff5722)",
+                "&:hover": { background: "linear-gradient(90deg, #2a5298, #1e3c72)" },
+              }}
                     onClick={() => {
                       handleEdit(examination._id);
                     }}
                   >
                     Edit
                   </Button>
-                  <Button
+                  <Button variant="contained"
+              sx={{
+                py: 0.5,
+                px: 2,
+                borderRadius: 2,
+                fontSize: "0.85rem",
+                fontWeight: "bold",
+                background: "linear-gradient(90deg, #e53935, #b71c1c)",
+                "&:hover": { background: "linear-gradient(90deg, #c62828, #8e0000)" },
+              }}
                     onClick={() => {
                       handleDelete(examination._id);
                     }}
