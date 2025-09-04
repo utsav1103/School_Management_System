@@ -8,6 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
@@ -27,7 +28,7 @@ export default function Schedule() {
     setMessage(msg);
     setMessageType(type);
   };
-
+  const [view, setView] = useState("week");
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [newPeriod, setNewPeriod] = useState(false);
@@ -47,21 +48,20 @@ export default function Schedule() {
     },
   ];
   const [events, setEvents] = useState(myEventsList);
-  
+
   const handleEventClose = () => {
     setNewPeriod(false);
-    setEdit(false)
-    setSelectedEventId(null)
+    setEdit(false);
+    setSelectedEventId(null);
   };
-
-  
-  const  [edit, setEdit]= useState(false)
-  const [selectedEventId, setSelectedEventId] = useState(null)
-  const handleSelectEvent=(event)=>{
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [edit, setEdit] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const handleSelectEvent = (event) => {
     setEdit(true);
-    setSelectedEventId(event.id)
-    console.log(event)
-  }
+    setSelectedEventId(event.id);
+    console.log(event);
+  };
 
   useEffect(() => {
     axios
@@ -94,26 +94,28 @@ export default function Schedule() {
           console.log("Error in fetching schedule", e);
         });
     }
-  }, [selectedClass,message]);
+  }, [selectedClass, message]);
 
   //useEffect(() => {}, [events]);
-  
+
   return (
     <>
-      <h1
-        style={{
-          fontSize: "2.5rem",
-          fontWeight: "700",
-          textAlign: "center",
-          margin: "2rem 0",
-          background: "linear-gradient(to right, #00bcd4, #8bc34a)",
+      <Typography
+        variant="h3"
+        align="center"
+        sx={{
+          fontWeight: 800,
+          my: 4,
+          background: "linear-gradient(90deg, #ff9800, #ff5722)", // warm orange gradient
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
-          letterSpacing: "1px",
+          letterSpacing: "2px",
+          textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
         📅 Schedule
-      </h1>
+      </Typography>
       {message && (
         <MessageSnackbar
           message={message}
@@ -128,21 +130,31 @@ export default function Schedule() {
           maxWidth: 600,
           margin: "30px auto",
           padding: "30px",
-          borderRadius: "16px",
-          background: "linear-gradient(to right, #e0f7fa, #80deea)",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          borderRadius: "20px",
+          background: "linear-gradient(90deg, #ff9800, #ff5722)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 3,
         }}
       >
         <FormControl fullWidth>
-          <InputLabel>Class</InputLabel>
+          <InputLabel sx={{ color: "white" }}>Class</InputLabel>
           <Select
             value={selectedClass || ""}
             label="Class"
-            onChange={(e) => {
-              setSelectedClass(e.target.value);
+            onChange={(e) => setSelectedClass(e.target.value)}
+            sx={{
+              borderRadius: 2,
+              background: "rgba(255,255,255,0.1)",
+              color: "white",
+              "& .MuiSvgIcon-root": { color: "white" }, // dropdown arrow white
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.3)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#ff9800",
+              }, // orange hover
             }}
           >
             {classes &&
@@ -159,16 +171,21 @@ export default function Schedule() {
         <Button
           onClick={() => setNewPeriod(true)}
           sx={{
-            background: "linear-gradient(to right, #00bcd4, #8bc34a)",
+            background: "linear-gradient(90deg, #ff9800, #ff5722)",
             color: "white",
             fontWeight: "bold",
-            padding: "10px 20px",
-            borderRadius: "12px",
-            fontSize: "1rem",
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-            transition: "0.3s",
+            px: 4,
+            py: 1.5,
+            borderRadius: "14px",
+            fontSize: "1.1rem",
+            letterSpacing: "0.5px",
+            textTransform: "none",
+            boxShadow: "0 6px 15px rgba(0,0,0,0.3)",
+            transition: "all 0.3s ease",
             "&:hover": {
-              background: "linear-gradient(to right, #0097a7, #689f38)",
+              background: "linear-gradient(to right,#ff5722, #e91e63)",
+              transform: "translateY(-3px) scale(1.05)", // pop effect
+              boxShadow: "0 10px 25px rgba(0,0,0,0.4)",
             },
           }}
         >
@@ -180,25 +197,28 @@ export default function Schedule() {
         <ScheduleEvent
           selectedClass={selectedClass}
           handleEventClose={handleEventClose}
-          handleMessageNew={handleMessageNew} edit={edit} selectedEventId={selectedEventId}
+          handleMessageNew={handleMessageNew}
+          edit={edit}
+          selectedEventId={selectedEventId}
         />
       )}
-
-      <div
-        style={{
+      <Box
+        sx={{
           maxWidth: "1000px",
           margin: "0 auto",
-          padding: "1rem",
-          backgroundColor: "white",
-          borderRadius: "12px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          p: 2,
+          borderRadius: "16px",
+          background: "rgba(30, 30, 30, 0.85)", // dark semi-transparent for glass effect
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
         }}
       >
         <Calendar
           localizer={localizer}
           events={events}
-          defaultView="week"
-          views={["week","day","agenda"]}
+          view={view}
+          onView={(newView) => setView(newView)}
+          views={["week", "day", "agenda"]}
           step={30}
           timeslots={1}
           startAccessor="start"
@@ -206,14 +226,17 @@ export default function Schedule() {
           onSelectEvent={handleSelectEvent}
           min={new Date(new Date().setHours(8, 0, 0, 0))}
           max={new Date(new Date().setHours(18, 0, 0, 0))}
-          defaultDate={new Date()}
+          date={currentDate}
+          onNavigate={(newDate)=>setCurrentDate(newDate)}
           showMultiDayTimes
           style={{
             height: "600px",
-            borderRadius: "8px",
+            borderRadius: "12px",
+            color: "#f1f1f1",
+            backgroundColor: "transparent", 
           }}
         />
-      </div>
+      </Box>
     </>
   );
 }
