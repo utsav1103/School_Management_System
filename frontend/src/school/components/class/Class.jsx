@@ -109,19 +109,34 @@ const [message, setMessage] = useState("");
               handleClose={handleMessageClose}
             />
           )}
-      <h1>Class</h1>
+       <Typography
+        variant="h4"
+        sx={{
+          textAlign: "center",
+          fontWeight: "bold",
+          mb: 3,
+          background: "linear-gradient(45deg,#ff9800,#ff5722)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        Class
+      </Typography>
       <Box
         component="form"
         sx={{
           "& > :not(style)": { m: 1 },
           display: "flex",
-          minHeight: "80vh",
+          minHeight: "70vh",
           flexDirection: "column",
           width: "50vw",
-          minWidth: "230px",
+          minWidth: "250px",
           margin: "auto",
-          padding: "1rem",
-          backgroundColor: "rgba(221, 183, 239, 0.22)",
+          p: 3,
+          borderRadius: "16px",
+          backgroundColor: "rgba(0,0,0,0.6)",
+          backdropFilter: "blur(10px)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
         }}
         noValidate
         autoComplete="off"
@@ -130,14 +145,24 @@ const [message, setMessage] = useState("");
         {edit ? (
           <Typography
             variant="h6"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
+            sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            mb: 2,
+            color: "#fff",
+          }}
           >
             Edit Class
           </Typography>
         ) : (
           <Typography
             variant="h6"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
+           sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            mb: 2,
+            color: "#fff",
+          }}
           >
             Add New Class
           </Typography>
@@ -149,6 +174,15 @@ const [message, setMessage] = useState("");
           value={Formik.values.class_text}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+           InputLabelProps={{ style: { color: "#ff9800" } }}
+          sx={{
+            input: { color: "#fff" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+              "&:hover fieldset": { borderColor: "#ff9800" },
+              "&.Mui-focused fieldset": { borderColor: "#ff5722" },
+            },
+          }}
         />
 
         {Formik.touched.class_text && Formik.errors.class_text && (
@@ -163,6 +197,15 @@ const [message, setMessage] = useState("");
           value={Formik.values.class_num}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+           InputLabelProps={{ style: { color: "#ff9800" } }}
+          sx={{
+            input: { color: "#fff" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+              "&:hover fieldset": { borderColor: "#ff9800" },
+              "&.Mui-focused fieldset": { borderColor: "#ff5722" },
+            },
+          }}
         />
 
         {Formik.touched.class_num && Formik.errors.class_num && (
@@ -170,8 +213,17 @@ const [message, setMessage] = useState("");
             {Formik.errors.class_num}
           </p>
         )}
-        <Button
-        sx={{width:'120px'}}
+        <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+ <Button
+         sx={{
+              flex: 1,
+              background: "linear-gradient(45deg,#ff9800,#ff5722)",
+              color: "#fff",
+              fontWeight: "bold",
+              "&:hover": {
+                background: "linear-gradient(45deg,#ff5722,#ff9800)",
+              },
+            }}
             type="submit"
             variant="contained"
           >
@@ -183,31 +235,56 @@ const [message, setMessage] = useState("");
             onClick={() => {
               cancelEdit();
             }}
-            type="button  "
+            type="button"
             variant="outlined"
-            sx={{width:'120px'}}
+             sx={{
+                flex: 1,
+                borderColor: "#ff9800",
+                color: "#ff9800",
+                fontWeight: "bold",
+                "&:hover": {
+                  borderColor: "#ff5722",
+                  color: "#ff5722",
+                },
+              }}
           >
             Cancel
           </Button>
         )}
       </Box>
+        </Box>
+       
 
       <Box
         component={"div"}
-        sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 2,
+          mt: 4,
+        }}
       >
         {classes &&
           classes.map((x) => {
             return (
-              <Paper key={x._id} sx={{m:2,p:2}}>
-                <Box component={"div"}>
-                  {" "}
-                  <Typography>
+              <Paper key={x._id} sx={{
+                p: 2,
+                borderRadius: "12px",
+                minWidth: "220px",
+                background: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(8px)",
+                color: "#fff",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+                "&:hover": { background: "rgba(255,152,0,0.15)" },
+              }}>
+                  <Typography sx={{ fontWeight: "bold", mb: 1 }}>
                     Class:{x.class_text}[{x.class_num}]
                   </Typography> 
-                </Box>
+              
                 <Box component={"div"}>
-                  <Button
+                  <Button  sx={{ color: "#ff9800" }}
                     onClick={() => {
                       handleEdit(x._id,x.class_text,x.class_num);
                     }}
@@ -218,7 +295,7 @@ const [message, setMessage] = useState("");
                     onClick={() => {
                       handleDelete(x._id);
                     }}
-                      sx={{color:"red"}}
+                      sx={{ color: "red" }}
                   >
                     <DeleteSweepIcon />
                   </Button>
