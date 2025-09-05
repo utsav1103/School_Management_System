@@ -35,17 +35,17 @@ export default function NoticeStudent() {
     (notice) => notice.audience === "student" || notice.audience === "all"
   );
 
-  return (
+ return (
     <div className="notice-container">
       <h2 className="notice-title">📢 Student Notices</h2>
 
-       <TableContainer component={Paper} className="notice-table">
+      <TableContainer component={Paper} className="notice-table">
         <Table sx={{ minWidth: 650 }} aria-label="student notices">
           <TableBody>
             {studentNotices.length > 0 ? (
               studentNotices.map((notice) => (
                 <TableRow key={notice._id} className="notice-row">
-                  <TableCell className="notice-cell">
+                  <TableCell className="notice-cell notice-title-cell">
                     <b>{notice.title}</b>
                   </TableCell>
                   <TableCell className="notice-cell" align="right">
@@ -64,8 +64,6 @@ export default function NoticeStudent() {
         </Table>
       </TableContainer>
 
-
-      {/* Custom Styling */}
       <style>
         {`
         .notice-container {
@@ -78,19 +76,22 @@ export default function NoticeStudent() {
 
         .notice-title {
           text-align: center;
-          font-size: 1.8rem;
+          font-size: 2rem;
           font-weight: bold;
           margin-bottom: 1.5rem;
-          color: #fff;
-          text-shadow: 0 0 10px rgba(255,255,255,0.4);
+          color: transparent;
+          background: linear-gradient(90deg, #ff9800, #ff5722);
+          -webkit-background-clip: text;
+          background-clip: text;
+          text-shadow: 0 0 8px rgba(255,152,0,0.6);
         }
 
         .notice-table {
-          background: rgba(20, 20, 20, 0) !important;
+          background: rgba(20, 20, 20, 0.7) !important;
           backdrop-filter: blur(8px);
-          border-radius: 12px;
+          border-radius: 14px;
           overflow: hidden;
-          box-shadow: 0 0 20px rgba(0,0,0,0.6);
+          box-shadow: 0 0 25px rgba(0,0,0,0.7);
         }
 
         .notice-row {
@@ -98,23 +99,24 @@ export default function NoticeStudent() {
         }
 
         .notice-row:hover {
-          background: rgba(255,255,255,0.08) !important;
+          background: rgba(255, 152, 0, 0.08) !important;
           transform: scale(1.01);
+          box-shadow: 0 0 12px rgba(255, 152, 0, 0.3);
         }
 
-.notice-cell {
-  color: #ddd !important;
-  font-size: 1rem;
-}
+        .notice-cell {
+          color: #eee !important;
+          font-size: 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
 
-.notice-cell b {
-  color: #FFD700; /* gold for titles */
-  text-shadow: 0 0 8px rgba(255,215,0,0.5);
-}
-
-.notice-cell * {
-  color: #ddd !important; /* makes sure messages stay light */
-}
+        .notice-title-cell b {
+          color: transparent;
+          background: linear-gradient(90deg, #ff9800, #ff5722);
+          -webkit-background-clip: text;
+          background-clip: text;
+          font-weight: bold;
+        }
       `}
       </style>
     </div>
