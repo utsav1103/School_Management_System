@@ -111,64 +111,64 @@ export default function ExaminationsStudent() {
 
       {/* Custom Styling */}
       <style>
-        {`
-        .exam-page {
-          background: url('/images/dark-wood.jpg');
-          background-size: cover;
-          min-height: 100vh;
-          padding: 2rem;
-          color: white;
-        }
+{`
+  .exam-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #ff9800, #ff5722);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(255,152,0,0.5);
+  }
 
-        .exam-title {
-          text-align: center;
-          font-size: 2rem;
-          font-weight: bold;
-          margin-bottom: 2rem;
-          color: #fff;
-          text-shadow: 0 0 12px rgba(255,255,255,0.5);
-        }
+  .exam-page {
+    background: url('/images/dark-wood.jpg');
+    background-size: cover;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+  }
 
-        .exam-select {
-          color: #fff !important;
-        }
+  .exam-table {
+    background: rgba(20, 20, 20, 0.5) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0,0,0,0.7);
+  }
 
-        .exam-table {
-          background: rgba(20, 20, 20, 0.4) !important;
-          backdrop-filter: blur(10px);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 0 25px rgba(0,0,0,0.7);
-        }
+  .exam-head {
+    background: rgba(40,40,40,0.9) !important;
+    color: #f5f5f5 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+  }
 
-        .exam-head {
-          background: rgba(40,40,40,0.9) !important;
-          color: #f0f0f0 !important;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
+  .exam-row {
+    transition: all 0.3s ease;
+  }
 
-        .exam-row {
-          transition: all 0.3s ease;
-        }
+  .exam-row:hover {
+    background: rgba(255,255,255,0.08) !important;
+    transform: scale(1.01);
+  }
 
-        .exam-row:hover {
-          background: rgba(255,255,255,0.08) !important;
-          transform: scale(1.01);
-        }
+  .exam-cell {
+    color: #e0e0e0 !important;
+    font-size: 1rem;
+  }
 
-        .exam-cell {
-          color: #ddd !important;
-          font-size: 1rem;
-        }
-
-        .subject-highlight {
-          color: #ff9800 !important; /* Highlight subject names */
-          font-weight: bold;
-        }
-      `}
-      </style>
+  .subject-highlight {
+    color: #ff9800 !important;
+    font-weight: bold;
+  }
+`}
+</style>
     </Box>
   );
 }
