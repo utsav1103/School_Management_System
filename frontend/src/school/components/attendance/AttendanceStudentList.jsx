@@ -165,12 +165,12 @@ export default function AttendanceStudentList() {
   <Typography
         variant="h4"
         sx={{
-          textAlign: "center",
-          mb: 4,
-          fontWeight: "bold",
-          color: "white",
-          textShadow: "0 0 10px rgba(255,255,255,0.6)",
-        }}
+          textAlign:"center",
+      mb: 2,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
       >
         Students Attendance
       </Typography>
@@ -191,29 +191,76 @@ export default function AttendanceStudentList() {
       onChange={handleSearch}
       variant="outlined"
       sx={{
-            input: { color: "white" },
-            label: { color: "rgba(255,255,255,0.8)" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
-              "&:hover fieldset": { borderColor: "#FFD700" },
-              "&.Mui-focused fieldset": { borderColor: "#FFD700" },
-            },
-          }}
+    input: { color: "#fff" }, // input text color
+
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // default label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label color
+    },
+
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.3)", // default border
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff9800", // hover border
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff5722", // focused border
+      },
+    },
+
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722", // helper text color
+    },
+  }}
     />
-    <FormControl sx={{ minWidth: 200 }}>
-      <InputLabel sx={{ color: "rgba(255,255,255,0.8)" }}>Class</InputLabel>
-      <Select label="Student Class" onChange={handleClass} sx={{
-              color: "white",
-              ".MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(255,255,255,0.3)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#FFD700",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#FFD700",
-              },
-            }}>
+    <FormControl sx={{
+      minWidth: 200,
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // default label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label
+    },
+    "& .MuiOutlinedInput-root": {
+      color: "#f5f5f5", // selected text
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.3)",
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff9800",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff5722",
+      },
+      "& .MuiSvgIcon-root": {
+        color: "#ff9800", // dropdown arrow
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}>
+      <InputLabel >Class</InputLabel>
+      <Select label="Student Class" onChange={handleClass}  MenuProps={{
+      PaperProps: {
+        sx: {
+          bgcolor: "#1e1e1e", // dropdown background
+          color: "#f5f5f5", // dropdown text
+          "& .MuiMenuItem-root": {
+            "&:hover": {
+              bgcolor: "rgba(255, 152, 0, 0.2)", // hover effect
+            },
+            "&.Mui-selected": {
+              bgcolor: "rgba(255, 87, 34, 0.3)", // selected item
+            },
+          },
+        },
+      },
+    }}>
         <MenuItem value="">All Students</MenuItem>
         {classes &&
           classes.map((x) => (
@@ -247,12 +294,42 @@ export default function AttendanceStudentList() {
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
       <TableHead>
         <TableRow sx={{ background: "rgba(255,255,255,0.05)" }}>
-          <TableCell><strong>Name</strong></TableCell>
-          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Gender</strong></TableCell>
-          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Guardian Contact</strong></TableCell>
-          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Class</strong></TableCell>
-          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>Percentage</strong></TableCell>
-          <TableCell sx={{ color: "#FFD700", fontWeight: "bold" }} align="right"><strong>View</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}><strong>Name</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }} align="right"><strong>Gender</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }} align="right"><strong>Guardian Contact</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }} align="right"><strong>Class</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }} align="right"><strong>Percentage</strong></TableCell>
+          <TableCell sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }} align="right"><strong>View</strong></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -268,13 +345,24 @@ export default function AttendanceStudentList() {
               <TableCell align="right" sx={{ color: "white" }}>{student.gender}</TableCell>
               <TableCell align="right" sx={{ color: "white" }}>{student.guardian_phone}</TableCell>
               <TableCell align="right" sx={{ color: "white" }}>{student.student_class.class_text}</TableCell>
-              <TableCell align="right" sx={{ color: "#FFD700", fontWeight: "bold" }}>
+              <TableCell align="right"  sx={{
+                  fontWeight: "bold",
+                  background: "linear-gradient(90deg, #ff9800, #ff5722)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
                 {attendacneData[student._id] !== undefined
                   ? `${attendacneData[student._id].toFixed(2)}%`
                   : "No Data"}
               </TableCell>
               <TableCell align="right">
-                <Link to={`/school/attendance/${student._id}`} style={{ color: "white", textDecoration: "underline" }}>Details</Link>
+                <Link to={`/school/attendance/${student._id}`}  style={{
+      color: "#ff9800", // solid orange for differentiation
+      fontWeight: "bold",
+      textDecoration: "none",
+    }}
+    onMouseEnter={(e) => (e.target.style.color = "#ff5722")}
+    onMouseLeave={(e) => (e.target.style.color = "#ff9800")}>Details</Link>
               </TableCell>
             </TableRow>
           ))}

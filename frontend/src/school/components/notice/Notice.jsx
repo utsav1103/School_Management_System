@@ -160,16 +160,12 @@ export default function Notice() {
         <Typography
   variant="h3"
   sx={{
-    textAlign: "center",
-    fontWeight: "bold",
-    mb: 4,
-    color: "#fff", // ✅ pure white text
-    letterSpacing: "1px",
-    textShadow: `
-      0px 0px 8px rgba(255,255,255,0.8),   /* soft outer glow */
-      0px 0px 20px rgba(255,255,255,0.6),  /* stronger shine */
-      0px 0px 30px rgba(255,255,255,0.4)`  /* extra glow depth */
-  }}
+    textAlign:"center",
+      mb: 2,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
 >
   Notice Board
 </Typography>
