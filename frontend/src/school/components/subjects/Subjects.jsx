@@ -110,20 +110,32 @@ const [message, setMessage] = useState("");
               handleClose={handleMessageClose}
             />
           )}
-      <Typography variant="h4" sx={{textAlign:'center', fontWeight:'bold'}}>Subject</Typography>
+      <Typography  variant='h3' sx={{
+        textAlign:"center",
+          fontWeight: 800,
+          my: 4,
+          background: "linear-gradient(90deg, #ff9800, #ff5722)", // warm orange gradient
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          letterSpacing: "2px",
+          textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+          fontFamily: "'Poppins', sans-serif",
+        }}>Subject</Typography>
       <Box
         component="form"
-        sx={{
-          "& > :not(style)": { m: 1 },
-          display: "flex",
-          minHeight: "80vh",
-          flexDirection: "column",
-          width: "50vw",
-          minWidth: "230px",
-          margin: "auto",
-          padding: "1rem",
-          backgroundColor: "rgba(221, 183, 239, 0.22)",
-        }}
+         sx={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    width: "50vw",
+    minWidth: "280px",
+    margin: "2rem auto",
+    p: 3,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    backdropFilter: "blur(10px)",
+    borderRadius: "16px",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.7)",
+  }}
         noValidate
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
@@ -131,14 +143,28 @@ const [message, setMessage] = useState("");
         {edit ? (
           <Typography
             variant="h6"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
+             sx={{
+      textAlign: "center",
+      fontWeight: "bold",
+      mb: 2,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
           >
             Edit subject
           </Typography>
         ) : (
           <Typography
             variant="h6"
-            sx={{ textAlign: "center", fontWeight: "bold" }}
+             sx={{
+      textAlign: "center",
+      fontWeight: "bold",
+      mb: 2,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
           >
             Add New subject
           </Typography>
@@ -150,6 +176,16 @@ const [message, setMessage] = useState("");
           value={Formik.values.subject_name}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          sx={{
+      input: { color: "#fff" },
+      "& .MuiInputLabel-root": { color: "#ff9800" },
+      "& .MuiInputLabel-root.Mui-focused": { color: "#ff5722" },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+        "&:hover fieldset": { borderColor: "#ff9800" },
+        "&.Mui-focused fieldset": { borderColor: "#ff5722" },
+      },
+    }}
         />
 
         {Formik.touched.subject_name && Formik.errors.subject_name && (
@@ -164,6 +200,16 @@ const [message, setMessage] = useState("");
           value={Formik.values.subject_codename}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          sx={{
+      input: { color: "#fff" },
+      "& .MuiInputLabel-root": { color: "#ff9800" },
+      "& .MuiInputLabel-root.Mui-focused": { color: "#ff5722" },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+        "&:hover fieldset": { borderColor: "#ff9800" },
+        "&.Mui-focused fieldset": { borderColor: "#ff5722" },
+      },
+    }}
         />
 
         {Formik.touched.subject_codename && Formik.errors.subject_codename && (
@@ -172,7 +218,15 @@ const [message, setMessage] = useState("");
           </p>
         )}
         <Button
-        sx={{width:'120px'}}
+         sx={{
+        flex: 1,
+        background: "linear-gradient(90deg, #ff9800, #ff5722)",
+        color: "#fff",
+        fontWeight: "bold",
+        "&:hover": {
+          boxShadow: "0 0 10px rgba(255, 87, 34, 0.8)",
+        },
+      }}
             type="submit"
             variant="contained"
           >
@@ -186,7 +240,15 @@ const [message, setMessage] = useState("");
             }}
             type="button"
             variant="outlined"
-            sx={{width:'120px'}}
+            sx={{
+          flex: 1,
+          borderColor: "#ff5722",
+          color: "#ff5722",
+          "&:hover": {
+            borderColor: "#ff9800",
+            color: "#ff9800",
+          },
+        }}
           >
             Cancel
           </Button>
@@ -195,23 +257,54 @@ const [message, setMessage] = useState("");
 
       <Box
         component={"div"}
-        sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+         sx={{
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 3,
+    mt: 4,
+  }}
       >
         {subjects &&
           subjects.map((x) => {
             return (
-              <Paper key={x._id} sx={{m:2,p:2}}>
+              <Paper key={x._id}sx={{
+          p: 3,
+          minWidth: 250,
+          borderRadius: "16px",
+          backgroundColor: "rgba(255,255,255,0.05)",
+          color: "#fff",
+          transition: "0.3s",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0 6px 16px rgba(0,0,0,0.5)",
+          },
+        }}>
                 <Box component={"div"}>
                   {" "}
-                  <Typography>
+                  <Typography variant="subtitle1"
+          sx={{
+            fontWeight: "bold",
+            background: "linear-gradient(90deg, #ff9800, #ff5722)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
                     subject:{x.subject_name}[{x.subject_codename}]
                   </Typography> 
                 </Box>
-                <Box component={"div"}>
+                <Box component={"div"} sx={{ display: "flex", gap: 1, mt: 2 }}>
                   <Button
                     onClick={() => {
                       handleEdit(x._id,x.subject_name,x.subject_codename);
-                    }}
+                    }}  sx={{
+              borderColor: "#ff9800",
+              color: "#ff9800",
+              border: "1px solid",
+              "&:hover": {
+                borderColor: "#ff5722",
+                color: "#ff5722",
+              },
+            }}
                   >
                     <EditIcon />
                   </Button>
@@ -219,7 +312,11 @@ const [message, setMessage] = useState("");
                     onClick={() => {
                       handleDelete(x._id);
                     }}
-                      sx={{color:"red"}}
+                       sx={{
+              color: "#fff",
+              backgroundColor: "#d32f2f",
+              "&:hover": { backgroundColor: "#b71c1c" },
+            }}
                   >
                     <DeleteSweepIcon />
                   </Button>
