@@ -9,7 +9,7 @@ export default function MessageSnackbar({ message, messageType, handleClose }) {
     <div>
       {messageType}
 
-      <Snackbar open={true} autoHideDuration={4000} onClose={handleClose}>
+      <Snackbar open={true} autoHideDuration={3000} onClose={handleClose} >
         <Alert
           onClose={handleClose}
           severity={messageType}

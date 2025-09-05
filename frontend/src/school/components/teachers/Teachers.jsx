@@ -29,7 +29,7 @@ export default function Teachers() {
   const [classes, setClasses] = React.useState([]);
   const [file, setFile] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState(null);
-
+  
   const addImage = (event) => {
     const file = event.target.files[0];
     setImageUrl(URL.createObjectURL(file));
@@ -210,15 +210,20 @@ export default function Teachers() {
   return (
     <Box
       component={"div"}
-      sx={{
-        background:
-          "",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        height: "100%",
-        paddingTop: "10px",
-        paddingBottom: "10px",
-      }}
+       sx={{
+    backgroundColor: "transparent", // keep transparent to show global bg
+    minHeight: "100vh",
+    paddingTop: "20px",
+    paddingBottom: "20px",
+    px: 2,
+
+    // gradient border on top for accent
+    borderTop: "4px solid",
+    borderImage: "linear-gradient(90deg, #ff9800, #ff5722) 1",
+
+    // optional subtle glow around the wrapper
+    boxShadow: "0 0 15px rgba(255, 152, 0, 0.2)",
+  }}
     >
       {message && (
         <MessageSnackbar
@@ -228,18 +233,32 @@ export default function Teachers() {
         />
       )}
 
-      <Box sx={{ textAlign: "center", mt: 2 }}></Box>
-
       <Box
   component="form"
-  sx={{
+   sx={{
     width: "100%",
     maxWidth: 600,
     margin: "30px auto",
     padding: "30px",
-    borderRadius: "16px",
-    background: "linear-gradient(to right, #e0f7fa, #80deea)",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    borderRadius: "20px",
+    backgroundColor: "rgba(0,0,0,0.6)", // semi-transparent over dark wood
+    backdropFilter: "blur(6px)", // frosted glass effect
+    border: "1px solid rgba(255,255,255,0.1)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+
+    // gradient accent border
+    position: "relative",
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "4px",
+      borderRadius: "20px 20px 0 0",
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+    },
+
     display: "flex",
     flexDirection: "column",
     gap: 2,
@@ -252,26 +271,60 @@ export default function Teachers() {
     variant="h5"
     textAlign="center"
     fontWeight="bold"
-    sx={{ mb: 2 }}
+     sx={{
+      mb: 2,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
   >
     {edit ? "Edit teacher Info..." : "Add teacher"}
   </Typography>
 
-  <Typography fontWeight="500">Add teacher Picture</Typography>
+  <Typography fontWeight="500"  sx={{ color: "#f5f5f5" }}>Add teacher Picture</Typography>
   <TextField
     type="file"
     inputRef={fileInputRef}
     onChange={addImage}
     variant="outlined"
     fullWidth
+   sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5", // input text
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)", // default border
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800", // hover border
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722", // focus border
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label color
+    },
+  }}
   />
 
   {imageUrl && (
     <CardMedia
-      component="img"
+       component="img"
       height="200"
       image={imageUrl}
-      sx={{ borderRadius: "12px", objectFit: "cover" }}
+      sx={{
+        borderRadius: "12px",
+        objectFit: "cover",
+        mt: 1,
+        border: "2px solid transparent",
+        backgroundImage:
+          "linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(90deg, #ff9800, #ff5722)",
+        backgroundOrigin: "border-box",
+        backgroundClip: "content-box, border-box",
+      }}
     />
   )}
 
@@ -284,6 +337,29 @@ export default function Teachers() {
     error={Boolean(Formik.touched.name && Formik.errors.name)}
     helperText={Formik.touched.name && Formik.errors.name}
     fullWidth
+     sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5", // text color
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722", // error text
+    },
+  }}
   />
 
   <TextField
@@ -295,6 +371,29 @@ export default function Teachers() {
     error={Boolean(Formik.touched.email && Formik.errors.email)}
     helperText={Formik.touched.email && Formik.errors.email}
     fullWidth
+    sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5", // text color
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722", // error text
+    },
+  }}
   />
 
   
@@ -308,21 +407,86 @@ export default function Teachers() {
     error={Boolean(Formik.touched.age && Formik.errors.age)}
     helperText={Formik.touched.age && Formik.errors.age}
     fullWidth
+    sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}
   />
 
-  <FormControl fullWidth error={Boolean(Formik.touched.gender && Formik.errors.gender)}>
+  <FormControl fullWidth error={Boolean(Formik.touched.gender && Formik.errors.gender)}
+   sx={{
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // default label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label
+    },
+    "& .MuiOutlinedInput-root": {
+      color: "#f5f5f5", // selected text
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.3)",
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff9800",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff5722",
+      },
+      "& .MuiSvgIcon-root": {
+        color: "#ff9800", // dropdown arrow
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}>
     <InputLabel>Gender</InputLabel>
     <Select
       name="gender"
       value={Formik.values.gender}
       label="Gender"
       onChange={Formik.handleChange}
+       MenuProps={{
+      PaperProps: {
+        sx: {
+          bgcolor: "#1e1e1e", // dropdown background
+          color: "#f5f5f5", // dropdown text
+          "& .MuiMenuItem-root": {
+            "&:hover": {
+              bgcolor: "rgba(255, 152, 0, 0.2)", // hover effect
+            },
+            "&.Mui-selected": {
+              bgcolor: "rgba(255, 87, 34, 0.3)", // selected item
+            },
+          },
+        },
+      },
+    }}
     >
       <MenuItem value="male">Male</MenuItem>
       <MenuItem value="female">Female</MenuItem>
     </Select>
     {Formik.touched.gender && Formik.errors.gender && (
-      <Typography variant="caption" color="error">
+      <Typography variant="caption" sx={{ color: "#ff5722" }}>
         {Formik.errors.gender}
       </Typography>
     )}
@@ -337,6 +501,29 @@ export default function Teachers() {
     error={Boolean(Formik.touched.qualification && Formik.errors.qualification)}
     helperText={Formik.touched.qualification && Formik.errors.qualification}
     fullWidth
+    sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}
   />
 
   
@@ -351,6 +538,29 @@ export default function Teachers() {
     error={Boolean(Formik.touched.password && Formik.errors.password)}
     helperText={Formik.touched.password && Formik.errors.password}
     fullWidth
+      sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}
   />
 
   <TextField
@@ -363,10 +573,43 @@ export default function Teachers() {
     error={Boolean(Formik.touched.confirm_password && Formik.errors.confirm_password)}
     helperText={Formik.touched.confirm_password && Formik.errors.confirm_password}
     fullWidth
+    sx={{
+    "& .MuiInputBase-root": {
+      color: "#f5f5f5",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff9800",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#ff5722",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#ff9800",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}
   />
 
   <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
-    <Button type="submit" variant="contained" fullWidth>
+    <Button type="submit" variant="contained" fullWidth sx={{
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      color: "#fff",
+      fontWeight: "bold",
+      borderRadius: "12px",
+      textTransform: "none",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+      "&:hover": {
+        background: "linear-gradient(90deg, #ffb74d, #ff7043)",
+      },
+    }}>
       Submit
     </Button>
     {edit && (
@@ -375,6 +618,19 @@ export default function Teachers() {
         variant="outlined"
         onClick={cancelEdit}
         fullWidth
+        sx={{
+        borderRadius: "12px",
+        textTransform: "none",
+        fontWeight: "bold",
+        border: "2px solid",
+        borderImage: "linear-gradient(90deg, #ff9800, #ff5722) 1",
+        color: "#ff9800",
+        "&:hover": {
+          background: "rgba(255, 152, 0, 0.1)",
+          borderImage: "linear-gradient(90deg, #ffb74d, #ff7043) 1",
+          color: "#ff5722",
+        },
+      }}
       >
         Cancel
       </Button>
@@ -398,6 +654,15 @@ export default function Teachers() {
     label="Search"
     onChange={handleSearch}
     variant="outlined"
+     sx={{
+      input: { color: "#fff" },
+      label: { color: "#ff9800" },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": { borderColor: "#ff9800" },
+        "&:hover fieldset": { borderColor: "#ff5722" },
+        "&.Mui-focused fieldset": { borderColor: "#ff5722" },
+      },
+    }}
   />
 </Box>
 
@@ -410,9 +675,6 @@ export default function Teachers() {
     gap: 3,
     marginTop: "30px",
     padding: "20px",
-    background: "linear-gradient(to right, #e0f7fa, #80deea)",
-    borderRadius: "20px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
   }}
 >
   {teachers &&
@@ -421,14 +683,16 @@ export default function Teachers() {
         <Card
           key={teacher._id}
           sx={{
-            width: 300,
-            borderRadius: "16px",
-            transition: "transform 0.2s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.03)",
-              boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-            },
-          }}
+          width: 300,
+          borderRadius: "16px",
+          backgroundColor: "rgba(0,0,0,0.7)",
+          color: "#fff",
+          transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.03)",
+            boxShadow: "0 6px 20px rgba(255, 152, 0, 0.5)",
+          },
+        }}
         >
           <CardActionArea>
             <Box sx={{ width: "100%", height: 250, overflow: "hidden" }}>
@@ -437,10 +701,11 @@ export default function Teachers() {
                 image={`/images/uploaded/teacher/${teacher.teacher_image}`}
                 alt="teacher image"
                 sx={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                opacity: 0.9,
+              }}
               />
             </Box>
 
@@ -470,13 +735,20 @@ export default function Teachers() {
               justifyContent: "space-between",
               px: 2,
               pb: 2,
+              gap:1,
             }}
           >
             <Button
               onClick={() => handleEdit(teacher._id)}
               variant="contained"
-              color="primary"
               size="small"
+               sx={{
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              color: "#fff",
+              "&:hover": {
+                background: "linear-gradient(90deg, #ffb74d, #ff7043)",
+              },
+            }}
               startIcon={<EditIcon />}
             >
               Edit
@@ -484,8 +756,14 @@ export default function Teachers() {
             <Button
               onClick={() => handleDelete(teacher._id)}
               variant="contained"
-              color="error"
               size="small"
+              sx={{
+              background: "linear-gradient(90deg, #f44336, #d32f2f)",
+              color: "#fff",
+              "&:hover": {
+                background: "linear-gradient(90deg, #ef5350, #c62828)",
+              },
+            }}
               startIcon={<DeleteIcon />}
             >
               Delete
