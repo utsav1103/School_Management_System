@@ -69,28 +69,32 @@ export default function ScheduleStudent() {
       }}
     >
       <h1
-        style={{
-          fontSize: "2.5rem",
-          fontWeight: "700",
-          textAlign: "center",
-          marginBottom: "2rem",
-          color: "#fff",
-        }}
+         style={{
+    fontSize: "2.5rem",
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: "2rem",
+    background: "linear-gradient(90deg, #ff9800, #ff5722)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+  }}
       >
         📅 Schedule Of Class [{selectedClass?selectedClass.class_text:''}]
       </h1>
 
       
       <div
-        style={{
-          maxWidth: "1000px",
-          margin: "0 auto",
-          padding: "1rem",
-          borderRadius: "16px",
-          background: "rgba(20,20,20,0.7)",
-          backdropFilter: "blur(8px)",
-          boxShadow: "0 8px 25px rgba(0,0,0,0.6)",
-        }}
+         style={{
+    maxWidth: "1000px",
+    margin: "0 auto",
+    padding: "1rem",
+    borderRadius: "16px",
+    background: "rgba(20,20,20,0.85)",
+    backdropFilter: "blur(10px)",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.6)",
+    transition: "all 0.3s ease-in-out",
+  }}
       >
         <Calendar
           localizer={localizer}
