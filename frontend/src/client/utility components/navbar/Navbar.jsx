@@ -127,7 +127,7 @@ function Navbar() {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={()=>setAnchorElNav(null)}
               sx={{
     display: { xs: 'block', md: 'none' },
     "& .MuiPaper-root": {
