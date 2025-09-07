@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 // Routers import
+const geminiRoutes = require("./routers/gemini")
 const schoolRouter = require("./routers/school.router")
 const classRouter = require("./routers/class.router")
 const subjectRouter = require("./routers/subject.router")
@@ -16,6 +17,8 @@ const examinationRouter = require("./routers/examination.router")
 const noticeRouter = require("./routers/notice.router")
 const app = express();
 app.use(express.json());  
+//Gemini routes
+app.use("/api/gemini", geminiRoutes);
 //if we pass any data to body to retrive the data we have to use this  
 app.use(express.urlencoded({extended: true}));
 const corsOption  = {
