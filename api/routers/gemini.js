@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-router.post("/chat", async (req, res) => {
+router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, res) => {
   try {
     const { prompt } = req.body;
 
