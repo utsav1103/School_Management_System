@@ -1,5 +1,5 @@
 import * as React from "react";
-import { baseApi } from "../../../environment";
+//import /api} from "../../../environment";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
@@ -55,7 +55,7 @@ export default function AttendanceStudentList() {
 
   const fetchClasses = () => {
     axios
-      .get(`${baseApi}/class/all`)
+      .get(`/api/class/all`)
       .then((resp) => {
         setClasses(resp.data.data);
       })
@@ -83,7 +83,7 @@ export default function AttendanceStudentList() {
   const [students, setStudents] = React.useState([]);
   const fetchStudents = () => {
     axios
-      .get(`${baseApi}/student/fetch-with-query`, { params })
+      .get(`/api/student/fetch-with-query`, { params })
       .then((resp) => {
         setStudents(resp.data.students)
         fetchAttendanceForStudents(resp.data.students)
@@ -108,7 +108,7 @@ export default function AttendanceStudentList() {
 
   const fetchAttendanceForStudent = async (studentId) => {
   try {
-    const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+    const response = await axios.get(`/api/attendance/${studentId}`);
     
     // FIX: use response.data.attendance instead of response.data
     const attendanceRecords = response.data.attendance || [];

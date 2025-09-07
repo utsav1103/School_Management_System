@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import {
   Table,
   TableBody,
@@ -17,7 +17,7 @@ export default function NoticeTeacher() {
   // Fetch all notices
   const FetchAllNotices = () => {
     axios
-      .get(`${baseApi}/notice/all`)
+      .get(`/api/notice/all`)
       .then((resp) => {
         setNotices(resp.data.data);
       })

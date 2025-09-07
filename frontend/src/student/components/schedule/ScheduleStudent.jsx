@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 const localizer = momentLocalizer(moment);
 
@@ -17,7 +17,7 @@ export default function ScheduleStudent() {
 
     const fetchStudentDetails = async () => {
     try {
-      const response = await axios.get(`${baseApi}/student/fetch-single`, {
+      const response = await axios.get(`/api/student/fetch-single`, {
         withCredentials: true, // if using cookies
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // if JWT in localStorage
@@ -38,7 +38,7 @@ export default function ScheduleStudent() {
   useEffect(() => {
     if (selectedClass) {
       axios
-        .get(`${baseApi}/schedule/fetch-with-class/${selectedClass._id}`)
+        .get(`/api/schedule/fetch-with-class/${selectedClass._id}`)
         .then((resp) => {
           const respData = resp.data.data.map((x) => {
             return {

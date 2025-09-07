@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 const localizer = momentLocalizer(moment);
 
@@ -16,7 +16,7 @@ export default function ScheduleTeacher() {
 
   useEffect(() => {
     axios
-      .get(`${baseApi}/class/all`)
+      .get(`/api/class/all`)
       .then((resp) => {
         setClasses(resp.data.data);
         setSelectedClass(resp.data.data[0]._id);
@@ -29,7 +29,7 @@ export default function ScheduleTeacher() {
   useEffect(() => {
     if (selectedClass) {
       axios
-        .get(`${baseApi}/schedule/fetch-with-class/${selectedClass}`)
+        .get(`/api/schedule/fetch-with-class/${selectedClass}`)
         .then((resp) => {
           const respData = resp.data.data.map((x) => {
             return {

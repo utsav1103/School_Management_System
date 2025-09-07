@@ -15,7 +15,7 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 export default function ExaminationsTeacher() {
   const [classes, setClasses] = useState([]);
@@ -32,7 +32,7 @@ export default function ExaminationsTeacher() {
   // Fetch all classes
   const fetchClasses = async () => {
     try {
-      const response = await axios.get(`${baseApi}/class/all`);
+      const response = await axios.get(`/api/class/all`);
       setClasses(response.data.data);
       if (response.data.data.length > 0) {
         setSelectedClass(response.data.data[0]._id); // default first class
@@ -47,7 +47,7 @@ export default function ExaminationsTeacher() {
     if (!selectedClass) return;
     try {
       const response = await axios.get(
-        `${baseApi}/examination/class/${selectedClass}`
+        `/api/examination/class/${selectedClass}`
       );
       setExaminations(response.data.examinations || []);
     } catch (error) {

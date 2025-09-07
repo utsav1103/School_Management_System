@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -41,7 +41,7 @@ export default function AttendanceDetails() {
   };
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get(`${baseApi}/attendance/${studentId}`);
+      const response = await axios.get(`/api/attendance/${studentId}`);
       console.log("Response Attendance", response.data);
 
       // Use the attendance array inside the object

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import axios from "axios";
 import {
   FormControl,
@@ -53,7 +53,7 @@ export default function AttendanceTeacher() {
 
   const fetchAttendeeClass = async () => {
     try {
-      const response = await axios.get(`${baseApi}/class/attendee`);
+      const response = await axios.get(`/api/class/attendee`);
       console.log("attende class response", response);
       setClasses(response.data.data || []);
     } catch (error) {
@@ -70,7 +70,7 @@ export default function AttendanceTeacher() {
     }
 
     axios
-      .get(`${baseApi}/student/fetch-with-query`, {
+      .get(`/api/student/fetch-with-query`, {
         params: { student_class: classId },
       })
       .then((resp) => {
@@ -93,7 +93,7 @@ export default function AttendanceTeacher() {
     fetchStudents(selectedClass);
 
      axios
-    .get(`${baseApi}/attendance/check/${selectedClass}`)
+    .get(`/api/attendance/check/${selectedClass}`)
     .then((resp) => {
       setAttendanceTaken(resp.data.attendanceTaken);
       if (resp.data.attendanceTaken) {
@@ -130,7 +130,7 @@ export default function AttendanceTeacher() {
         })),
       };
 
-      const resp = await axios.post(`${baseApi}/attendance/mark`, payload);
+      const resp = await axios.post(`/api/attendance/mark`, payload);
        setMessage(resp.data.message || "Attendance saved successfully ✅");
       setMessageType("success");
       setOpenSnackbar(true);} 

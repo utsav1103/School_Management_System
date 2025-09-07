@@ -2,7 +2,7 @@ import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { subjectSchema } from "../../../yupSchema/subjectSchema";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { useEffect, useState } from "react";
 
 //icons
@@ -38,7 +38,7 @@ const [message, setMessage] = useState("");
   };  
   const handleDelete = (id) => {
     console.log(id);
-    axios.delete(`${baseApi}/subject/delete/${id}`).then(resp=>{
+    axios.delete(`/api/subject/delete/${id}`).then(resp=>{
        setMessage(resp.data.message)
        setMessageType("success")
     }).catch(e=>{
@@ -55,7 +55,7 @@ const [message, setMessage] = useState("");
       console.log(values);
       if(edit){
         axios
-        .patch(`${baseApi}/subject/update/${editId  }`, { ...values })
+        .patch(`/api/subject/update/${editId  }`, { ...values })
         .then((resp) => {
           setMessage(resp.data.message)
           setMessageType("success")
@@ -71,7 +71,7 @@ const [message, setMessage] = useState("");
 
       
       axios
-        .post(`${baseApi}/subject/create`, { ...values })
+        .post(`/api/subject/create`, { ...values })
         .then((resp) => {
           console.log("subject add response", resp);
           setMessage(resp.data.message)
@@ -88,7 +88,7 @@ const [message, setMessage] = useState("");
   });
   const FetchAllsubjects = () => {
     axios
-      .get(`${baseApi}/subject/all`)
+      .get(`/api/subject/all`)
       .then((resp) => {
         setSubjects(resp.data.data);
       })

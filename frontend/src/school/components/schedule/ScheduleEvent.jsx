@@ -15,7 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 export default function ScheduleEvent({
   selectedClass,
@@ -64,7 +64,7 @@ export default function ScheduleEvent({
   ];
   const handleDelete = ()=>{
     if(confirm("Are you sure you want to delete ?")){
-      axios.delete(`${baseApi}/schedule/delete/${selectedEventId}`).then(resp=>{
+      axios.delete(`/api/schedule/delete/${selectedEventId}`).then(resp=>{
       handleMessageNew(resp.data.message, "success")
       handleCancel()
     }).catch((e)=>{
@@ -119,9 +119,9 @@ export default function ScheduleEvent({
           date: values.date,
         };
 
-        let BACKEND_URL = `${baseApi}/schedule/create`;
+        let BACKEND_URL = `/api/schedule/create`;
         if (edit) {
-          BACKEND_URL = `${baseApi}/schedule/update/${selectedEventId}`;
+          BACKEND_URL = `/api/schedule/update/${selectedEventId}`;
         }
         axios
           .post(BACKEND_URL, payload)
@@ -145,10 +145,10 @@ export default function ScheduleEvent({
   });
   const fetchData = async () => {
     const teacherResponse = await axios.get(
-      `${baseApi}/teacher/fetch-with-query`,
+      `/api/teacher/fetch-with-query`,
       { params: {} }
     );
-    const subjectResponse = await axios.get(`${baseApi}/subject/all`);
+    const subjectResponse = await axios.get(`/api/subject/all`);
     setTeachers(teacherResponse.data.teachers);
     setSubjects(subjectResponse.data.data);
   };
@@ -165,7 +165,7 @@ export default function ScheduleEvent({
   useEffect(() => {
     if (selectedEventId) {
       axios
-        .get(`${baseApi}/schedule/fetch/${selectedEventId}`)
+        .get(`/api/schedule/fetch/${selectedEventId}`)
         .then((resp) => {
           let start = new Date(resp.data.data.startTime);
           let end = new Date(resp.data.data.endTime);

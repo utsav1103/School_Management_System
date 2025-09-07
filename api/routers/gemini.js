@@ -1,5 +1,7 @@
-import express from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+const express = require("express");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { route } = require("./school.router");
+const authMiddleware = require("../auth/auth");
 
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -18,4 +20,4 @@ router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, 
   }
 });
 
-export default router;
+module.exports = router;

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 export default function Attendee({classId,handleMessage,message  }) {
   const [teachers, setteachers] = React.useState([]);
@@ -19,7 +19,7 @@ export default function Attendee({classId,handleMessage,message  }) {
     
     try {
       if(selectedTeacher){
-      const response = await axios.patch(`${baseApi}/class/update/${classId}`, {
+      const response = await axios.patch(`/api/class/update/${classId}`, {
         attendee: selectedTeacher,
       }); 
       console.log(response, "Submit attendee");
@@ -36,7 +36,7 @@ export default function Attendee({classId,handleMessage,message  }) {
   const fetchClassDetails = async ()=>{
       if(classId){
       try{
-        const response = await axios.get(`${baseApi}/class/single/${classId}`)
+        const response = await axios.get(`/api/class/single/${classId}`)
         setAttendee(response.data.data.attendee?response.data.data.attendee:null)
         console.log("single class",response)
       }catch(error){
@@ -47,7 +47,7 @@ export default function Attendee({classId,handleMessage,message  }) {
 
   const fetchteachers = () => {
     axios
-      .get(`${baseApi}/teacher/fetch-with-query`, { params: {} })
+      .get(`/api/teacher/fetch-with-query`, { params: {} })
       .then((resp) => {
         setteachers(resp.data.teachers);
       })

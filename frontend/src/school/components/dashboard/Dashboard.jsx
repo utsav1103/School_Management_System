@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Box, Button, CardMedia, TextField, Typography } from "@mui/material";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { useRef } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
@@ -46,7 +46,7 @@ export default function Dashboard() {
        if(file){
         fd.append("image", file, file.name)
        }
-       axios.patch(`${baseApi}/school/update`, fd).then(resp => {
+       axios.patch(`/api/school/update`, fd).then(resp => {
          setMessage(resp.data.message)
         setMessageType("success")
         cancelEdit()
@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   const fetchSchool = async () => {
     try {
-      const data = await axios.get(`${baseApi}/school/fetch-single`,)
+      const data = await axios.get(`/api/school/fetch-single`,)
       const res = await data.data;
       if (res?.success === true) {
         setSchool(res.school);

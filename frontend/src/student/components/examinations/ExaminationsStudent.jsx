@@ -11,7 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 
 export default function ExaminationsStudent() {
   const [selectedClass, setSelectedClass] = useState("");
@@ -28,7 +28,7 @@ export default function ExaminationsStudent() {
     if (!selectedClass) return;
     try {
       const response = await axios.get(
-        `${baseApi}/examination/class/${selectedClass}`
+        `/api/examination/class/${selectedClass}`
       );
       setExaminations(response.data.examinations || []);
     } catch (error) {
@@ -44,7 +44,7 @@ export default function ExaminationsStudent() {
 
   const fetchStudentDetails = async () => {
     try {
-      const response = await axios.get(`${baseApi}/student/fetch-single`, {
+      const response = await axios.get(`/api/student/fetch-single`, {
         withCredentials: true, // if using cookies
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // if JWT in localStorage

@@ -15,7 +15,7 @@ import MessageSnackbar from "../../../basic utility components/snackbar/MessageS
 import { useEffect, useState } from "react";
 import ScheduleEvent from "./ScheduleEvent";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 const localizer = momentLocalizer(moment);
 
 export default function Schedule() {
@@ -65,7 +65,7 @@ export default function Schedule() {
 
   useEffect(() => {
     axios
-      .get(`${baseApi}/class/all`)
+      .get(`/api/class/all`)
       .then((resp) => {
         setClasses(resp.data.data);
         setSelectedClass(resp.data.data[0]._id);
@@ -78,7 +78,7 @@ export default function Schedule() {
   useEffect(() => {
     if (selectedClass) {
       axios
-        .get(`${baseApi}/schedule/fetch-with-class/${selectedClass}`)
+        .get(`/api/schedule/fetch-with-class/${selectedClass}`)
         .then((resp) => {
           const respData = resp.data.data.map((x) => {
             return {

@@ -17,7 +17,7 @@ import {
 import { useFormik } from "formik";
 import { noticeSchema } from "../../../yupSchema/noticeSchema";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { useEffect, useState } from "react";
 
 //icons
@@ -76,7 +76,7 @@ export default function Notice() {
   const handleDelete = (id) => {
     console.log(id);
     axios
-      .delete(`${baseApi}/notice/delete/${id}`)
+      .delete(`/api/notice/delete/${id}`)
       .then((resp) => {
         setMessage(resp.data.message);
         setMessageType("success");
@@ -95,7 +95,7 @@ export default function Notice() {
       console.log(values);
       if (edit) {
         axios
-          .patch(`${baseApi}/notice/update/${editId}`, { ...values })
+          .patch(`/api/notice/update/${editId}`, { ...values })
           .then((resp) => {
             setMessage(resp.data.message);
             setMessageType("success");
@@ -108,7 +108,7 @@ export default function Notice() {
           });
       } else {
         axios
-          .post(`${baseApi}/notice/create`, { ...values })
+          .post(`/api/notice/create`, { ...values })
           .then((resp) => {
             console.log("Notice add response", resp);
             setMessage(resp.data.message);
@@ -126,7 +126,7 @@ export default function Notice() {
   });
   const FetchAllNotices = () => {
     axios
-      .get(`${baseApi}/notice/all`)
+      .get(`/api/notice/all`)
       .then((resp) => {
         setNotices(resp.data.data);
       })

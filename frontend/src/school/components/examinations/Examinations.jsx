@@ -31,7 +31,7 @@ import { useFormik } from "formik";
 import { examinationSchema } from "../../../yupSchema/examinationSchema";
 import { date } from "yup";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
 
 export default function Examinations() {
@@ -79,7 +79,7 @@ export default function Examinations() {
     if (confirm("Are you sure ??")) {
       try {
         const response = await axios.delete(
-          `${baseApi}/examination/delete/${id}`
+          `/api/examination/delete/${id}`
         );
         console.log("Delete response", response);
         setMessage(response.data.message);
@@ -109,9 +109,9 @@ export default function Examinations() {
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
       try {
-        let URL = `${baseApi}/examination/create`;
+        let URL = `/api/examination/create`;
         if (editId) {
-          URL = `${baseApi}/examination/update/${editId}`;
+          URL = `/api/examination/update/${editId}`;
         }
         //console.log("Examination", value);
         const response = await axios.post(URL, {
@@ -135,7 +135,7 @@ export default function Examinations() {
   });
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get(`${baseApi}/subject/all`);
+      const response = await axios.get(`/api/subject/all`);
       setSubjects(response.data.data);
     } catch (error) {
       console.log("Error in fetching subjects => Examination component", error);
@@ -145,7 +145,7 @@ export default function Examinations() {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get(`${baseApi}/class/all`);
+      const response = await axios.get(`/api/class/all`);
       setClasses(response.data.data);
       setSelectedClass(response.data.data[0]._id);
     } catch (error) {
@@ -160,7 +160,7 @@ export default function Examinations() {
         //console.log("Selected Class in fetchExaminations:", selectedClass);
 
         const response = await axios.get(
-          `${baseApi}/examination/class/${selectedClass}`
+          `/api/examination/class/${selectedClass}`
         );
         const data = await response.data.examinations;
         //console.log(data)

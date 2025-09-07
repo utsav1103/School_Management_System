@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { Box, CardMedia, Typography } from "@mui/material";
 
 export default function StudentDetails() {
@@ -14,7 +14,7 @@ export default function StudentDetails() {
 
   const fetchStudentDetails = async () => {
     try {
-      const response = await axios.get(`${baseApi}/student/fetch-single`, {
+      const response = await axios.get(`/api/student/fetch-single`, {
         withCredentials: true, // if using cookies
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // if JWT in localStorage

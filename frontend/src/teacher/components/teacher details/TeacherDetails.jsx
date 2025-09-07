@@ -6,13 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { Box, CardMedia, Typography } from "@mui/material";
 
 export default function TeacherDetails() {
   const fetchTeacherDetails = async () => {
     try {
-      const response = await axios.get(`${baseApi}/teacher/fetch-single`);
+      const response = await axios.get(`/api/teacher/fetch-single`);
 
       console.log("teacher details response", response.data);
       setTeacherDetails(response.data.teacher)

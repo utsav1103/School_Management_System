@@ -1,5 +1,5 @@
 import * as React from "react";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
@@ -171,7 +171,7 @@ export default function Teachers() {
 
   const fetchClasses = () => {
     axios
-      .get(`${baseApi}/class/all`)
+      .get(`/api/class/all`)
       .then((resp) => {
         setClasses(resp.data.data);
       })
@@ -192,7 +192,7 @@ export default function Teachers() {
   const [teachers, setteachers] = React.useState([]);
   const fetchteachers = () => {
     axios
-      .get(`${baseApi}/teacher/fetch-with-query`, { params })
+      .get(`/api/teacher/fetch-with-query`, { params })
       .then((resp) => {
         setteachers(resp.data.teachers);
       })

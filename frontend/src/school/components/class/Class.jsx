@@ -2,7 +2,7 @@ import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { classSchema } from "../../../yupSchema/classSchema";
 import axios from "axios";
-import { baseApi } from "../../../environment";
+//import { baseApi } from "../../../environment";
 import { useEffect, useState } from "react";
 
 //icons
@@ -37,7 +37,7 @@ const [message, setMessage] = useState("");
   };  
   const handleDelete = (id) => {
     console.log(id);
-    axios.delete(`${baseApi}/class/delete/${id}`).then(resp=>{
+    axios.delete(`/api/class/delete/${id}`).then(resp=>{
        setMessage(resp.data.message)
        setMessageType("success")
     }).catch(e=>{
@@ -54,7 +54,7 @@ const [message, setMessage] = useState("");
       console.log(values);
       if(edit){
         axios
-        .patch(`${baseApi}/class/update/${editId  }`, { ...values })
+        .patch(`/api/class/update/${editId  }`, { ...values })
         .then((resp) => {
           setMessage(resp.data.message)
           setMessageType("success")
@@ -70,7 +70,7 @@ const [message, setMessage] = useState("");
 
       
       axios
-        .post(`${baseApi}/class/create`, { ...values })
+        .post(`/api/class/create`, { ...values })
         .then((resp) => {
           console.log("class add response", resp);
           setMessage(resp.data.message)
@@ -87,7 +87,7 @@ const [message, setMessage] = useState("");
   });
   const FetchAllclasses = () => {
     axios
-      .get(`${baseApi}/class/all`)
+      .get(`/api/class/all`)
       .then((resp) => {
         setClasses(resp.data.data);
       })
