@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { baseApi } from "../environment";
+//import { baseApi } from "../environment";
 
 export default function GeminiChat() {
   const [prompt, setPrompt] = useState("");
@@ -17,7 +17,7 @@ export default function GeminiChat() {
   };
 
   return (
-    <div>
+    <div  style={{ padding: "1rem", background: "lightyellow" }}>
       <textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}

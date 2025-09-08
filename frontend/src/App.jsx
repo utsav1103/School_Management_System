@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import School from "./school/School.jsx";
 import "./App.css";
+import GeminiChat from "./components/GeminiChat.jsx";
+
 import Dashboard from "./school/components/dashboard/Dashboard.jsx";
 import Class from "./school/components/class/Class.jsx";
 import Examinations from "./school/components/examinations/Examinations.jsx";
@@ -31,6 +33,7 @@ import  {AuthProvider}  from "./context/AuthContext.jsx";
 import AttendanceDetails from "./school/components/attendance/AttendanceDetails.jsx";
 import LogOut from "./client/components/logout/LogOut.jsx";
 import { Box } from "@mui/material";
+
 
 function App() {
   return (
@@ -96,6 +99,24 @@ function App() {
             
           </Route>
         </Routes>
+
+   <Box
+    sx={{
+      position: "fixed",
+      bottom: 20,
+      right: 20,
+      width: 300,
+      zIndex: 1000,
+      boxShadow: 3,
+      borderRadius: 2,
+      backgroundColor: "white",
+      p: 2,
+    }}
+  >
+    <GeminiChat />
+  </Box>
+
+
       </Box>
         
       </BrowserRouter>
