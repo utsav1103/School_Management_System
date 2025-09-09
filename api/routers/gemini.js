@@ -3,17 +3,80 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { route } = require("./school.router");
 const authMiddleware = require("../auth/auth");
 
+const Student = require("../models/student.model");
+const Teacher = require("../models/teacher.model");
+const Schedule = require("../models/schedule.model");
+const Notice = require("../models/notice.model");
+const Examination = require("../models/examination.model");
+const Attendance = require("../models/attendance.model");
+const Subject = require("../models/subject.model");
+const Class = require("../models/class.model");
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, res) => {
   try {
     const { prompt } = req.body;
+    const user = req.user; // we will take this form jwt
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent(prompt);
+    let response = "";
+    //student asks schedule
+    if (prompt.toLowerCase().includes("my schedule") && user.role === "STUDENT") {
+  const student = await Student.findById(user.id).populate("student_class");
 
-    res.json({ response: result.response.text() });
+  if (!student || !student.student_class) {
+    response = "You are not assigned to any class yet.";
+  } else {
+    const schedule = await Schedule.find({ class: student.student_class._id })
+      .populate("subject teacher");
+
+    response = schedule.length
+      ? `Here is your schedule: ${schedule.map(
+          s => `${s.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${s.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} | ${s.subject.name} with ${s.teacher.name}`
+        ).join("\n")}`
+      : "I couldn’t find your schedule.";
+  }
+}
+
+
+      //teacher asks attendance
+      else if (prompt.toLowerCase().includes("attendance") && user.role === "TEACHER") {
+        const attendance = await Attendance.find({ teacher: user.id }).populate("class");
+        response = attendance.length
+          ? `You have attendance records for ${attendance.length} classes.`
+          : "No attendance records found.";
+      }
+
+      //school admin asks teachers
+       else if (prompt.toLowerCase().includes("teachers") && user.role === "SCHOOL") {
+        const teachers = await Teacher.countDocuments({ school: user.id });
+        response = `There are ${teachers} teachers registered in your school.`;
+      }
+
+      //anyone asks about notices
+else if (prompt.toLowerCase().includes("notices")) {
+        const notices = await Notice.find().sort({ createdAt: -1 }).limit(5);
+        response = notices.length
+          ? `Recent notices: ${notices.map(n => n.title).join(", ")}`
+          : "No notices available.";
+      }
+      //anyone aasks about exam query
+      else if (prompt.toLowerCase().includes("exams") || prompt.toLowerCase().includes("examinations")) {
+        const exams = await Examination.find({ school: user.schoolId }).sort({ date: 1 });
+        response = exams.length
+          ? `Upcoming exams: ${exams.map(e => `${e.subject} on ${e.date}`).join(", ")}`
+          : "No upcoming exams found.";
+      }
+
+      //by default
+      else {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(prompt);
+        response = result.response.text();
+      }
+
+    
+    res.json({ response });
   } catch (err) {
     console.error("Gemini Error:", err);
     res.status(500).json({ error: "Something went wrong" });
