@@ -100,21 +100,7 @@ function App() {
           </Route>
         </Routes>
 
-   <Box
-    sx={{
-      position: "fixed",
-      bottom: 20,
-      right: 20,
-      width: 300,
-      zIndex: 1000,
-      boxShadow: 3,
-      borderRadius: 2,
-      backgroundColor: "white",
-      p: 2,
-    }}
-  >
-    <GeminiChat />
-  </Box>
+   <GeminiChat />
 
 
       </Box>
