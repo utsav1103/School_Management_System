@@ -40,12 +40,23 @@ router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, 
 
 
       //teacher asks attendance
-      else if (prompt.toLowerCase().includes("attendance") && user.role === "TEACHER") {
-        const attendance = await Attendance.find({ teacher: user.id }).populate("class");
-        response = attendance.length
-          ? `You have attendance records for ${attendance.length} classes.`
-          : "No attendance records found.";
-      }
+     else if (prompt.toLowerCase().includes("attendance") && user.role === "TEACHER") {
+  // Step 1: Find all classes taught by this teacher
+  const teacherClasses = await Class.find({ attendee: user._id || user.id });
+
+  if (!teacherClasses.length) {
+    response = "You are not assigned to any classes yet.";
+  } else {
+    // Step 2: Find attendance for those classes
+    const attendance = await Attendance.find({
+      class: { $in: teacherClasses.map(c => c._id) }
+    }).populate("class student");
+
+    response = attendance.length
+      ? `You have attendance records for ${teacherClasses.length} classes, with a total of ${attendance.length} entries.`
+      : "No attendance records found for your classes.";
+  }
+}
 
       //school admin asks teachers
        else if (prompt.toLowerCase().includes("teachers") && user.role === "SCHOOL") {
