@@ -15,6 +15,19 @@ const School = require("../models/school.model");
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+
+
+
+{/* Student attendance summary ("my attendance")
+
+Teacher schedule query ("my schedule" when teacher role)
+
+School stats ("school stats") → counts students, teachers, subjects, classes
+
+ */}
+
+
+
 router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, res) => {
   try {
     const { prompt } = req.body;

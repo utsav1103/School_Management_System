@@ -29,49 +29,73 @@ export default function TeacherDetails() {
   return (
     <>
       {teacherDetails && (
-        <Box sx={{ textAlign: "center", mt: 3 }}>
+        <Box   sx={{
+            textAlign: "center",
+            mt: 5,
+            px: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }} >
           {/* Teacher Profile Photo */}
           <CardMedia
             component="img"
             alt="Teacher"
             image={`/images/uploaded/teacher/${teacherDetails.teacher_image}`} 
             sx={{
-              height: 160,
-              width: 160,
-              margin: "0 auto",
+              height: 250,
+              width: 250,
               borderRadius: "50%",
               objectFit: "cover",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
+              boxShadow: "0 8px 28px rgba(0,0,0,0.5)",
+              border: "4px solid #ff9800",
             }}
           />
 
           {/* Name below the photo */}
-          <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+          <Typography variant="h6"  sx={{
+              mt: 3,
+              fontWeight: "bold",
+              background: "linear-gradient(90deg, #ff9800, #ff5722)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              textTransform: "capitalize",
+            }}>
             {teacherDetails.name}
           </Typography>
 
           {/* Teacher Details Table */}
-          <TableContainer component={Paper} sx={{ mt: 3, maxWidth: 600, margin: "0 auto" }}>
-            <Table aria-label="teacher details table">
+          <TableContainer component={Paper} sx={{
+              mt: 4,
+              maxWidth: 650,
+              width: "100%",
+              borderRadius: "16px",
+              background: "rgba(255, 255, 255, 0.08)",
+              backdropFilter: "blur(12px)",
+              color: "white",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+              border: "1px solid rgba(255,255,255,0.15)",
+            }}>
+            <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell><b>Email :</b></TableCell>
-                  <TableCell align="right">{teacherDetails.email}</TableCell>
+                  <TableCell sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Email :</b></TableCell>
+                  <TableCell align="right" sx={{ color: "white" }}>{teacherDetails.email}</TableCell>
                 </TableRow>
 
                 <TableRow>
-                  <TableCell><b>Age :</b></TableCell>
-                  <TableCell align="right">{teacherDetails.age}</TableCell>
+                  <TableCell sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Age :</b></TableCell>
+                  <TableCell align="right" sx={{ color: "white" }}>{teacherDetails.age}</TableCell>
                 </TableRow>
 
                 <TableRow>
-                  <TableCell><b>Gender :</b></TableCell>
-                  <TableCell align="right">{teacherDetails.gender}</TableCell>
+                  <TableCell sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Gender :</b></TableCell>
+                  <TableCell align="right" sx={{ color: "white" }}>{teacherDetails.gender}</TableCell>
                 </TableRow>
 
                 <TableRow>
-                  <TableCell><b>Qualifications :</b></TableCell>
-                  <TableCell align="right">{teacherDetails.qualification}</TableCell>
+                  <TableCell sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Qualifications :</b></TableCell>
+                  <TableCell align="right" sx={{ color: "white" }}>{teacherDetails.qualification}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
