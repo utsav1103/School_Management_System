@@ -84,7 +84,7 @@ export default function TeacherDetails() {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Age :</b></TableCell>
+                  <TableCell  sx={{ color: "#ff9800", fontWeight: "bold" }}><b>Age :</b></TableCell>
                   <TableCell align="right" sx={{ color: "white" }}>{teacherDetails.age}</TableCell>
                 </TableRow>
 
