@@ -146,16 +146,45 @@ export default function AttendanceTeacher() {
 
   return (
     <>
-      <h1>Attendance Teacher</h1>
+      <h1 style={{
+    fontSize: "2.5rem",
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: "2rem",
+    background: "linear-gradient(90deg, #ff9800, #ff5722)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+  }}>Attendance Teacher</h1>
 
       {!loading && classes.length === 0 && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
+        <Alert severity="warning"  sx={{
+      mb: 2,
+      background: "linear-gradient(135deg, #ff9800, #ffb74d)",
+      color: "#fff",
+      fontWeight: "bold",
+      borderRadius: "10px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+      "& .MuiAlert-icon": {
+        color: "#fff",
+      },
+    }}>
           You are not assigned to any class now.
         </Alert>
       )}
 
       {!loading && classes.length > 0 && (
-        <Alert severity="info" sx={{ mb: 2 }}>
+        <Alert severity="info"  sx={{
+      mb: 2,
+      background: "linear-gradient(135deg, #ff9800, #ffb74d)",
+      color: "#fff",
+      fontWeight: "bold",
+      borderRadius: "10px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+      "& .MuiAlert-icon": {
+        color: "#fff",
+      },
+    }}>
           ✅ You are attendee of <strong>{classes.length}</strong> class
           {classes.length > 1 ? "es" : ""}:{" "}
           {classes.map((c) => c.class_text).join(", ")}
@@ -163,13 +192,55 @@ export default function AttendanceTeacher() {
       )}
 
       {classes.length > 0 && (
-        <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
+        <FormControl fullWidth variant="outlined" sx={{
+      minWidth: 200,
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // default label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label
+    },
+    "& .MuiOutlinedInput-root": {
+      color: "#f5f5f5", // selected text
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.3)",
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff9800",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff5722",
+      },
+      "& .MuiSvgIcon-root": {
+        color: "#ff9800", // dropdown arrow
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}>
           <InputLabel id="class-select-label">Class</InputLabel>
           <Select
             labelId="class-select-label"
             onChange={(e) => setSelectedClass(e.target.value)}
             value={selectedClass}
             label="class"
+            MenuProps={{
+      PaperProps: {
+        sx: {
+          bgcolor: "#1e1e1e", // dropdown background
+          color: "#f5f5f5", // dropdown text
+          "& .MuiMenuItem-root": {
+            "&:hover": {
+              bgcolor: "rgba(255, 152, 0, 0.2)", // hover effect
+            },
+            "&.Mui-selected": {
+              bgcolor: "rgba(255, 87, 34, 0.3)", // selected item
+            },
+          },
+        },
+      },
+    }}
           >
             <MenuItem value="">Select Class</MenuItem>
             {classes.map((x) => (

@@ -217,6 +217,7 @@ export default function AttendanceStudentList() {
     },
   }}
     />
+
     <FormControl sx={{
       minWidth: 200,
     "& .MuiInputLabel-root": {
@@ -245,7 +246,8 @@ export default function AttendanceStudentList() {
     },
   }}>
       <InputLabel >Class</InputLabel>
-      <Select label="Student Class" onChange={handleClass}  MenuProps={{
+      <Select label="Student Class" onChange={handleClass}  
+      MenuProps={{
       PaperProps: {
         sx: {
           bgcolor: "#1e1e1e", // dropdown background

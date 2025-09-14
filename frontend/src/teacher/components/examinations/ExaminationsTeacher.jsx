@@ -42,6 +42,7 @@ export default function ExaminationsTeacher() {
     }
   };
 
+
   // Fetch exams of selected class
   const fetchExaminations = async () => {
     if (!selectedClass) return;
@@ -64,42 +65,50 @@ export default function ExaminationsTeacher() {
   }, [selectedClass]);
 
   return (
-     <Box className="exam-page">
-      <Typography variant="h5" className="exam-title">
+     <Box>
+      <Typography variant="h5"
+        sx={{
+      textAlign: "center",
+      mb: 3,
+      background: "linear-gradient(90deg, #ff9800, #ff5722)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      fontWeight: "bold",
+      letterSpacing: "1px",
+    }}>
         📘 Class Examinations
       </Typography>
 
       {/* Select Class */}
-      <FormControl fullWidth sx={{
-    mb: 3,
-    "& .MuiOutlinedInput-root": {
-      color: "#fff", // text color
-      "& fieldset": {
-        borderColor: "rgba(255,255,255,0.4)", // default border
+      <FormControl   sx={{
+      minWidth: 200,
+      mb: 4, // ⬅️ adds spacing between form and table
+      "& .MuiInputLabel-root": {
+        color: "#ff9800",
       },
-      "&:hover fieldset": {
-        borderColor: "#42a5f5", // border on hover
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#ff5722",
       },
-      "&.Mui-focused fieldset": {
-        borderColor: "#42a5f5", // border when focused (instead of blue)
+      "& .MuiOutlinedInput-root": {
+        color: "#f5f5f5",
+        "& fieldset": {
+          borderColor: "rgba(255,255,255,0.3)",
+        },
+        "&:hover fieldset": {
+          borderColor: "#ff9800",
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: "#ff5722",
+        },
+        "& .MuiSvgIcon-root": {
+          color: "#ff9800",
+        },
       },
-    },
-    "& .MuiInputLabel-root": {
-      color: "#aaa", // label color
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      color: "#42a5f5", // label when focused
-    },
-    "& .MuiSelect-icon": {
-      color: "#fff", // dropdown arrow color
-    },
-    background: "rgba(20,20,20,0.6)", // dark transparent background
-    borderRadius: "12px",
-  }}>
-        <InputLabel id="class-select-label" sx={{
-      color: "white !important", // label color
-      "&.Mui-focused": { color: "white !important" }, // label on focus
+      "& .MuiFormHelperText-root": {
+        color: "#ff5722",
+      },
     }}>
+        <InputLabel >
           Class
         </InputLabel>
         <Select
@@ -107,33 +116,23 @@ export default function ExaminationsTeacher() {
           label="Class"
           value={selectedClass}
           onChange={(e) => setSelectedClass(e.target.value)}
-          sx={{
-      color: "white", // text color
-      ".MuiOutlinedInput-notchedOutline": {
-        borderColor: "rgba(255,255,255,0.5)", // default border
-      },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "white", // hover border
-      },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#ff9800", // focus border color (change as you like)
-      },
-      ".MuiSvgIcon-root": {
-        color: "white", // dropdown arrow
-      },
-      backgroundColor: "rgba(0,0,0,0.4)", // transparent select box
-    }}
+          
     MenuProps={{
-      PaperProps: {
-        sx: {
-          backgroundColor: "rgba(20,20,20,0.7)", // transparent dark bg
-          backdropFilter: "blur(8px)", // glassy effect
-          color: "white", // text color
-          borderRadius: "12px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.6)",
+        PaperProps: {
+          sx: {
+            bgcolor: "#1e1e1e",
+            color: "#f5f5f5",
+            "& .MuiMenuItem-root": {
+              "&:hover": {
+                bgcolor: "rgba(255, 152, 0, 0.2)",
+              },
+              "&.Mui-selected": {
+                bgcolor: "rgba(255, 87, 34, 0.3)",
+              },
+            },
+          },
         },
-      },
-    }}
+      }}
         >
           {classes.map((cls) => (
             <MenuItem key={cls._id} value={cls._id}>
@@ -144,33 +143,47 @@ export default function ExaminationsTeacher() {
       </FormControl>
 
       {/* Exams Table */}
-      <TableContainer component={Paper} className="exam-table">
+      <TableContainer component={Paper}  sx={{
+      backgroundColor: "#2b2b2b",
+      borderRadius: "12px",
+      overflow: "hidden",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+    }}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell align="center" className="exam-head">Exam Date</TableCell>
-              <TableCell align="center" className="exam-head">Subject</TableCell>
-              <TableCell align="center" className="exam-head">Exam Type</TableCell>
+            <TableRow sx={{
+            background: "linear-gradient(90deg, #ff9800, #ff5722)",
+          }}>
+              <TableCell align="center"  sx={{ color: "#fff", fontWeight: "bold" }}>Exam Date</TableCell>
+              <TableCell align="center"  sx={{ color: "#fff", fontWeight: "bold" }}>Subject</TableCell>
+              <TableCell align="center"  sx={{ color: "#fff", fontWeight: "bold" }}>Exam Type</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {examinations.length > 0 ? (
               examinations.map((exam) => (
-                <TableRow key={exam._id} className="exam-row">
-                  <TableCell align="center" className="exam-cell">
+                <TableRow key={exam._id} sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(255, 152, 0, 0.1)",
+                },
+              }}>
+                  <TableCell align="center" sx={{ color: "#f5f5f5" }}>
                     {dateFormat(exam.examDate)}
                   </TableCell>
-                  <TableCell align="center" className="exam-cell subject-highlight">
+                  <TableCell align="center" sx={{
+                  color: "#ffb74d",
+                  fontWeight: "bold",
+                }}>
                     {exam.subject ? exam.subject.subject_name : ""}
                   </TableCell>
-                  <TableCell align="center" className="exam-cell">
+                  <TableCell align="center" sx={{ color: "#f5f5f5" }}>
                     {exam.examType}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell align="center" colSpan={3} className="exam-cell">
+                <TableCell align="center" colSpan={3} sx={{ color: "#aaa" }}>
                   No examinations found
                 </TableCell>
               </TableRow>
@@ -179,66 +192,7 @@ export default function ExaminationsTeacher() {
         </Table>
       </TableContainer>
 
-      {/* Custom Styling */}
-      <style>
-        {`
-        .exam-page {
-          background: url('/images/dark-wood.jpg');
-          background-size: cover;
-          min-height: 100vh;
-          padding: 2rem;
-          color: white;
-        }
-
-        .exam-title {
-          text-align: center;
-          font-size: 2rem;
-          font-weight: bold;
-          margin-bottom: 2rem;
-          color: #fff;
-          text-shadow: 0 0 12px rgba(255,255,255,0.5);
-        }
-
-        .exam-select {
-          color: #fff !important;
-        }
-
-        .exam-table {
-          background: rgba(20, 20, 20, 0.4) !important;
-          backdrop-filter: blur(10px);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 0 25px rgba(0,0,0,0.7);
-        }
-
-        .exam-head {
-          background: rgba(40,40,40,0.9) !important;
-          color: #f0f0f0 !important;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .exam-row {
-          transition: all 0.3s ease;
-        }
-
-        .exam-row:hover {
-          background: rgba(255,255,255,0.08) !important;
-          transform: scale(1.01);
-        }
-
-        .exam-cell {
-          color: #ddd !important;
-          font-size: 1rem;
-        }
-
-        .subject-highlight {
-          color: #ff9800 !important; /* Highlight subject names */
-          font-weight: bold;
-        }
-      `}
-      </style>
+      
     </Box>
   );
 }

@@ -26,6 +26,7 @@ export default function ScheduleTeacher() {
       });
   }, []);
 
+
   useEffect(() => {
     if (selectedClass) {
       axios
@@ -51,9 +52,9 @@ export default function ScheduleTeacher() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage:
-          "url('https://www.transparenttextures.com/patterns/wood-pattern.png')",
-        backgroundColor: "#0d0d0d",
+        // backgroundImage:
+        //   "url('https://www.transparenttextures.com/patterns/wood-pattern.png')",
+        // backgroundColor: "#0d0d0d",
         backgroundBlendMode: "overlay",
         backgroundSize: "repeat",
         padding: "2rem",
@@ -61,29 +62,68 @@ export default function ScheduleTeacher() {
     >
       <h1
         style={{
-          fontSize: "2.5rem",
-          fontWeight: "700",
-          textAlign: "center",
-          marginBottom: "2rem",
-          color: "#fff",
-        }}
+    fontSize: "2.5rem",
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: "2rem",
+    background: "linear-gradient(90deg, #ff9800, #ff5722)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+  }}
       >
         📅 Schedule
       </h1>
 
       <Box sx={{ maxWidth: 400, margin: "0 auto 2rem auto" }}>
-        <FormControl fullWidth>
-          <InputLabel sx={{ color: "#fff" }}>Class</InputLabel>
+        <FormControl sx={{
+      minWidth: 200,
+    "& .MuiInputLabel-root": {
+      color: "#ff9800", // default label color
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff5722", // focused label
+    },
+    "& .MuiOutlinedInput-root": {
+      color: "#f5f5f5", // selected text
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.3)",
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff9800",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff5722",
+      },
+      "& .MuiSvgIcon-root": {
+        color: "#ff9800", // dropdown arrow
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff5722",
+    },
+  }}>
+          <InputLabel >Class</InputLabel>
           <Select
             value={selectedClass || ""}
             label="Class"
             onChange={(e) => setSelectedClass(e.target.value)}
-            sx={{
-              color: "white",
-              ".MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
-              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#aaa" },
-              ".MuiSvgIcon-root": { color: "white" },
-            }}
+            MenuProps={{
+      PaperProps: {
+        sx: {
+          bgcolor: "#1e1e1e", // dropdown background
+          color: "#f5f5f5", // dropdown text
+          "& .MuiMenuItem-root": {
+            "&:hover": {
+              bgcolor: "rgba(255, 152, 0, 0.2)", // hover effect
+            },
+            "&.Mui-selected": {
+              bgcolor: "rgba(255, 87, 34, 0.3)", // selected item
+            },
+          },
+        },
+      },
+    }}
           >
             {classes.map((x) => (
               <MenuItem key={x._id} value={x._id}>

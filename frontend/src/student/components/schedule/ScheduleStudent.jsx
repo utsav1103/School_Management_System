@@ -35,6 +35,7 @@ export default function ScheduleStudent() {
     fetchStudentDetails()
   }, []);
 
+
   useEffect(() => {
     if (selectedClass) {
       axios
@@ -60,9 +61,9 @@ export default function ScheduleStudent() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage:
-          "url('https://www.transparenttextures.com/patterns/wood-pattern.png')",
-        backgroundColor: "#0d0d0d",
+        // backgroundImage:
+        //   "url('https://www.transparenttextures.com/patterns/wood-pattern.png')",
+        // backgroundColor: "#0d0d0d",
         backgroundBlendMode: "overlay",
         backgroundSize: "repeat",
         padding: "2rem",
