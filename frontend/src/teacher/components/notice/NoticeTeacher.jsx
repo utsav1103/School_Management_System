@@ -67,6 +67,7 @@ export default function NoticeTeacher() {
       {/* Custom Styling */}
      <style>
       
+      
   {`
   .notice-container {
     //background: url('/images/dark-wood.jpg');
