@@ -74,6 +74,7 @@ router.post("/chat",authMiddleware(['SCHOOL','TEACHER','STUDENT']), async (req, 
       }
 
       //school admin asks teachers
+      
         else if (prompt.toLowerCase().includes("teachers") && user.role === "SCHOOL") {
         const teachers = await Teacher.countDocuments({ school: user.id });
         response = `There are ${teachers} teachers registered in your school.`;
